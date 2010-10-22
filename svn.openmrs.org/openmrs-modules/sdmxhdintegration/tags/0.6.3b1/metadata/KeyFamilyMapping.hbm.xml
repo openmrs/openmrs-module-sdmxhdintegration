@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="@MODULE_PACKAGE@">
+
+	<class name="KeyFamilyMapping" table="sdmxhdintegration_keyfamily_mapping" batch-size="25">
+		<id name="id" type="int" column="id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="uuid" type="string" length="38" not-null="true" />
+		<many-to-one name="sdmxhdMessage" class="SDMXHDMessage" not-null="true">
+			 <column name="sdmxhd_message_id" />
+		</many-to-one>
+		<property name="keyFamilyId" type="string" length="255" column="keyfamily_id" not-null="true" />
+		<property name="reportDefinitionId" type="int" column="report_definition_id" />
+	</class>
+
+</hibernate-mapping>

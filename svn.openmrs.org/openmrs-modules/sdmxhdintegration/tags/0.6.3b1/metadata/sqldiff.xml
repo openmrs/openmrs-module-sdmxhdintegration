@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help>
+		USE:
+			The diffs are ordered by datamodel version number.
+			The script can be run in a top down fashion and is
+			expected to not fail or overwrite old data
+		
+		EXPECT:
+			- "use business-database-name;" was called prior to
+			   calling this script
+	</help>
+	
+	<diff>
+		<version>1.0.0</version>
+		<author>Ryan Crichton</author>
+		<date>Apr 06 2009</date>
+		<description>
+			Create SDMX-HD table, for storing SDMX-HD Messages
+		</description>
+		<sql>			
+			CREATE TABLE IF NOT EXISTS `sdmxhdintegration_sdmxhd_message` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `uuid` char(38) NOT NULL,
+			  `sdmxhd_zip_file_name` varchar(255) NOT NULL,
+			  `name` varchar(255) NOT NULL,
+			  `description` mediumtext default NULL,
+			  `creator` int(11) NOT NULL default '0',
+			  `date_created` datetime NOT NULL default '0000-00-00 00:00:00',
+			  `changed_by` int(11) default NULL,
+  			  `date_changed` datetime default NULL,
+			  `retired` tinyint(1) NOT NULL default '0',
+			  `date_retired` datetime default NULL,
+			  `retired_by` int(11) default NULL,
+			  `retire_reason` varchar(255) default NULL,
+			  PRIMARY KEY  (`id`),
+			  KEY `User who created this sdmx-hd template` (`creator`),
+			  KEY `User who changed this sdmx-hd template` (`changed_by`),
+			  KEY `User who retired this sdmx-hd template` (`retired_by`),
+			  CONSTRAINT `User who created this sdmx-hd template` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+			  CONSTRAINT `User who changed this sdmx-hd template` FOREIGN KEY (`changed_by`) REFERENCES `users` (`user_id`),
+			  CONSTRAINT `User who retired this sdmx-hd template` FOREIGN KEY (`retired_by`) REFERENCES `users` (`user_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `sdmxhdintegration_keyfamily_mapping` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `uuid` char(38) NOT NULL,
+			  `sdmxhd_message_id` int(11) NOT NULL,
+			  `keyfamily_id` varchar(255) NOT NULL,
+			  `report_definition_id` int(11),
+			  PRIMARY KEY (`id`),
+			  KEY `The SDMX-HD Message that this mapping relates to` (`sdmxhd_message_id`),
+			  KEY `The Report Definition that the keyfamily relates to` (`report_definition_id`),
+			  CONSTRAINT `The SDMX-HD Message that this mapping relates to` FOREIGN KEY (`sdmxhd_message_id`) REFERENCES `sdmxhdintegration_sdmxhd_message` (`id`),
+			  CONSTRAINT `The ReportDefinition that this mapping relates to` FOREIGN KEY (`report_definition_id`) REFERENCES `serialized_object` (`serialized_object_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	
+	<diff>
+		<version>1.0.1</version>
+		<author>Ryan Crichton</author>
+		<date>June 01 2010</date>
+		<description>
+			Create table for Hibernate map in SDMXHDMessage object
+		</description>
+		<sql>			
+			CREATE TABLE IF NOT EXISTS `sdmxhdintegration_header_attributes_map` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `attribute` varchar(255) NOT NULL,
+			  `value` varchar(255),
+			  PRIMARY KEY  (`id`, `attribute`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `sdmxhdintegration_dataset_attributes_map` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `attribute` varchar(255) NOT NULL,
+			  `value` varchar(255),
+			  PRIMARY KEY  (`id`, `attribute`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `sdmxhdintegration_group_attributes_map` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `attribute` varchar(255) NOT NULL,
+			  `value` varchar(255),
+			  PRIMARY KEY  (`id`, `attribute`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	
+</sqldiff>
