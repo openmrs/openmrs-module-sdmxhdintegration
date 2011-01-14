@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
@@ -12,22 +12,22 @@
 <b class="boxHeader">
 	<spring:message code="Upload SDMX-HD Message" />
 </b>
-<form:form modelAttribute="sdmxhdMessage" enctype="multipart/form-data">
+<springform:form modelAttribute="sdmxhdMessage" enctype="multipart/form-data">
 	<table class="box">
 		<tr>
 			<input type="hidden" value="${sdmxhdMessage.id}"/>
 			
 			<td>Name:</td>
 			<td>
-				<form:input path="name"/>
-				<form:errors path="name" cssClass="error"/>
+				<springform:input path="name"/>
+				<springform:errors path="name" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
 			<td>Description:</td>
 			<td>
-				<form:input path="description"/>
-				<form:errors path="description" cssClass="error"/>
+				<springform:input path="description"/>
+				<springform:errors path="description" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
@@ -48,7 +48,7 @@
 				
 				<input type="hidden" value="${sdmxhdMessage.sdmxhdZipFileName}"/>
 				<br />
-				<form:errors path="sdmxhdZipFileName" cssClass="error"/>
+				<springform:errors path="sdmxhdZipFileName" cssClass="error"/>
 	    	</td>
 		</tr>
 		<tr></tr>
@@ -56,6 +56,6 @@
 			<td><input type="submit" value="Save" /></td>
 		</tr>
 	</table>
-</form:form>
+</springform:form>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
