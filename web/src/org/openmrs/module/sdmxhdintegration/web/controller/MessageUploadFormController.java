@@ -81,7 +81,7 @@ public class MessageUploadFormController {
 			AdministrationService as = Context.getAdministrationService();
 			String dir = as.getGlobalProperty("sdmxhdintegration.messageUploadDir");
 			String filename = file.getOriginalFilename();
-			filename = "[" + (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).format(new Date()) + "]" + filename;
+			filename = "_" + (new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss")).format(new Date()) + "_" + filename;
 			destFile = new File(dir + File.separator + filename);
 			destFile.mkdirs();
 			
