@@ -3,6 +3,10 @@
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
 <%@ include file="include.jsp"%>
 
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+</script>
+
 <form method="POST">
 	<table>
 		<tr>
@@ -30,9 +34,9 @@
 						</c:when>
 						<c:when test="${mandAttrDataTypes[attr.conceptRef] == 'Date'}">
 							<script type="text/javascript">
-								$(function() {
+								$j(function() {
 									var dp = "#" + "${attr.conceptRef}" + "DatePicker";
-									$(dp).datepicker({dateFormat: "yy-mm-dd"});
+									$j(dp).datepicker({dateFormat: "yy-mm-dd"});
 								});
 							</script>
 								
@@ -70,9 +74,9 @@
 						</c:when>
 						<c:when test="${condAttrDataTypes[attr.conceptRef] == 'Date'}">
 							<script type="text/javascript">
-								$(function() {
+								$j(function() {
 									var dp = "#" + "${attr.conceptRef}" + "DatePicker";
-									$(dp).datepicker({dateFormat: "yy-mm-dd"});
+									$j(dp).datepicker({dateFormat: "yy-mm-dd"});
 								});
 							</script>
 								

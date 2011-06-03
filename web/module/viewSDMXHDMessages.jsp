@@ -3,9 +3,13 @@
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+</script>
+
 <script type="text/javascript" charset="utf-8">
-	$(document).ready(function() {
-		$(".reporting-data-table").dataTable( {
+	$j(document).ready(function() {
+		$j(".reporting-data-table").dataTable( {
 			"bPaginate": true,
 			"iDisplayLength": 25,
 			"bLengthChange": false,
@@ -21,11 +25,11 @@
 
 	function toggleKF(sdmxhdMsgID) {
 		if (currentKeyFamily != null) {
-			$("#keyFamilyTable" + currentKeyFamily).hide();
-			$("#selectedIcon" + currentKeyFamily).hide();
+			$j("#keyFamilyTable" + currentKeyFamily).hide();
+			$j("#selectedIcon" + currentKeyFamily).hide();
 		}
-		$("#keyFamilyTable" + sdmxhdMsgID).toggle();
-		$("#selectedIcon" + sdmxhdMsgID).toggle();
+		$j("#keyFamilyTable" + sdmxhdMsgID).toggle();
+		$j("#selectedIcon" + sdmxhdMsgID).toggle();
 		currentKeyFamily = sdmxhdMsgID;
 	}
 </script>

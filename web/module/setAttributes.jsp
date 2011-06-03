@@ -4,13 +4,17 @@
 <%@ include file="include.jsp"%>
 
 <script type="text/javascript">
+	var $j = jQuery.noConflict();
+</script>
+
+<script type="text/javascript">
 	<!--
 
 	var scr = "setAttributesDialog.form?sdmxhdMessageId=${sdmxhdMessageId}&keyfamilyid=${keyfamilyid}";
 
-	$(function() {
+	$j(function() {
 
-		$("#setAttributesDialogiFrameDiv").dialog({
+		$j("#setAttributesDialogiFrameDiv").dialog({
 			autoOpen: false,
 			bgiframe: false,
 			width: 800,
@@ -26,19 +30,19 @@
 		attachmentLevel = encodeURIComponent(attachmentLevel);
 		columnName = encodeURIComponent(columnName);
 		// add request params
-		$("#setAttributesDialogiFrame").attr("src", encodeURI(scr + "&attachmentLevel=" + attachmentLevel + "&columnName=" + columnName));
-		//src = $("#setAttributesDialogiFrame").attr("src");
+		$j("#setAttributesDialogiFrame").attr("src", encodeURI(scr + "&attachmentLevel=" + attachmentLevel + "&columnName=" + columnName));
+		//src = $j("#setAttributesDialogiFrame").attr("src");
 		
-		$("#setAttributesDialogiFrameDiv").dialog('open');
+		$j("#setAttributesDialogiFrameDiv").dialog('open');
 	}
 
 	function openDialog(attachmentLevel) {
 		attachmentLevel = encodeURIComponent(attachmentLevel);
 		// add request params
-		$("#setAttributesDialogiFrame").attr("src", encodeURI(scr + "&attachmentLevel=" + attachmentLevel));
-		//src = $("#setAttributesDialogiFrame").attr("src");
+		$j("#setAttributesDialogiFrame").attr("src", encodeURI(scr + "&attachmentLevel=" + attachmentLevel));
+		//src = $j("#setAttributesDialogiFrame").attr("src");
 		
-		$("#setAttributesDialogiFrameDiv").dialog('open');
+		$j("#setAttributesDialogiFrameDiv").dialog('open');
 	}
 
 	-->
@@ -52,7 +56,7 @@
 
 <span class="boxHeader">
 	<b><spring:message code="DataSet Attributes" /></b>
-	<a onclick="$('#dataSetAttrBox').slideToggle()"> [show/hide]</a>
+	<a onclick="$j('#dataSetAttrBox').slideToggle()"> [show/hide]</a>
 </span>
 <table id="dataSetAttrBox" class="box">
 	<tr>
@@ -77,7 +81,7 @@
 
 <span class="boxHeader">
 	<b><spring:message code="Report Columns" /></b>
-	<a onclick="$('#columnsAttrBox').slideToggle()"> [show/hide]</a>
+	<a onclick="$j('#columnsAttrBox').slideToggle()"> [show/hide]</a>
 </span>
 <table id="columnsAttrBox" class="box">
 	<tr>

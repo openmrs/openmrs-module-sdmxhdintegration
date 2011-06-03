@@ -6,7 +6,7 @@
 	<!-- Base Module Properties -->
 	<id>sdmxhdintegration</id>
 	<name>SDMX-HD Integration Module</name>
-	<version>0.6.3b1</version>
+	<version>0.6.5</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>Ryan Crichton</author>
 	<description>

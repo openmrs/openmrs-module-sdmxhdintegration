@@ -69,12 +69,12 @@
 	<classpathentry kind="lib" path="lib-common/openmrs-api-1.5.1.10591-.jar" sourcepath="/openmrs-1.5.x"/>
 	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.5.1.10591-.jar"/>
 	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.5.1.10591-.jar"/>
-	<classpathentry kind="lib" path="lib-common/reporting-0.4.1.1.jar" sourcepath="/reporting-0.4.1.1-alpha"/>
 	<classpathentry kind="lib" path="lib/jembi-sdmx-hd-library-0.3.2.jar" sourcepath="/Jembi-Java-SDMX-HD-Library">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/home/ryan/workspace/Jembi-Java-SDMX-HD-Library/doc/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib-common/serialization.xstream-0.1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib-common/reporting-0.5.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

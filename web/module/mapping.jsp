@@ -4,31 +4,35 @@
 <%@ include file="include.jsp"%>
 
 <script type="text/javascript">
+	var $j = jQuery.noConflict();
+</script>
+
+<script type="text/javascript">
 	<!--
 
 	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
 	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
 
-	$(function() {
+	$j(function() {
 
-		$("#mapDimDialogiFrameDiv").dialog({
+		$j("#mapDimDialogiFrameDiv").dialog({
 			autoOpen: false,
 			bgiframe: false,
 			width: 640,
 			height: 480,
 			modal: true,
 			resizable: true,
-			title: "Dimension Mapping"
+			title: "<spring:message code="@MODULE_ID@.mapping.dimdialogtitle" />"
 		});
 
-		$("#mapIndDialogiFrameDiv").dialog({
+		$j("#mapIndDialogiFrameDiv").dialog({
 			autoOpen: false,
 			bgiframe: false,
 			width: 640,
 			height: 160,
 			modal: true,
 			resizable: true,
-			title: "Indicator Mapping"
+			title: "<spring:message code="@MODULE_ID@.mapping.inddialogtitle" />"
 		}); 
 		
 	});
@@ -36,27 +40,27 @@
 	function indDialog(sdmxhdInd) {
 		sdmxhdInd = encodeURIComponent(sdmxhdInd);
 		// add request params
-		$("#mapIndDialogiFrame").attr("src", encodeURI(indMapUrl + "&sdmxhdIndicator=" + sdmxhdInd));
-		src = $("#mapIndDialogiFrame").attr("src");
+		$j("#mapIndDialogiFrame").attr("src", encodeURI(indMapUrl + "&sdmxhdIndicator=" + sdmxhdInd));
+		src = $j("#mapIndDialogiFrame").attr("src");
 		
-		$("#mapIndDialogiFrameDiv").dialog('open');
+		$j("#mapIndDialogiFrameDiv").dialog('open');
 	}
 
 	function dimDialog(sdmxhdDim) {
 		sdmxhdDim = encodeURIComponent(sdmxhdDim);
 		// add request params
-		$("#mapDimDialogiFrame").attr("src", encodeURI(dimMapUrl + "&sdmxhdDimension=" + sdmxhdDim));
-		src = $("#mapDimDialogiFrame").attr("src");
+		$j("#mapDimDialogiFrame").attr("src", encodeURI(dimMapUrl + "&sdmxhdDimension=" + sdmxhdDim));
+		src = $j("#mapDimDialogiFrame").attr("src");
 		
-		$("#mapDimDialogiFrameDiv").dialog('open');
+		$j("#mapDimDialogiFrameDiv").dialog('open');
 	}
 	
 	-->
 </script>
 	
-	<a href="messageUpload.form">Upload New SDMX-HD Template</a> | <a href="viewSDMXHDMessages.list">View All SDMX-HD Message Templates</a>
+	<a href="messageUpload.form"><spring:message code="@MODULE_ID@.general.uploadlink" /></a> | <a href="viewSDMXHDMessages.list"><spring:message code="@MODULE_ID@.general.viewlink" /></a>
 
-	<h2><spring:message code="SDMX-HD Message Mapping" /></h2>
+	<h2><spring:message code="@MODULE_ID@.mapping.title" /></h2>
 
 	<form action="mapping.form" method="POST">
 		<input type="hidden" name="sdmxhdmessageid" value="${sdmxhdmessageid}">
@@ -64,13 +68,13 @@
 		<table>
 			<tr>
 				<td><img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/glass_numbers_1.png" title="Step 1" /></td>
-				<td class="description">Map the dimensions from this SDMX-HD DataSet Definition to dimensions that exist in OpenMRS. If an appropriate dimension doesn't exist, it can be created using the reporting framework.</td>
+				<td class="description"><spring:message code="@MODULE_ID@.mapping.dimdescription" /></td>
 			</tr>
 		</table>
 		
 		<span class="boxHeader">
 			<b><spring:message code="Dimensions" /></b>
-			<a onclick="$('#dimBox').slideToggle()"> [show/hide]</a>
+			<a onclick="$j('#dimBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
 		</span>
 		<table id="dimBox" class="box">
 		
@@ -97,13 +101,13 @@
 		<table>
 			<tr>
 				<td><img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/glass_numbers_2.png" title="Step 1" /></td>
-				<td class="description">Map the indicators from this SDMX-HD DataSet Definition to indicators that exist in OpenMRS. If an appropriate indicator doesn't exist, it can be created using the reporting framework. Indicators often relate to the dimensions listed above so, it is best to map all the dimensions first otherwise it may not be possible to map some of the indicators.</td>
+				<td class="description"><spring:message code="@MODULE_ID@.mapping.inddescription" /></td>
 			</tr>
 		</table>
 		
 		<span class="boxHeader">
 			<b><spring:message code="Indicators" /></b>
-			<a onclick="$('#indBox').slideToggle()"> [show/hide]</a>
+			<a onclick="$j('#indBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
 		</span>
 		<table id="indBox" class="box">
 		

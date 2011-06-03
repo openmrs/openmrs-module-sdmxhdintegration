@@ -1,16 +1,4 @@
-/**
- * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://license.openmrs.org
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
- *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
- */
+
 package org.openmrs.module.sdmxhdintegration.reporting.extension;
 
 import java.io.File;
@@ -53,7 +41,6 @@ import org.jembi.sdmxhd.primitives.Code;
 import org.jembi.sdmxhd.primitives.CodeList;
 import org.jembi.sdmxhd.util.Constants;
 import org.openmrs.annotation.Handler;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.dataset.DataSetColumn;
@@ -427,28 +414,28 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        out.close();
         }
         catch (IllegalArgumentException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
         catch (XMLStreamException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
         catch (ExternalRefrenceNotFoundException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
         catch (IllegalAccessException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
         catch (ValidationException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
         catch (SchemaValidationException e) {
-	        // TODO Auto-generated catch block
 	        log.error("Error generated", e);
+	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
     }
 

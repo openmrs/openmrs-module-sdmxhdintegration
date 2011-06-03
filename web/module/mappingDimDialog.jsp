@@ -4,10 +4,14 @@
 <%@ include file="include.jsp"%>
 
 <script type="text/javascript">
+	var $j = jQuery.noConflict();
+</script>
+
+<script type="text/javascript">
 <!--
-	$(function() {
-		$("#mappedOMRSDimensionId").change(function() {
-			var omrsDimensionId = $("#mappedOMRSDimensionId").val();
+	$j(function() {
+		$j("#mappedOMRSDimensionId").change(function() {
+			var omrsDimensionId = $j("#mappedOMRSDimensionId").val();
 			var sdmxhdIdRequestParam = 'sdmxhdMessageId=<c:out value="${sdmxhdMessageId}" />';
 			var sdmxhdDimensionRequestParam = 'sdmxhdDimension=<c:out value="${sdmxhdDimension}" />';
 			var omrsDimensionRequestParam = 'omrsDimension=' + omrsDimensionId;

@@ -1,16 +1,4 @@
-/**
- * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://license.openmrs.org
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
- *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
- */
+
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
 import java.io.IOException;
@@ -23,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import org.jembi.sdmxhd.dsd.DSD;
 import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
 import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
+import org.jembi.sdmxhd.primitives.CodeList;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
@@ -50,7 +39,10 @@ public class GlobalMessageConfigController {
 		sdmxhdMessage.getGroupElementAttributes();
 		
 		DSD sdmxhdDSD = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
-		model.addAttribute("CL_FREQ", sdmxhdDSD.getCodeList("CL_FREQ").getCodes());
+		CodeList freqCL = sdmxhdDSD.getCodeList("CL_FREQ");
+		if (freqCL != null) {
+			model.addAttribute("CL_FREQ", freqCL.getCodes());
+		}
 		
 		model.addAttribute("sdmxhdMessage", sdmxhdMessage);
 	}
