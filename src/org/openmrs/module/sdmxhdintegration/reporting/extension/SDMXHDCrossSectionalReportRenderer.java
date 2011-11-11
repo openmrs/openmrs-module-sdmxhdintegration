@@ -383,15 +383,19 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        while(entries.hasMoreElements()) {
 	        	ZipEntry readZipEntry = entries.nextElement();
 	        	
-	        	ZipEntry newZipEntry = new ZipEntry(readZipEntry.getName());
-	        	zos.putNextEntry(newZipEntry);
-	        	InputStream is = zf.getInputStream(readZipEntry);
-	        	
-	        	byte[] buffer = new byte[1024];
-	        	int len;
-	        	while ((len = is.read(buffer)) > 0){
-	        		zos.write(buffer, 0, len);
-	  	        }
+	        	// leave out data result files
+	        	if (!readZipEntry.getName().equals(Constants.CDS_PATH) &&
+	        			!readZipEntry.getName().equals(Constants.CSDS_PATH)) {
+		        	ZipEntry newZipEntry = new ZipEntry(readZipEntry.getName());
+		        	zos.putNextEntry(newZipEntry);
+		        	InputStream is = zf.getInputStream(readZipEntry);
+		        	
+		        	byte[] buffer = new byte[1024];
+		        	int len;
+		        	while ((len = is.read(buffer)) > 0){
+		        		zos.write(buffer, 0, len);
+		  	        }
+	        	}
 	        }
 	        
 	        // insert CSDS into temp file
