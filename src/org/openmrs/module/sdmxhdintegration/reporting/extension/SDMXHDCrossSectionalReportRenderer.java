@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import org.jembi.sdmxhd.csds.DataSet;
 import org.jembi.sdmxhd.csds.Group;
 import org.jembi.sdmxhd.csds.Obs;
 import org.jembi.sdmxhd.csds.Section;
+import org.jembi.sdmxhd.dsd.CodeRef;
 import org.jembi.sdmxhd.dsd.DSD;
 import org.jembi.sdmxhd.dsd.Dimension;
 import org.jembi.sdmxhd.dsd.KeyFamily;
@@ -45,8 +47,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.dataset.DataSetColumn;
 import org.openmrs.module.reporting.dataset.DataSetRow;
-import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition.CohortIndicatorAndDimensionColumn;
+import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.indicator.CohortIndicator;
 import org.openmrs.module.reporting.indicator.dimension.CohortIndicatorAndDimensionResult;
@@ -253,8 +255,9 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        	sdmxhdDataSet.getAttributes().put(key, dataSetAttachedAttributes.get(key));
 	        }
 	        
-	        Section s = new Section();
-	        
+
+	        //holder for all sections.  Will hold a default section if no explicit heirarchy is found in SL_ISET
+	        List<Section> sectionList = new ArrayList<Section>();
 	        //for each row of dataset
 	        for (DataSetRow row : dataSet) {
 	        	//for each column of dataset
@@ -271,6 +274,9 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        		Dimension indDim = sdmxhdDSD.getIndicatorOrDataElementDimension(keyFamilyId);
 	        		CodeList indCodeList = sdmxhdDSD.getCodeList(indDim.getCodelistRef());
 	        		Code indCode = indCodeList.getCodeByDescription(sdmxhdIndicatorName);
+
+	        		//setup or get the section for this indicator
+	        		Section s = getSectionHelper(indCode, sectionList, sdmxhdDSD);  //indicator code, listOfSections, message
 	        		
 	        		//get the dimension for the list of indicators (CL_INDICATOR)
 	        		Dimension indDimension = sdmxhdDSD.getDimension(indCodeList);
@@ -352,13 +358,15 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        			o.getAttributes().put("value", value.toString());
 	        		}
 	        		
+	        		//TODO:  add obs to the correct Section from the ISET in the DTD
 	        		s.getObs().add(o);
 	        		
 	        	}
 	        }
 	        
 	        // add section to SDMX-HD group
-    		g.getSections().add(s);
+	        for (Section s:sectionList)
+	        	g.getSections().add(s);
     		// add group to dataset
     		sdmxhdDataSet.getGroups().add(g);
 	        
@@ -441,6 +449,73 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        log.error("Error generated", e);
 	        throw new RenderingException("Error rendering the SDMX-HD message: " + e.getMessage(), e);
         }
+    }
+    
+    /**
+     * this uses the HCL_CONFIGURATION_HIERARCHIES, INDICATOR_SET_INDICATOR_HIERARCHY in the DSD 
+     * to put an indicator in the right Section based on the CL_ISET file.  
+     * If not found, all results will end up in 1 section.
+     * @param indCode
+     * @param sectionList
+     * @param dsd
+     * @return
+     */
+    public Section getSectionHelper(Code indCode, List<Section> sectionList, DSD dsd){
+    	org.jembi.sdmxhd.dsd.HierarchicalCodelist codeList = dsd.getHierarchicalCodeList("HCL_CONFIGURATION_HIERARCHIES");
+    	String sectionId = null;
+    	if (codeList != null){ //if the codelist hierarchy exists
+    		org.jembi.sdmxhd.dsd.Hierarchy h = codeList.getHierarchy("INDICATOR_SET_INDICATOR_HIERARCHY"); //this is the spot in the DSD where you put indicators into sets described in CL_ISET
+    		if (h != null && h.getCodeRefs() != null){
+    			for (CodeRef cr : h.getCodeRefs()){ // these are one of these for each AL_ISET entry
+    				if (cr.getChildren() != null){ 
+    					for (CodeRef crInner : cr.getChildren()){ // these point to AL_INDICATOR
+    						if (crInner.getCodeID().equals(indCode.getValue())){ //we've found the indicator by its codeId
+    							CodeList cl_iset = dsd.getCodeListByAlias(cr.getCodelistAliasRef()); //get the CL_ISET codelist
+    							if (cl_iset != null){
+    								Code code = cl_iset.getCodeByID(cr.getCodeID());  //get the description of the Code in CL_ISET
+    								sectionId = code.getDescription().getDefaultStr();  //now we have the description of the section that this indicator should go into
+    								break;
+    							}
+    						}
+    					}
+    					if (sectionId != null)
+    						break;
+    				}
+    			}
+    		}
+    	}
+    	if (sectionId == null){
+    		if (sectionList.size() == 0){
+    			Section section = new Section();
+    			sectionList.add(section);
+    			return section;
+    		} else {
+    			return sectionList.get(0);
+    		}	
+    	} else {
+    		return findSectionByAttributeText(sectionList, sectionId);
+    	}
+    }
+    
+    /**
+     * 
+     * Looks in a list of Sections to find an existing Section by its description attribute.
+     * Returns a new section if not found.
+     * 
+     * @param sections
+     * @param attributeText
+     * @return Section
+     */
+    private Section findSectionByAttributeText(List<Section> sections, String attributeText){
+    	for (Section s : sections){
+    		if (s.getAttributeValue("description") != null && s.getAttributeValue("description").equals(attributeText))
+    			return s;
+    	}
+    	//not found
+    	Section section = new Section();
+    	section.addAttribute("description", attributeText);
+    	sections.add(section);
+    	return section;
     }
 
 }

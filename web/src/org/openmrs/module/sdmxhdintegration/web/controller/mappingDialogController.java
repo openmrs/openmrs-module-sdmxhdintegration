@@ -276,7 +276,7 @@ public class mappingDialogController {
 	        List<String> baseFixedDimensionToBeMapped = new ArrayList<String>();
 	        
 	        // if there is no disaggregation hierarchy for this indicator... use all (non-fixed) dimensions for disagregation
-	        if (allCombinationofDimensionsForIndicator == null || allCombinationofDimensionsForIndicator.size() <= 0) {
+	        if (allCombinationofDimensionsForIndicator == null || allCombinationofDimensionsForIndicator.size() < 0) {
 	        	Set<String> smxhdFixedDimensions = omrsDSD.getFixedDimensionValues().keySet();
 	        	List<Dimension> allNonStanadrdDimensions = sdmxhdDSD.getAllNonStanadrdDimensions(keyFamilyId);
 	        	List<Dimension> listToBeRemoved = new ArrayList<Dimension>();
@@ -294,6 +294,16 @@ public class mappingDialogController {
 	        	for (Dimension d : listToBeRemoved) {
 	        		baseFixedDimensionToBeMapped.add(d.getConceptRef());
 	        	}
+	        	
+	        //added by Dave Thomas -- if the indicator is listed in the hierarchy as having no dimensions explicitly, just add indicator with no dimensions,
+	        //rather than applying all possible dimension combinations.
+	        } else if (allCombinationofDimensionsForIndicator.size() == 0){
+	        	
+	        	String columnName = omrsIndicator.getName();
+	        	Mapped<CohortIndicator> mappedOMRSIndicator = new Mapped<CohortIndicator>(omrsIndicator, IndicatorUtil.getDefaultParameterMappings());
+	        	omrsDSD.addColumn(columnName, columnName, mappedOMRSIndicator, new HashMap<String, String>());  //empty map = no dimensions
+	        	omrsDSD.addIndicatorColumnMapping(sdmxhdIndicator, columnName);
+	        	
 	        }
 	        
 	        for (List<DimensionWrapper> combinationOfDimensions : allCombinationofDimensionsForIndicator) {
