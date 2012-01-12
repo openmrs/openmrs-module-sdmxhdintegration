@@ -462,7 +462,8 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
      */
     public Section getSectionHelper(Code indCode, List<Section> sectionList, DSD dsd){
     	org.jembi.sdmxhd.dsd.HierarchicalCodelist codeList = dsd.getHierarchicalCodeList("HCL_CONFIGURATION_HIERARCHIES");
-    	String sectionId = null;
+    	String descriptionAttributeText = "";
+    	Code code = null;
     	if (codeList != null){ //if the codelist hierarchy exists
     		org.jembi.sdmxhd.dsd.Hierarchy h = codeList.getHierarchy("INDICATOR_SET_INDICATOR_HIERARCHY"); //this is the spot in the DSD where you put indicators into sets described in CL_ISET
     		if (h != null && h.getCodeRefs() != null){
@@ -472,19 +473,20 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     						if (crInner.getCodeID().equals(indCode.getValue())){ //we've found the indicator by its codeId
     							CodeList cl_iset = dsd.getCodeListByAlias(cr.getCodelistAliasRef()); //get the CL_ISET codelist
     							if (cl_iset != null){
-    								Code code = cl_iset.getCodeByID(cr.getCodeID());  //get the description of the Code in CL_ISET
-    								sectionId = code.getDescription().getDefaultStr();  //now we have the description of the section that this indicator should go into
+    								code = cl_iset.getCodeByID(cr.getCodeID());  //get the description of the Code in CL_ISET
+    								descriptionAttributeText = code.getDescription().getDefaultStr();  //now we have the description of the section that this indicator should go into
     								break;
     							}
     						}
     					}
-    					if (sectionId != null)
+    					if (code != null)
     						break;
     				}
     			}
     		}
     	}
-    	if (sectionId == null){
+    	
+    	if (code == null){ //if sections aren't described in hierarchy in DSD.
     		if (sectionList.size() == 0){
     			Section section = new Section();
     			sectionList.add(section);
@@ -492,8 +494,8 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     		} else {
     			return sectionList.get(0);
     		}	
-    	} else {
-    		return findSectionByAttributeText(sectionList, sectionId);
+    	} else {   //sections are describe in hierarchy in DSD
+    		return findSectionByCodeValue(sectionList, descriptionAttributeText, code);
     	}
     }
     
@@ -506,14 +508,15 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
      * @param attributeText
      * @return Section
      */
-    private Section findSectionByAttributeText(List<Section> sections, String attributeText){
+    private Section findSectionByCodeValue(List<Section> sections, String descriptionAttributeText, Code code){
     	for (Section s : sections){
-    		if (s.getAttributeValue("description") != null && s.getAttributeValue("description").equals(attributeText))
+    		if (s.getAttributeValue("value") != null && s.getAttributeValue("value").equals(code.getValue()))
     			return s;
     	}
     	//not found
     	Section section = new Section();
-    	section.addAttribute("description", attributeText);
+    	section.addAttribute("description", descriptionAttributeText);
+    	section.addAttribute("value", code.getValue());
     	sections.add(section);
     	return section;
     }
