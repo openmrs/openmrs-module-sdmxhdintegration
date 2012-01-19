@@ -1,3 +1,5 @@
-This module is to integrate TracNET with OpenMRS. TracNET stored aggregated data and this module
-aims to facilitate the storing mapping and writing of SDMX-HD message to allow OpenMRS to 
-communicate aggregate data to OpenMRS 
+SDMX-HD Integration OpenMRS Module
+=========================================
+
+This module is to allow SDMX-HD messages to be imported to and exported from OpenMRS. 
+
