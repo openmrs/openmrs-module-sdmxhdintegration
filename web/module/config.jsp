@@ -3,6 +3,8 @@
 <%@ include file="localInclude.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
+<openmrs:require privilege="Manage SDMX-HD Integration" otherwise="/login.htm" redirect="/module/sdmxhdintegration/config.form" />
+
 <b class="boxHeader">
 	<spring:message code="@MODULE_ID@.config.title" />
 </b>

@@ -3,7 +3,7 @@
 <%@ include file="localInclude.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="Manage SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messages.list" />
+<openmrs:require privilege="Manage SDMX-HD Integration" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messages.list" />
 
 <script type="text/javascript" charset="utf-8">
 	var $j = jQuery.noConflict();

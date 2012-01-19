@@ -18,5 +18,9 @@ package org.openmrs.module.sdmxhdintegration;
  * Holds module constants
  */
 public class Constants {
+	// Module properties
 	public static final String MODULE_ID = "sdmxhdintegration";
+	
+	// Module privileges
+	public static final String PRIV_MANAGE_SDMXHD_INTEGRATION = "Manage SDMX-HD Integration";
 }

@@ -3,7 +3,7 @@
 <%@ include file="localInclude.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="Upload SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messageUpload.form" />
+<openmrs:require privilege="Manage SDMX-HD Integration" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messageUpload.form" />
 
 <b class="boxHeader">
 	<spring:message code="Upload SDMX-HD Message" />

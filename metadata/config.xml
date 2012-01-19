@@ -23,13 +23,8 @@
 	</extension>
 	
 	<privilege>
-		<name>Upload SDMX-HD Messages</name>
-		<description>Allows the user to upload SDMX-HD Messages to the OpenMRS server</description>
-	</privilege>
-	
-	<privilege>
-		<name>Manage SDMX-HD Messages</name>
-		<description>Allows the user to manage uploaded SDMX-HD files from the admin page</description>
+		<name>Manage SDMX-HD Integration</name>
+		<description>Allows the user to manage SDMX-HD integration</description>
 	</privilege>
 
 	<globalProperty>
