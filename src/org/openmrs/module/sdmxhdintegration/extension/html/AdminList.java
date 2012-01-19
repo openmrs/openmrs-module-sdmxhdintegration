@@ -48,8 +48,8 @@ public class AdminList extends AdministrationSectionExt {
 		Map<String, String> map = new HashMap<String, String>();
 		
 		map.put("/module/sdmxhdintegration/messageUpload.form", "Upload an SDMX-HD Message");
-		map.put("/module/sdmxhdintegration/viewSDMXHDMessages.list", "View SDMX-HD Messages");
-		map.put("/module/sdmxhdintegration/configPage.list", "Configuration Page");
+		map.put("/module/sdmxhdintegration/messages.list", "View SDMX-HD Messages");
+		map.put("/module/sdmxhdintegration/config.form", "Configuration Page");
 		
 		return map;
 	}

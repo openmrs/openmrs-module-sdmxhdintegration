@@ -2,21 +2,14 @@
 <!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "../lib-common/config-1.2.dtd">
 
 <module configVersion="1.2">
-	
-	<!-- Base Module Properties -->
 	<id>sdmxhdintegration</id>
 	<name>SDMX-HD Integration Module</name>
 	<version>0.6.6</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>Ryan Crichton</author>
-	<description>
-			Allows SDMX-HD reports to be generated from SDMX-HD Data Set Definitions.
-	</description>
+	<description>Allows SDMX-HD reports to be generated from SDMX-HD Data Set Definitions.</description>
 
 	<activator>@MODULE_PACKAGE@.SDMXHDActivator</activator>
-	
-	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
-	<!-- /Base Module Properties -->
 	
 	<require_version>1.5.2</require_version>
 	
@@ -24,22 +17,11 @@
 	   	<require_module>org.openmrs.module.reporting</require_module>
 	</require_modules>
 	
-	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
 		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
 	</extension>
 	
-	
-	<!-- AOP
-	<advice>
-		<point>org.openmrs.api.FormService</point>
-		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
-	</advice>
-	 /AOP -->
-	
-	
-	<!-- Required Privileges -->
 	<privilege>
 		<name>Upload SDMX-HD Messages</name>
 		<description>Allows the user to upload SDMX-HD Messages to the OpenMRS server</description>
@@ -49,10 +31,7 @@
 		<name>Manage SDMX-HD Messages</name>
 		<description>Allows the user to manage uploaded SDMX-HD files from the admin page</description>
 	</privilege>
-	<!-- /Required Privileges -->
 
-
-	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>@MODULE_ID@.messageUploadDir</property>
 		<defaultValue></defaultValue>
@@ -60,53 +39,12 @@
 			The directory where SDMX-HD messages are uploaded to.
 		</description>
 	</globalProperty>
-	<!-- /Required Global Properties -->
-	
-	<!--
-	<dwr>
-		<allow>
-			<create creator="new" javascript="DWRFormEntryService">
-				<param name="class" value="org.openmrs.module.@MODULE_ID@.web.DWRFormEntryService"/>
-				<include method="enterForm"/>
-			</create>
-		</allow>
 
-		<signatures>
-			<![CDATA[
-			import @MODULE_PACKAGE@.web.DWRFormEntryService;
-			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
-			]]>
-		</signatures>	
-	</dwr>
-	-->
-	
-	<!-- Servlets -->
-	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
-	<servlet>
-		<servlet-name>formDownload</servlet-name>
-		<servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class>
-	</servlet>
-	-->
-	<!-- /Servlets -->
-	
-	
-	<!-- Internationalization -->
-	<!-- All message codes should start with @MODULE_ID@.* -->
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
 	</messages>
-	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
-	</messages>
-	<!-- /Internationalization -->
-	
-	<!-- Hibernate Mappings -->
+
 	<mappingFiles>
 		SDMXHDMessage.hbm.xml
 		KeyFamilyMapping.hbm.xml

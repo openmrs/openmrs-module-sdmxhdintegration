@@ -57,7 +57,7 @@ public class GlobalMessageConfigController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Global message configuration saved");
-		return "redirect:viewSDMXHDMessages.list";
+		return "redirect:messages.list";
 	}
 	
 }

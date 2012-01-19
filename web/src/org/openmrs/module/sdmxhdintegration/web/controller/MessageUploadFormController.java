@@ -134,7 +134,7 @@ public class MessageUploadFormController {
         	return "/module/sdmxhdintegration/messageUpload";
         }
         
-		return "redirect:viewSDMXHDMessages.list";
+		return "redirect:messages.list";
 	}
 
 }

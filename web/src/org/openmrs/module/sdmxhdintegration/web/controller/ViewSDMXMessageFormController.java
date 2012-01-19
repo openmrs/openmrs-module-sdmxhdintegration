@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ViewSDMXMessageFormController {
 	
-	@RequestMapping("/module/sdmxhdintegration/viewSDMXHDMessages")
+	@RequestMapping("/module/sdmxhdintegration/messages")
     public void showList(@RequestParam(value="deletemsgid", required=false) Integer deleteMsgId, ModelMap model) throws ValidationException, IOException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
 		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
@@ -41,7 +41,6 @@ public class ViewSDMXMessageFormController {
 			sdmxhdMessage.setRetiredBy(Context.getAuthenticatedUser());
 			sdmxhdMessage.setRetireReason("User Deleted");
 			sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
-			
 		}
 		
 		List<SDMXHDMessage> allSDMXHDMessages = sdmxhdService.getAllSDMXHDMessages(false);
@@ -71,12 +70,10 @@ public class ViewSDMXMessageFormController {
 		        }
 	        }
         }
-		
-		
+				
 		model.addAttribute("sdmxhdMessages", allSDMXHDMessages);
 		model.addAttribute("keyFamilyMappings", allKeyFamilyMappings);
 		model.addAttribute("reportUuidMapping", reportUuidMapping);
 		model.addAttribute("keyFamilyNamesMap", keyFamilyNamesMap);
-    }
-	
+    }	
 }

@@ -3,7 +3,7 @@
 <%@ include file="localInclude.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="Manage SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/viewSDMXHDMessages.list" />
+<openmrs:require privilege="Manage SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messages.list" />
 
 <script type="text/javascript" charset="utf-8">
 	var $j = jQuery.noConflict();
@@ -71,7 +71,7 @@
 										</a>
 									</td>
 									<td align="center">
-										<a href="viewSDMXHDMessages.list?deletemsgid=${sdmxhdMessage.id}" onclick="return confirm('Are you sure you want to delete this SDMX-HD Message?')">
+										<a href="messages.list?deletemsgid=${sdmxhdMessage.id}" onclick="return confirm('Are you sure you want to delete this SDMX-HD Message?')">
 											<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
 										</a>
 									</td>

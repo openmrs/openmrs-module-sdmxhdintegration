@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/module/sdmxhdintegration/configPage")
+@RequestMapping("/module/sdmxhdintegration/config")
 public class ConfigurationPageController {
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -37,7 +37,7 @@ public class ConfigurationPageController {
 		
 		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Configuration saved");
 		
-		return "redirect:configPage.form";
+		return "redirect:config.form";
 	}
 	
 }
