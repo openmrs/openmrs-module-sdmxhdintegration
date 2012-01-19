@@ -73,19 +73,19 @@ public class SetAttributesDialogController {
     	
     	// set the mandatory attributes datatypes
     	Map<String, String> mandAttrDataTypes = new HashMap<String, String>();
+    	
     	for (Attribute a : mandAttributes) {
     		if (a.getCodelist() != null) {
-    			// get codelist
+    			// Get codelist from DSD
     			CodeList codeList = sdmxhdDSD.getCodeList(a.getCodelist());
-    			// extract code values
+    			
+    			// Extract code values
     			List<SimpleCode> codeValues = new ArrayList<SimpleCode>();
     			for (Code c : codeList.getCodes()) {
-    				SimpleCode sc = new SimpleCode();
-    				sc.setDescription(c.getDescription().getDefaultStr());
-    				sc.setValue(c.getValue());
-    				codeValues.add(sc);
+    				codeValues.add(new SimpleCode(c.getValue(), c.getDescription().getDefaultStr()));
     			}
-    			// store code values
+    			
+    			// Add to master map
     			codelistValues.put(a.getConceptRef(), codeValues);
     			
     			mandAttrDataTypes.put(a.getConceptRef(), "Coded");
@@ -103,17 +103,16 @@ public class SetAttributesDialogController {
     	Map<String, String> condAttrDataTypes = new HashMap<String, String>();
     	for (Attribute a : condAttributes) {
     		if (a.getCodelist() != null) {
-    			// get codelist
+    			// Get codelist from DSD
     			CodeList codeList = sdmxhdDSD.getCodeList(a.getCodelist());
-    			// extract code values
+    			
+    			// Extract code values
     			List<SimpleCode> codeValues = new ArrayList<SimpleCode>();
     			for (Code c : codeList.getCodes()) {
-    				SimpleCode sc = new SimpleCode();
-    				sc.setDescription(c.getDescription().getDefaultStr());
-    				sc.setValue(c.getValue());
-    				codeValues.add(sc);
+    				codeValues.add(new SimpleCode(c.getValue(), c.getDescription().getDefaultStr()));
     			}
-    			// store code values
+    			
+    			// Add to master map
     			codelistValues.put(a.getConceptRef(), codeValues);
     			
     			condAttrDataTypes.put(a.getConceptRef(), "Coded");
