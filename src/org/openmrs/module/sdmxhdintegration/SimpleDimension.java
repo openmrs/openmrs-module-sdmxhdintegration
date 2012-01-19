@@ -11,34 +11,49 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.sdmxhdintegration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- *
+ * Used by UI to represent an SDMX dimension 
  */
 public class SimpleDimension {
 	
-	String name;
-	List<String> values = new ArrayList<String>();
+	private String name;
+	private List<String> values = new ArrayList<String>();
 	
-    public String getName() {
+    /**
+     * Constructs a dimension
+     * @param name the name
+     */
+    public SimpleDimension(String name) {
+	    this.name = name;
+    }
+
+    /**
+     * Gets the name
+     * @return the name
+     */
+	public String getName() {
     	return name;
     }
 	
-    public void setName(String name) {
-    	this.name = name;
-    }
-	
+	/**
+     * Gets the values
+     * @return the values
+     */
     public List<String> getValues() {
     	return values;
     }
-	
-    public void setValues(List<String> values) {
-    	this.values = values;
+    
+    /**
+     * Adds a value
+     * @param value the value
+     */
+    public void addValue(String value) {
+    	values.add(value);
     }
-
 }
