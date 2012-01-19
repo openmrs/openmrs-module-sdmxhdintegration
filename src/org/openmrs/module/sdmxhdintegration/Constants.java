@@ -18,5 +18,5 @@ package org.openmrs.module.sdmxhdintegration;
  * Holds module constants
  */
 public class Constants {
-	public static final String MODULE_ID = "sdmxintegration";
+	public static final String MODULE_ID = "sdmxhdintegration";
 }
