@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ViewSDMXMessageFormController {
+public class MessagesController {
 	
 	@RequestMapping("/module/sdmxhdintegration/messages")
     public void showList(@RequestParam(value="deletemsgid", required=false) Integer deleteMsgId, ModelMap model) throws ValidationException, IOException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {

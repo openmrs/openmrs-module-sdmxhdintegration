@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
@@ -49,15 +62,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
-
 /**
- * Controller for Indicator and Dimension mapping Dialog boxs
+ * Controller for indicator and dimension mapping dialog boxes
  */
 @Controller
-public class mappingDialogController {
+public class MappingDialogController {
 	
-	/* DIMENSIONS MAPPING */
-	
+	/**
+	 * Shows the dimensions mapping dialog
+	 * @param model the model
+	 * @param sdmxhdIndicator the SDMX indicator
+	 * @param sdmxhdMessageId the SDMX message id
+	 * @param keyFamilyId the key family id
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping("/module/sdmxhdintegration/mappingDimDialog")
 	public void showDimDialog(ModelMap model,
 	                          @RequestParam("sdmxhdDimension") String sdmxhdDimension,
@@ -139,6 +157,9 @@ public class mappingDialogController {
 	
 	public static final String DIM_OPT = "dimOptMapping.";
 	
+	/**
+	 * Handles submission of dimension mapping dialog
+	 */
 	@RequestMapping(value="/module/sdmxhdintegration/mappingDimDialog", method=RequestMethod.POST)
 	public String handleDimDialogSubmission(WebRequest request,
 	                                        @RequestParam("mappedOMRSDimensionId") Integer mappedOMRSDimensionId,
@@ -198,8 +219,14 @@ public class mappingDialogController {
 		return "redirect:redirectParent.form?url=mapping.form?sdmxhdmessageid=" + sdmxhdMessageId + "%26keyfamilyid=" + keyFamilyId;
 	}
 	
-	/* INDICATOR MAPPING */
-	
+	/**
+	 * Shows the indicator mapping dialog
+	 * @param model the model
+	 * @param sdmxhdIndicator the SDMX indicator
+	 * @param sdmxhdMessageId the SDMX message id
+	 * @param keyFamilyId the key family id
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping("/module/sdmxhdintegration/mappingIndDialog")
 	public void showIndDialog(ModelMap model, @RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
 	                          @RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId,
@@ -226,6 +253,9 @@ public class mappingDialogController {
     	}
 	}
 	
+	/**
+	 * Handles submission of indicator mapping dialog
+	 */
 	@RequestMapping(value="/module/sdmxhdintegration/mappingIndDialog", method=RequestMethod.POST)
 	public String handleIndDialogSubmission(HttpSession httpSession,
 	                                        @RequestParam("mappedOMRSIndicatorId") Integer mappedOMRSIndicatorId,
