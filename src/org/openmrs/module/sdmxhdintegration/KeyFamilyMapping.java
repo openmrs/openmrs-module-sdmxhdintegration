@@ -1,12 +1,23 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration;
 
 import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.module.reporting.report.definition.ReportDefinition;
-
 
 /**
- *
+ * Entity which stores mappings for a key family
  */
 public class KeyFamilyMapping extends BaseOpenmrsObject {
 	
@@ -14,55 +25,7 @@ public class KeyFamilyMapping extends BaseOpenmrsObject {
 	private SDMXHDMessage sdmxhdMessage;
 	private String keyFamilyId;
 	private Integer reportDefinitionId;
-
 	
-    /**
-     * @return the sdmxhdMessage
-     */
-    public SDMXHDMessage getSdmxhdMessage() {
-    	return sdmxhdMessage;
-    }
-
-	
-    /**
-     * @param sdmxhdMessage the sdmxhdMessage to set
-     */
-    public void setSdmxhdMessage(SDMXHDMessage sdmxhdMessage) {
-    	this.sdmxhdMessage = sdmxhdMessage;
-    }
-
-	
-    /**
-     * @return the keyFamilyId
-     */
-    public String getKeyFamilyId() {
-    	return keyFamilyId;
-    }
-
-	
-    /**
-     * @param keyFamilyId the keyFamilyId to set
-     */
-    public void setKeyFamilyId(String keyFamilyId) {
-    	this.keyFamilyId = keyFamilyId;
-    }
-
-	
-    /**
-     * @return the reportDefinition
-     */
-    public Integer getReportDefinitionId() {
-    	return reportDefinitionId;
-    }
-
-	
-    /**
-     * @param reportDefinition the reportDefinition to set
-     */
-    public void setReportDefinitionId(Integer reportDefinitionId) {
-    	this.reportDefinitionId = reportDefinitionId;
-    }
-
 	/**
      * @see org.openmrs.OpenmrsObject#getId()
      */
@@ -79,4 +42,51 @@ public class KeyFamilyMapping extends BaseOpenmrsObject {
 	    this.id = id;
     }
 
+    /**
+     * Gets the SDMX message
+     * @return the sdmxhdMessage
+     */
+    public SDMXHDMessage getSdmxhdMessage() {
+    	return sdmxhdMessage;
+    }
+	
+    /**
+     * Sets the SDMX message
+     * @param sdmxhdMessage the message
+     */
+    public void setSdmxhdMessage(SDMXHDMessage sdmxhdMessage) {
+    	this.sdmxhdMessage = sdmxhdMessage;
+    }
+
+    /**
+     * Gets the key family id
+     * @return the id
+     */
+    public String getKeyFamilyId() {
+    	return keyFamilyId;
+    }
+	
+    /**
+     * Sets the key family id
+     * @param keyFamilyId the id
+     */
+    public void setKeyFamilyId(String keyFamilyId) {
+    	this.keyFamilyId = keyFamilyId;
+    }
+	
+    /**
+     * Gets the report definition id
+     * @return the id
+     */
+    public Integer getReportDefinitionId() {
+    	return reportDefinitionId;
+    }
+	
+    /**
+     * Sets the report definition id
+     * @param reportDefinitionId the id
+     */
+    public void setReportDefinitionId(Integer reportDefinitionId) {
+    	this.reportDefinitionId = reportDefinitionId;
+    }
 }
