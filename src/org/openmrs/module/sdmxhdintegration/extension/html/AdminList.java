@@ -11,12 +11,14 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.sdmxhdintegration.extension.html;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openmrs.module.Extension;
+import org.openmrs.module.sdmxhdintegration.Constants;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
@@ -47,9 +49,9 @@ public class AdminList extends AdministrationSectionExt {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
-		map.put("/module/sdmxhdintegration/messageUpload.form", "Upload an SDMX-HD Message");
-		map.put("/module/sdmxhdintegration/messages.list", "View SDMX-HD Messages");
-		map.put("/module/sdmxhdintegration/config.form", "Configuration Page");
+		map.put("/module/sdmxhdintegration/messageUpload.form", Constants.MODULE_ID + ".general.uploadlink");
+		map.put("/module/sdmxhdintegration/messages.list", Constants.MODULE_ID + ".general.viewlink");
+		map.put("/module/sdmxhdintegration/config.form", Constants.MODULE_ID + ".general.configlink");
 		
 		return map;
 	}
