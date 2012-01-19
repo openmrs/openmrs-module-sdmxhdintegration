@@ -1,7 +1,6 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
-
 <!-- Include taglibs from core -->
 <%@ taglib prefix="fn" uri="/WEB-INF/taglibs/fn.tld" %>
+<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
 
 <!-- Include css from core -->
 <openmrs:htmlInclude file="/scripts/jquery-ui/css/redmond/jquery-ui-1.7.2.custom.css"/>

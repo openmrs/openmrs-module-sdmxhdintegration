@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="include.jsp"%>
+<%@ include file="localInclude.jsp" %>
 
 <script type="text/javascript">
 	var $j = jQuery.noConflict();

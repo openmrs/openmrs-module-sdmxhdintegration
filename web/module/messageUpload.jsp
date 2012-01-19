@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
-
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="localInclude.jsp" %>
 
 <openmrs:require privilege="Upload SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messageUpload.form" />
 

@@ -1,14 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
-
-<%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="include.jsp"%>
-
-<script type="text/javascript">
-	var $j = jQuery.noConflict();
-</script>
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="localInclude.jsp" %>
 
 <script type="text/javascript">
-	<!--
+var $j = jQuery.noConflict();
 
 	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
 	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";

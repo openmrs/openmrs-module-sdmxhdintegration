@@ -1,13 +1,10 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/reporting/include.jsp"%>
-<%@ include file="/WEB-INF/view/module/reporting/includeScripts.jsp"%>
-<%@ include file="/WEB-INF/template/header.jsp"%>
-
-<script type="text/javascript">
-	var $j = jQuery.noConflict();
-</script>
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="localInclude.jsp" %>
 
 <script type="text/javascript" charset="utf-8">
+	var $j = jQuery.noConflict();
+	
 	$j(document).ready(function() {
 		$j(".reporting-data-table").dataTable( {
 			"bPaginate": true,

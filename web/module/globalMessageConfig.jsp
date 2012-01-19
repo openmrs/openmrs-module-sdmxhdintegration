@@ -1,8 +1,6 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
-
-<%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="include.jsp"%>
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="localInclude.jsp" %>
 
 <script type="text/javascript">
 	var $j = jQuery.noConflict();

@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
+<%@ include file="localInclude.jsp" %>
 
 <form id="indMappingForm" method="POST">
 	<label for="mapping">Map indicator to -> </label>
