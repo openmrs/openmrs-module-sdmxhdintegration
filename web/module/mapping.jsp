@@ -1,9 +1,10 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="localInclude.jsp" %>
+<%@ include file="localHeader.jsp" %>
 
 <script type="text/javascript">
-var $j = jQuery.noConflict();
+	var $j = jQuery.noConflict();
 
 	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
 	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
@@ -53,10 +54,6 @@ var $j = jQuery.noConflict();
 	-->
 </script>
 	
-	<a href="messageUpload.form"><spring:message code="@MODULE_ID@.general.uploadlink" /></a> | <a href="viewSDMXHDMessages.list"><spring:message code="@MODULE_ID@.general.viewlink" /></a>
-
-	<h2><spring:message code="@MODULE_ID@.mapping.title" /></h2>
-
 	<form action="mapping.form" method="POST">
 		<input type="hidden" name="sdmxhdmessageid" value="${sdmxhdmessageid}">
 		

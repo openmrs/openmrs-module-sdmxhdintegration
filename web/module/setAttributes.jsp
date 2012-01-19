@@ -1,14 +1,10 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localInclude.jsp" %>
+<%@ include file="localHeader.jsp" %>
 
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
-</script>
-
-<script type="text/javascript">
-	<!--
-
 	var scr = "setAttributesDialog.form?sdmxhdMessageId=${sdmxhdMessageId}&keyfamilyid=${keyfamilyid}";
 
 	$j(function() {
@@ -43,13 +39,7 @@
 		
 		$j("#setAttributesDialogiFrameDiv").dialog('open');
 	}
-
-	-->
 </script>
-
-<a href="messageUpload.form">Upload New SDMX-HD Template</a> | <a href="viewSDMXHDMessages.list">View All SDMX-HD Message Templates</a>
-
-<h2><spring:message code="Attributes" /></h2>
 
 <p class="description">Set the attributes that can be attached at the DataSet level for this SDMX-HD message. A tick will be show if all mandatory attributes have been filled in.</p>
 

@@ -1,8 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="localInclude.jsp" %>
-
-<h2><spring:message code="SDMX-HD Messages" /></h2>
+<%@ include file="localHeader.jsp" %>
 
 <form method="POST">
 

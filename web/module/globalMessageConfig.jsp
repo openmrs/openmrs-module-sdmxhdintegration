@@ -1,14 +1,11 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="localInclude.jsp" %>
+<%@ include file="localHeader.jsp" %>
 
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
 </script>
-
-<a href="messageUpload.form"><spring:message code="@MODULE_ID@.general.uploadlink" /></a> | <a href="viewSDMXHDMessages.list"><spring:message code="@MODULE_ID@.general.viewlink" /></a>
-
-<h2><spring:message code="@MODULE_ID@.globalconfig.title" /></h2>
 
 <springform:form commandName="sdmxhdMessage">
 

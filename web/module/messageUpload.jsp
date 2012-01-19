@@ -1,12 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localInclude.jsp" %>
+<%@ include file="localHeader.jsp" %>
 
 <openmrs:require privilege="Upload SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messageUpload.form" />
-
-<span>Upload New SDMX-HD Template</span> | <a href="viewSDMXHDMessages.list">View All SDMX-HD Message Templates</a>
-
-<h2><spring:message code="Upload SDMX-HD Message" /></h2>
 
 <b class="boxHeader">
 	<spring:message code="Upload SDMX-HD Message" />

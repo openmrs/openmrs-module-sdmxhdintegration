@@ -1,6 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="localInclude.jsp" %>
+<%@ include file="localHeader.jsp" %>
+
+<openmrs:require privilege="Manage SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/viewSDMXHDMessages.list" />
 
 <script type="text/javascript" charset="utf-8">
 	var $j = jQuery.noConflict();
@@ -30,12 +33,6 @@
 		currentKeyFamily = sdmxhdMsgID;
 	}
 </script>
-
-<a href="messageUpload.form">Upload New SDMX-HD Template</a> | <span>View All SDMX-HD Message Templates</span>
-
-<openmrs:require privilege="Manage SDMX-HD Messages" otherwise="/login.htm" redirect="/module/sdmxhdintegration/viewSDMXHDMessages.list" />
-
-<h2><spring:message code="SDMX-HD Messages" /></h2>
 
 <div id="page">
 
