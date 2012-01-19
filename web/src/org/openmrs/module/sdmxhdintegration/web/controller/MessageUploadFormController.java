@@ -100,7 +100,7 @@ public class MessageUploadFormController {
 		sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
 		
 		// delete all existing mappings and reports
-		List<KeyFamilyMapping> allKeyFamilyMappingsForMsg = sdmxhdService.getKeyFamilyMappingBySDMXHDMessage(sdmxhdMessage);
+		List<KeyFamilyMapping> allKeyFamilyMappingsForMsg = sdmxhdService.getKeyFamilyMappingsFromMessage(sdmxhdMessage);
 		for (Iterator<KeyFamilyMapping> iterator = allKeyFamilyMappingsForMsg.iterator(); iterator.hasNext();) {
 	        KeyFamilyMapping kfm = iterator.next();
 	        Integer reportDefinitionId = kfm.getReportDefinitionId();
@@ -136,5 +136,4 @@ public class MessageUploadFormController {
         
 		return "redirect:messages.list";
 	}
-
 }
