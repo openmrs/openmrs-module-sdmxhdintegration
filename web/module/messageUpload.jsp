@@ -49,7 +49,7 @@
 		</tr>
 		<tr></tr>
 		<tr>
-			<td><input type="submit" value="Save" /></td>
+			<td><input type="submit" value="<spring:message code="general.save" />" /></td>
 		</tr>
 	</table>
 </springform:form>

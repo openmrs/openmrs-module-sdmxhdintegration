@@ -88,8 +88,9 @@
 				</td>
 			</tr>
 		</c:forEach>
-		<tr><td><input type="submit" value="Save" /></td></tr>
+		<tr><td><input type="submit" value="<spring:message code="general.save" />" /></td></tr>
 	</table>
+	
 	<input type="hidden" id="sdmxhdMessageId" value="${sdmxhdmessageid}" />
 	<input type="hidden" id="attachmentLevel" value="${attachmentLevel}" />
 	<input type="hidden" id="keyfamilyid" value="${keyfamilyid}" />

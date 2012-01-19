@@ -20,7 +20,7 @@
 			<td><input type="text" name="messageUploadDir" value="${messageUploadDir}" /></td>
 		</tr>
 		<tr>
-			<td><input type="submit" value="<spring:message code="@MODULE_ID@.general.save" />" /></td>
+			<td><input type="submit" value="<spring:message code="general.save" />" /></td>
 		</tr>
 	</table>
 	

@@ -132,7 +132,7 @@
 	
 	<br />
 	
-	<input type="submit" value="<spring:message code="@MODULE_ID@.general.save" />" />
+	<input type="submit" value="<spring:message code="general.save" />" />
 
 </springform:form>
 

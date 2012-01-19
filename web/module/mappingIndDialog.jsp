@@ -20,7 +20,7 @@
 	<input type="hidden" id="sdmxhdMessageId" value="${sdmxhdMessageId}" />
 	<input type="hidden" id="sdmxhdIndicator" value="${sdmxhdIndicator}" />
 	<input type="hidden" id="keyfamilyid" value="${keyfamilyid}" />
-	<input type="submit" value="Save" />
+	<input type="submit" value="<spring:message code="general.save" />" />
 </form>
 
 <%@ include file="/WEB-INF/template/footerMinimal.jsp"%>
