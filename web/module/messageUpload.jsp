@@ -8,39 +8,35 @@
 <b class="boxHeader">
 	<spring:message code="Upload SDMX-HD Message" />
 </b>
-<springform:form modelAttribute="sdmxhdMessage" enctype="multipart/form-data">
-	<table class="box">
+<springform:form modelAttribute="sdmxhdMessage" cssClass="box" enctype="multipart/form-data">
+	<table>
 		<tr>
 			<input type="hidden" value="${sdmxhdMessage.id}"/>
 			
-			<td>Name:</td>
+			<td><spring:message code="general.name" /></td>
 			<td>
 				<springform:input path="name"/>
 				<springform:errors path="name" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
-			<td>Description:</td>
+			<td><spring:message code="general.description" /></td>
 			<td>
 				<springform:input path="description"/>
 				<springform:errors path="description" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
-	    	<td>SDMX-HD DataSetDefinition:</td>
+	    	<td><spring:message code="@MODULE_ID@.upload.sdmxhdZipFileName" /></td>
 	    	<td>
-				<c:choose>
-				    <c:when test="${empty sdmxhdMessage.sdmxhdZipFileName}">
-				    	<input type="file" name="sdmxhdMessage" id="sdmxhdMessage" size="40" />
-				    </c:when>
-				    <c:otherwise>
-				    	Current message: <i>${sdmxhdMessage.sdmxhdZipFileName}</i>
-				    	<input type="file" name="sdmxhdMessage" id="sdmxhdMessage" size="40" />
+	    		<input type="file" name="sdmxhdMessage" id="sdmxhdMessage" size="40" />
+	    		
+				<c:if test="${not empty sdmxhdMessage.sdmxhdZipFileName}">
+				    	<spring:message code="@MODULE_ID@.upload.currentMessage" />: <i>${sdmxhdMessage.sdmxhdZipFileName}</i>
 				    	<br />
 				    	<br />
-				    	<span class="tooltip">Warning: Uploading a new SDMX-HD DataSetDefinition will delete all previous mappings</span>
-				    </c:otherwise>
-				</c:choose>
+				    	<span class="tooltip"><spring:message code="@MODULE_ID@.upload.overwriteWarning" /></span>
+				</c:if>
 				
 				<input type="hidden" value="${sdmxhdMessage.sdmxhdZipFileName}"/>
 				<br />
