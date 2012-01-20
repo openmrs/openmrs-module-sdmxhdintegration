@@ -258,10 +258,10 @@ public class MappingDialogController {
 	 */
 	@RequestMapping(value="/module/sdmxhdintegration/mappingIndDialog", method=RequestMethod.POST)
 	public String handleIndDialogSubmission(HttpSession httpSession,
-	                                        @RequestParam("mappedOMRSIndicatorId") Integer mappedOMRSIndicatorId,
-	                                      @RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId,
-	                                      @RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
-	                                      @RequestParam("keyfamilyid") String keyFamilyId) throws Exception {
+			@RequestParam("mappedOMRSIndicatorId") Integer mappedOMRSIndicatorId,
+			@RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId,
+			@RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
+			@RequestParam("keyfamilyid") String keyFamilyId) throws Exception {
 		sdmxhdIndicator = URLDecoder.decode(sdmxhdIndicator);
 		
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
@@ -343,14 +343,16 @@ public class MappingDialogController {
 	        	StringBuilder fixedDimsString = new StringBuilder();
 	        	Map<String, String> dimOpts = new HashMap<String, String>();
 	        	List<String> fixedDimensionToBeMapped = new ArrayList<String>();
+	        	
 	        	for (DimensionWrapper dw : combinationOfDimensions) {
 	        		String omrsMappedDimensionOption = omrsDSD.getORMSMappedDimensionOption(dw.getDimension().getConceptRef(), dw.getCode().getDescription().getDefaultStr());
 	        		Integer omrsMappedDimensionId = omrsDSD.getOMRSMappedDimension(dw.getDimension().getConceptRef());
+	        		
 	        		if (omrsMappedDimensionOption == null || omrsMappedDimensionId == null) {
 	        			if (omrsDSD.getFixedDimensionValues(dw.getDimension().getConceptRef()) == null) {
-	        				// error
-	        				throw new DimensionNotMappedException();
-	        			} else {
+	        				throw new DimensionNotMappedException(dw.getDimension());
+	        			} 
+	        			else {
 	        				// Fixed value is set, no need to add this dimension
 	        				// Just save it for mapping once we know the column name
 	        				String sdmxhdDimension = dw.getDimension().getConceptRef();
@@ -362,6 +364,7 @@ public class MappingDialogController {
 	        				continue;
 	        			}
 	        		}
+	        		
 	        		dimOpts.put(omrsMappedDimensionId + "", omrsMappedDimensionOption);
 	        		if (dimOptsString.length() > 0) {
 	        			dimOptsString.append(", ");
@@ -455,8 +458,6 @@ public class MappingDialogController {
     		return omrsDSD;
     	} else {
     	    return Util.getOMRSDataSetDefinition(keyFamilyMapping);
-    	}
-    	
+    	}    	
     }
-
 }
