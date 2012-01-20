@@ -29,8 +29,15 @@
 				<artifactId>sdmx-hd</artifactId>
 				<version>0.3.2</version>
 				<type>jar</type>
-				<scope>runtime</scope>
-			</dependency>		
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>reporting</artifactId>
+				<version>0.7.0</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>	
 			<dependency>
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>

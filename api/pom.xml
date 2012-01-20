@@ -8,13 +8,22 @@
 		<version>0.6.7-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>org.openmrs.module</groupId>
 	<artifactId>sdmxhdintegration-api</artifactId>
 	<packaging>jar</packaging>
 	<name>SDMX-HD Integration Module API</name>
 	<description>API project for SDMX-HD Integration Module</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>jembi</groupId>
+			<artifactId>sdmx-hd</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>reporting</artifactId>
+			<type>jar</type>
+		</dependency>
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
