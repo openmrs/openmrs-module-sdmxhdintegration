@@ -19,6 +19,21 @@
 			<artifactId>sdmxhdintegration-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		
+		<!-- These won't be need once reporting is mavenized properly -->
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>htmlwidgets</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>serialization.xstream</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>reporting</artifactId>

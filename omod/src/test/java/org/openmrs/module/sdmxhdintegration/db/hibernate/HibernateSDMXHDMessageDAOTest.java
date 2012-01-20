@@ -1,5 +1,18 @@
-package org.openmrs.module.sdmxhdintegration.db.hibernate;
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
+package org.openmrs.module.sdmxhdintegration.db.hibernate;
 
 import java.util.List;
 
@@ -14,6 +27,9 @@ import org.openmrs.module.sdmxhdintegration.db.hibernate.HibernateSDMXHDMessageD
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
 
+/**
+ * Tests for module DAO implementation
+ */
 public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTest {
 	
 	public Integer testMsg1Id;
@@ -21,14 +37,14 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 	
 	@Before
 	public void runBeforeAllTests() throws Exception {
-		executeDataSet("test/org/openmrs/module/sdmxhdintegration/include/IndicatorTest.xml");
+		executeDataSet("IndicatorTest.xml");
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
 		
 		SDMXHDMessage sdmxhdMessage = new SDMXHDMessage();
 		
 		sdmxhdMessage.setName("test1");
 		sdmxhdMessage.setDescription("test1");
-		sdmxhdMessage.setSdmxhdZipFileName("test/org/openmrs/module/sdmxhdintegration/include/SDMX-HD.v1.0 sample1.zip");
+		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
 		
 		SDMXHDMessage saveSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
 		testMsg1Id = saveSDMXHDMessage.getId();
@@ -37,7 +53,7 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 		
 		sdmxhdMessage.setName("test2");
 		sdmxhdMessage.setDescription("test2");
-		sdmxhdMessage.setSdmxhdZipFileName("test/org/openmrs/module/sdmxhdintegration/include/SDMX-HD.v1.0 sample2.zip");
+		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample2.zip");
 		
 		saveSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
 		testMsg2Id = saveSDMXHDMessage.getId();
@@ -54,7 +70,7 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 		
 		sdmxhdMessage.setName("deltest");
 		sdmxhdMessage.setDescription("deltest");
-		sdmxhdMessage.setSdmxhdZipFileName("test/org/openmrs/module/sdmxhdintegration/include/SDMX-HD.v1.0 sample1.zip");
+		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
 		
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
 		SDMXHDMessage savedSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
@@ -110,7 +126,7 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 		
 		sdmxhdMessage.setName("test3");
 		sdmxhdMessage.setDescription("test3");
-		sdmxhdMessage.setSdmxhdZipFileName("test/org/openmrs/module/sdmxhdintegration/include/SDMX-HD.v1.0 sample1.zip");
+		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
 		
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
 		SDMXHDMessage savedSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
