@@ -43,7 +43,7 @@ public class MessagesController {
 			sdmxhdService.saveMessage(sdmxhdMessage);
 		}
 		
-		List<SDMXHDMessage> allSDMXHDMessages = sdmxhdService.getAllMessages(false);
+		List<SDMXHDMessage> messages = sdmxhdService.getAllMessages(false);
 		List<KeyFamilyMapping> allKeyFamilyMappings = sdmxhdService.getAllKeyFamilyMappings();
 
 		// get report uuid's
@@ -59,19 +59,18 @@ public class MessagesController {
 		
 		// get keyFamilyNames
 		Map<String, String> keyFamilyNamesMap = new HashMap<String, String>();
-		for (Iterator<SDMXHDMessage> iterator = allSDMXHDMessages.iterator(); iterator.hasNext();) {
-	        SDMXHDMessage sdmxhdMessage = iterator.next();
-	        DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
+		for (SDMXHDMessage message : messages) {
+	        DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(message);
 			for (Iterator<KeyFamilyMapping> iterator2 = allKeyFamilyMappings.iterator(); iterator2.hasNext();) {
 		        KeyFamilyMapping keyFamilyMapping = iterator2.next();
-		        if (keyFamilyMapping.getSdmxhdMessage().getId().equals(sdmxhdMessage.getId())) {
+		        if (keyFamilyMapping.getSdmxhdMessage().getId().equals(message.getId())) {
 			        KeyFamily keyFamily = dsd.getKeyFamily(keyFamilyMapping.getKeyFamilyId());
 			        keyFamilyNamesMap.put(keyFamily.getId(), keyFamily.getName().getDefaultStr());
 		        }
 	        }
         }
 				
-		model.addAttribute("sdmxhdMessages", allSDMXHDMessages);
+		model.addAttribute("messages", messages);
 		model.addAttribute("keyFamilyMappings", allKeyFamilyMappings);
 		model.addAttribute("reportUuidMapping", reportUuidMapping);
 		model.addAttribute("keyFamilyNamesMap", keyFamilyNamesMap);

@@ -9,11 +9,10 @@
 	<spring:message code="Upload SDMX-HD Message" />
 </b>
 <springform:form modelAttribute="message" cssClass="box" enctype="multipart/form-data">
+	<input type="hidden" value="${message.id}"/>
 	<table>
-		<tr>
-			<input type="hidden" value="${message.id}"/>
-			
-			<td><spring:message code="general.name" /></td>
+		<tr>		
+			<td width="300"><spring:message code="general.name" /></td>
 			<td>
 				<springform:input path="name"/>
 				<springform:errors path="name" cssClass="error"/>
@@ -43,9 +42,8 @@
 				<springform:errors path="sdmxhdZipFileName" cssClass="error"/>
 	    	</td>
 		</tr>
-		<tr></tr>
 		<tr>
-			<td><input type="submit" value="<spring:message code="general.save" />" /></td>
+			<td><input type="submit" value="<spring:message code="@MODULE_ID@.general.upload" />" /></td>
 		</tr>
 	</table>
 </springform:form>
