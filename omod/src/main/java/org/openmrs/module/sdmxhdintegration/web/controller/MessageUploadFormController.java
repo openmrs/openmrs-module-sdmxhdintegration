@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
@@ -35,29 +48,43 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-
+/**
+ * Controller for message upload form
+ */
 @Controller
-@SessionAttributes("sdmxhdMessage")
+@SessionAttributes("message")
 @RequestMapping("/module/sdmxhdintegration/messageUpload")
 public class MessageUploadFormController {
 	
 	private static Log log = LogFactory.getLog(MessageUploadFormController.class);
 	
+	/**
+	 * Displays the form
+	 * @param messageId the message id (null for new messages)
+	 * @param model the model
+	 */
 	@RequestMapping(method=RequestMethod.GET)
-    public void showForm(@RequestParam(value = "sdmxhdmessageid", required = false) Integer sdmxMessageId, ModelMap model) {
-		if (sdmxMessageId != null) {
-	    	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxMessageId);
-	    	
-	    	model.addAttribute("sdmxhdMessage", sdmxhdMessage);
+    public void showForm(@RequestParam(value = "messageId", required = false) Integer messageId, ModelMap model) {
+		if (messageId != null) {
+	    	SDMXHDService service = (SDMXHDService) Context.getService(SDMXHDService.class);
+	    	model.addAttribute("message", service.getMessage(messageId));
     	} else {
-    		model.addAttribute("sdmxhdMessage", new SDMXHDMessage());
+    		model.addAttribute("message", new SDMXHDMessage());
     	}
     }
 	
+	/**
+	 * Handles form submission
+	 * @param request the request
+	 * @param message the message
+	 * @param result the binding result
+	 * @param status the session status
+	 * @return the view
+	 * @throws IllegalStateException
+	 */
 	@RequestMapping(method=RequestMethod.POST)
     public String handleSubmission(HttpServletRequest request,
-                                   @ModelAttribute("sdmxhdMessage") SDMXHDMessage sdmxhdMessage,
+                                   @ModelAttribute("message") SDMXHDMessage message,
                                    BindingResult result,
                                    SessionStatus status) throws IllegalStateException {
 		
@@ -82,10 +109,10 @@ public class MessageUploadFormController {
             	return "/module/sdmxhdintegration/messageUpload";
             }
 			
-			sdmxhdMessage.setSdmxhdZipFileName(filename);
+			message.setSdmxhdZipFileName(filename);
 		}
 		
-		new SDMXHDMessageValidator().validate(sdmxhdMessage, result);
+		new SDMXHDMessageValidator().validate(message, result);
 		
 		if (result.hasErrors()) {
 			log.error("SDMXHDMessage object failed validation");
@@ -95,16 +122,16 @@ public class MessageUploadFormController {
 			return "/module/sdmxhdintegration/messageUpload";
 		}
 		
-		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
+		SDMXHDService service = Context.getService(SDMXHDService.class);
 		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
-		sdmxhdService.saveMessage(sdmxhdMessage);
+		service.saveMessage(message);
 		
 		// delete all existing mappings and reports
-		List<KeyFamilyMapping> allKeyFamilyMappingsForMsg = sdmxhdService.getKeyFamilyMappingsFromMessage(sdmxhdMessage);
+		List<KeyFamilyMapping> allKeyFamilyMappingsForMsg = service.getKeyFamilyMappingsFromMessage(message);
 		for (Iterator<KeyFamilyMapping> iterator = allKeyFamilyMappingsForMsg.iterator(); iterator.hasNext();) {
 	        KeyFamilyMapping kfm = iterator.next();
 	        Integer reportDefinitionId = kfm.getReportDefinitionId();
-	        sdmxhdService.purgeKeyFamilyMapping(kfm);
+	        service.purgeKeyFamilyMapping(kfm);
 	        if (reportDefinitionId != null) {
 	        	rds.purgeDefinition(rds.getDefinition(reportDefinitionId));
 	        }
@@ -112,15 +139,15 @@ public class MessageUploadFormController {
 		
 		// create initial keyFamilyMappings
 		try {
-	        DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
+	        DSD dsd = service.getSDMXHDDataSetDefinition(message);
 	        List<KeyFamily> keyFamilies = dsd.getKeyFamilies();
 	        for (Iterator<KeyFamily> iterator = keyFamilies.iterator(); iterator.hasNext();) {
 	            KeyFamily keyFamily = iterator.next();
 	            
 	            KeyFamilyMapping kfm = new KeyFamilyMapping();
             	kfm.setKeyFamilyId(keyFamily.getId());
-	            kfm.setSdmxhdMessage(sdmxhdMessage);
-	            sdmxhdService.saveKeyFamilyMapping(kfm);
+	            kfm.setSdmxhdMessage(message);
+	            service.saveKeyFamilyMapping(kfm);
             }
         }
         catch (Exception e) {
@@ -129,7 +156,7 @@ public class MessageUploadFormController {
         		destFile.delete();
         	}
         	
-        	sdmxhdService.deleteMessage(sdmxhdMessage);
+        	service.deleteMessage(message);
         	result.rejectValue("sdmxhdZipFileName", "upload.file.rejected", "This file is not a valid zip file or it does not contain a valid SDMX-HD DataSetDefinition");
         	return "/module/sdmxhdintegration/messageUpload";
         }

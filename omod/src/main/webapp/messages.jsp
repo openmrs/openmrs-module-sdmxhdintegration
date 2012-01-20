@@ -61,12 +61,12 @@
 							<c:forEach var="sdmxhdMessage" items="${sdmxhdMessages}" varStatus="index1">
 								<tr class="<c:choose><c:when test="${index1.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
 									<td>				
-										<a href="messageUpload.form?sdmxhdmessageid=${sdmxhdMessage.id}">${sdmxhdMessage.name}</a>
+										<a href="messageUpload.form?messageId=${sdmxhdMessage.id}">${sdmxhdMessage.name}</a>
 									</td>
 									<td>${sdmxhdMessage.description}</td>
 									<td>${sdmxhdMessage.creator}</td>
 									<td align="center">
-										<a href="globalMessageConfig.form?sdmxhdMessageId=${sdmxhdMessage.id}">
+										<a href="globalMessageConfig.form?messageId=${sdmxhdMessage.id}">
 											<img width="20" height="20" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/preferences_system.png" align="absmiddle" border="0"/>	
 										</a>
 									</td>

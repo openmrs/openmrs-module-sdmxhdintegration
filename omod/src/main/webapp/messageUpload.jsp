@@ -8,10 +8,10 @@
 <b class="boxHeader">
 	<spring:message code="Upload SDMX-HD Message" />
 </b>
-<springform:form modelAttribute="sdmxhdMessage" cssClass="box" enctype="multipart/form-data">
+<springform:form modelAttribute="message" cssClass="box" enctype="multipart/form-data">
 	<table>
 		<tr>
-			<input type="hidden" value="${sdmxhdMessage.id}"/>
+			<input type="hidden" value="${message.id}"/>
 			
 			<td><spring:message code="general.name" /></td>
 			<td>
@@ -31,14 +31,14 @@
 	    	<td>
 	    		<input type="file" name="sdmxhdMessage" id="sdmxhdMessage" size="40" />
 	    		
-				<c:if test="${not empty sdmxhdMessage.sdmxhdZipFileName}">
-				    	<spring:message code="@MODULE_ID@.upload.currentMessage" />: <i>${sdmxhdMessage.sdmxhdZipFileName}</i>
+				<c:if test="${not empty message.sdmxhdZipFileName}">
+				    	<spring:message code="@MODULE_ID@.upload.currentMessage" />: <i>${message.sdmxhdZipFileName}</i>
 				    	<br />
 				    	<br />
 				    	<span class="tooltip"><spring:message code="@MODULE_ID@.upload.overwriteWarning" /></span>
 				</c:if>
 				
-				<input type="hidden" value="${sdmxhdMessage.sdmxhdZipFileName}"/>
+				<input type="hidden" value="${message.sdmxhdZipFileName}"/>
 				<br />
 				<springform:errors path="sdmxhdZipFileName" cssClass="error"/>
 	    	</td>

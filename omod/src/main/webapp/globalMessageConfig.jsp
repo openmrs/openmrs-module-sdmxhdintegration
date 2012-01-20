@@ -5,17 +5,36 @@
 
 <openmrs:require privilege="Manage SDMX-HD Integration" otherwise="/login.htm" redirect="/module/sdmxhdintegration/messages.list" />
 
-<springform:form commandName="sdmxhdMessage">
+<springform:form commandName="message">
+
+	<b class="boxHeader">
+		<spring:message code="@MODULE_ID@.general.message" />
+	</b>
+	<div class="box" style="margin-bottom: 20px">
+		<table>
+			<tr>
+				<td width="300"><spring:message code="general.name" /></td>
+				<td>${message.name}</td>
+			</tr>
+		</table>
+	</div>
 
 	<b class="boxHeader">
 		<spring:message code="@MODULE_ID@.globalconfig.groupAttributes" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
-		<table id="frequencyTable">
+		<table>
 			<tr>
-				<td><spring:message code="@MODULE_ID@.globalconfig.reportingfrequency" /></td>
+				<td width="300"><spring:message code="@MODULE_ID@.globalconfig.reportingfrequency" /></td>
 				<td>
-					<springform:select path="groupElementAttributes[${'FREQ'}]" items="${CL_FREQ}" itemLabel="description.defaultStr" itemValue="value" />
+					<c:choose>
+						<c:when test="${frequencyCodes != null}">
+							<springform:select path="groupElementAttributes[${'FREQ'}]" items="${frequencyCodes}" itemLabel="description.defaultStr" itemValue="value" />
+						</c:when>
+						<c:otherwise>
+							<i><spring:message code="@MODULE_ID@.globalconfig.noFrequencies" /></i>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 		</table>
@@ -25,17 +44,9 @@
 		<spring:message code="@MODULE_ID@.globalconfig.datasetAttributes" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
-		<table id="datasetTable">
-			<!--
+		<table>
 			<tr>
-				<td>keyFamilyURI</td>
-				<td>
-					<springform:input path="datasetElementAttributes['keyFamilyURI']" />
-				</td>
-			</tr>
-			-->
-			<tr>
-				<td>datasetID</td>
+				<td width="300">datasetID</td>
 				<td>
 					<springform:input path="datasetElementAttributes['datasetID']" />
 				</td>
