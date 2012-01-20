@@ -41,60 +41,56 @@
 			<td valign="top" width="50%">
 
 				<div class="boxHeader">
-					SDMX-HD Messages
+					<spring:message code="@MODULE_ID@.general.messages" />
 				</div>
 				<div class="box">
 					<table width="100%">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Description</th>
-								<th>Creator</th>
-								<th>Config</th>
-								<th>Delete</th>
-								<th>&nbsp;</th>
-								<th>&nbsp;</th>
-								<th>&nbsp;</th>
+						<tr>
+							<th><spring:message code="general.name" /></th>
+							<th><spring:message code="general.description" /></th>
+							<th><spring:message code="general.creator" /></th>
+							<th><spring:message code="@MODULE_ID@.general.attributes" /></th>
+							<th><spring:message code="general.delete" /></th>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+						</tr>
+						<c:forEach var="sdmxhdMessage" items="${sdmxhdMessages}" varStatus="index1">
+							<tr class="<c:choose><c:when test="${index1.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
+								<td>				
+									<a href="messageUpload.form?messageId=${sdmxhdMessage.id}">${sdmxhdMessage.name}</a>
+								</td>
+								<td>${sdmxhdMessage.description}</td>
+								<td>${sdmxhdMessage.creator}</td>
+								<td align="center">
+									<a href="messageAttributes.form?messageId=${sdmxhdMessage.id}">
+										<img width="20" height="20" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/preferences_system.png" align="absmiddle" border="0"/>	
+									</a>
+								</td>
+								<td align="center">
+									<a href="messages.list?deletemsgid=${sdmxhdMessage.id}" onclick="return confirm('Are you sure you want to delete this SDMX-HD Message?')">
+										<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
+									</a>
+								</td>
+								<td align="right">
+									<button onclick="toggleKF('${sdmxhdMessage.id}')">Show KeyFamilies...</button>
+								</td>
+								<td id="selectedIcon${sdmxhdMessage.id}" style="display:none" align="center">
+									<img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/next.png" />
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="sdmxhdMessage" items="${sdmxhdMessages}" varStatus="index1">
-								<tr class="<c:choose><c:when test="${index1.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
-									<td>				
-										<a href="messageUpload.form?messageId=${sdmxhdMessage.id}">${sdmxhdMessage.name}</a>
-									</td>
-									<td>${sdmxhdMessage.description}</td>
-									<td>${sdmxhdMessage.creator}</td>
-									<td align="center">
-										<a href="globalMessageConfig.form?messageId=${sdmxhdMessage.id}">
-											<img width="20" height="20" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/preferences_system.png" align="absmiddle" border="0"/>	
-										</a>
-									</td>
-									<td align="center">
-										<a href="messages.list?deletemsgid=${sdmxhdMessage.id}" onclick="return confirm('Are you sure you want to delete this SDMX-HD Message?')">
-											<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
-										</a>
-									</td>
-									<td align="right">
-										<button onclick="toggleKF('${sdmxhdMessage.id}')">Show KeyFamilies...</button>
-									</td>
-									<td id="selectedIcon${sdmxhdMessage.id}" style="display:none" align="center">
-										<img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/next.png" />
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
+						</c:forEach>
 					</table>
-				</div>
-				
+				</div>			
 			</td>
 			
 			<td valign="top" width="50%">
 				<div class="boxHeader">
-					SDMX-HD Message KeyFamilies
+					<spring:message code="@MODULE_ID@.general.keyFamilies" />
 				</div>
 				<div class="box">
-					<span id="keyFamilyTableHelp"><i>Select a SDMX-HD Message to show the KeyFamilies for that message</i></span>
+					<span id="keyFamilyTableHelp"><i><spring:message code="@MODULE_ID@.messages.keyFamilyTableHelp" /></i></span>
+					
 					<c:forEach var="sdmxhdMessage" items="${sdmxhdMessages}">
 						<div id="keyFamilyTable${sdmxhdMessage.id}" style="display:none">
 							<table width="100%">
@@ -145,11 +141,9 @@
 						</div>
 					</c:forEach>
 				</div>
-			</td>
-			
+			</td>		
 		</tr>
 	</table>
-
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

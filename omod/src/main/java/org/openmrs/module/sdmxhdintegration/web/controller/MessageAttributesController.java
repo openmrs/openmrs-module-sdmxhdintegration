@@ -40,8 +40,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @SessionAttributes("message")
-@RequestMapping("/module/sdmxhdintegration/globalMessageConfig")
-public class GlobalMessageConfigController {
+@RequestMapping("/module/sdmxhdintegration/messageAttributes")
+public class MessageAttributesController {
 	
 	/**
 	 * Displays the form
