@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "../lib-common/config-1.2.dtd">
+
+<module configVersion="1.2">
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
+	<author>Jembi, PIH</author>
+	<description>Allows SDMX-HD reports to be generated from SDMX-HD Data Set Definitions.</description>
+	<updateURL>https://dev.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
+	<require_version>${openMRSVersion}</require_version>
+	<activator>@MODULE_PACKAGE@.SDMXHDActivator</activator>
+	
+	<require_modules>
+	   	<require_module>org.openmrs.module.reporting</require_module>
+	</require_modules>
+	
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+	</extension>
+	
+	<privilege>
+		<name>Manage SDMX-HD Integration</name>
+		<description>Allows the user to manage SDMX-HD integration</description>
+	</privilege>
+
+	<globalProperty>
+		<property>@MODULE_ID@.messageUploadDir</property>
+		<defaultValue></defaultValue>
+		<description>The directory where SDMX-HD messages are uploaded to.</description>
+	</globalProperty>
+
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+
+	<mappingFiles>
+		${omodHbmConfig}
+	</mappingFiles>
+	
+</module>
+
