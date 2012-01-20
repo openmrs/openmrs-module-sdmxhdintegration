@@ -31,6 +31,27 @@
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
+			
+			<!-- These won't be need once reporting is mavenized properly -->
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>htmlwidgets</artifactId>
+				<version>1.6.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>serialization.xstream</artifactId>
+				<version>0.2.5</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi</artifactId>
+			    <version>3.7</version>
+			    <scope>test</scope>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>reporting</artifactId>
