@@ -136,7 +136,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     	
     	// get SDMX-HD DSD
     	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(omrsDSD.getSDMXHDMessageId());
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(omrsDSD.getSDMXHDMessageId());
     	
     	// get keyFamilyId
     	KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMappingByReportDefinitionId(reportData.getDefinition().getId());

@@ -49,42 +49,54 @@ public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXH
 	    this.dao = dao;
 	}
 	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getMessage(Integer)
+	 */
 	@Override
-	public List<SDMXHDMessage> getAllSDMXHDMessages(Boolean includeRetired) {
-		return dao.getAllSDMXHDMessages(includeRetired);
+	public SDMXHDMessage getMessage(Integer id) {
+		return dao.getMessage(id);
 	}
 	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getAllMessages(Boolean)
+	 */
 	@Override
-	public SDMXHDMessage getSDMXHDMessage(Integer id) {
-		return dao.getSDMXHDMessage(id);
+	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired) {
+		return dao.getAllMessages(includeRetired);
 	}
 	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#deleteMessage(SDMXHDMessage)
+	 */
 	@Override
-	public void purgeSDMXHDMessage(SDMXHDMessage sdmxhdMessage) {
-		dao.deleteSDMXHDMessage(sdmxhdMessage);
+	public void deleteMessage(SDMXHDMessage message) {
+		dao.deleteMessage(message);
 	}
 	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#saveMessage(SDMXHDMessage)
+	 */
 	@Override
-	public SDMXHDMessage saveSDMXHDMessage(SDMXHDMessage sdmxhdMessage) {
-	    if (sdmxhdMessage.getCreator() == null) {
-	    	sdmxhdMessage.setCreator(Context.getAuthenticatedUser());
-	    }
-	    if (sdmxhdMessage.getDateCreated() == null) {
-	    	sdmxhdMessage.setDateCreated(new Date());
-	    }
-	    if (sdmxhdMessage.getId() != null) {
-	        if (sdmxhdMessage.getChangedBy() == null) {
-	        	sdmxhdMessage.setChangedBy(Context.getAuthenticatedUser());
-	        }
-	        if (sdmxhdMessage.getDateChanged() == null) {
-	        	sdmxhdMessage.setDateChanged(new Date());
-	        }
-	    }
-	    if (sdmxhdMessage.getRetired() == null) {
-	    	sdmxhdMessage.setRetired(false);
-	    }
-	
-	    return dao.saveSDMXHDMessage(sdmxhdMessage);
+	public void saveMessage(SDMXHDMessage message) {
+		if (message.getCreator() == null) {
+			message.setCreator(Context.getAuthenticatedUser());
+		}
+		if (message.getDateCreated() == null) {
+			message.setDateCreated(new Date());
+		}
+		if (message.getId() != null) {
+		    if (message.getChangedBy() == null) {
+		    	message.setChangedBy(Context.getAuthenticatedUser());
+		    }
+		    if (message.getDateChanged() == null) {
+		    	message.setDateChanged(new Date());
+		    }
+		}
+		if (message.getRetired() == null) {
+			message.setRetired(false);
+		}
+		
+		dao.saveMessage(message);
 	}
 	
 	/**
@@ -99,8 +111,8 @@ public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXH
 	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getKeyFamilyMapping(org.openmrs.module.sdmxhdintegration.SDMXHDMessage, java.lang.String)
 	 */
 	@Override
-	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage sdmxhdMessage, String keyFamilyId) {
-	    return dao.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
+	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage message, String keyFamilyId) {
+	    return dao.getKeyFamilyMapping(message, keyFamilyId);
 	}
 	
 	/**
@@ -115,8 +127,8 @@ public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXH
 	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getKeyFamilyMappingsFromMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
 	 */
 	@Override
-	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage sdmxhdMessage) {
-	    return dao.getKeyFamilyMappingsFromMessage(sdmxhdMessage);
+	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage message) {
+	    return dao.getKeyFamilyMappingsFromMessage(message);
 	}
 	
 	/**
@@ -152,9 +164,9 @@ public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXH
 	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getSDMXHDDataSetDefinition(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
 	 */
 	@Override
-	public DSD getSDMXHDDataSetDefinition(SDMXHDMessage sdmxhdMessage) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
+	public DSD getSDMXHDDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-		ZipFile zf = new ZipFile(path + File.separator + sdmxhdMessage.getSdmxhdZipFileName());
+		ZipFile zf = new ZipFile(path + File.separator + message.getSdmxhdZipFileName());
 		SDMXHDParser parser = new SDMXHDParser();
 		org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
 		return sdmxhdData.getDsd();

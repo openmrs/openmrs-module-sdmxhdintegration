@@ -132,7 +132,7 @@ public class SDMXHDCDSReportRenderer extends AbstractReportRenderer {
     	
     	// get SDMX-HD DSD
     	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(omrsDSD.getSDMXHDMessageId());
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(omrsDSD.getSDMXHDMessageId());
     	
     	try {
     		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");

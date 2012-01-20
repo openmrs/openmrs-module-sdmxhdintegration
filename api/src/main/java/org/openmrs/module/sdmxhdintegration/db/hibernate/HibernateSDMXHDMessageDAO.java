@@ -43,43 +43,43 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getSDMXHDMessage(java.lang.Integer)
-	 * @should get the correct sdmxhd message for the given id
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getMessage(java.lang.Integer)
+	 * @should get the correct message for the given id
 	 */
-	public SDMXHDMessage getSDMXHDMessage(Integer id) {
-	    return (SDMXHDMessage) sessionFactory.getCurrentSession().get(SDMXHDMessage.class, id);
+	public SDMXHDMessage getMessage(Integer id) {
+	    return (SDMXHDMessage)sessionFactory.getCurrentSession().get(SDMXHDMessage.class, id);
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#saveSDMXHDMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
-	 * @should save the given sdmxhd message
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#saveMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
+	 * @should save the given message
 	 */
-	public SDMXHDMessage saveSDMXHDMessage(SDMXHDMessage sdmxhdMessage) {
-	    sessionFactory.getCurrentSession().saveOrUpdate(sdmxhdMessage);
-	    return sdmxhdMessage;
+	public SDMXHDMessage saveMessage(SDMXHDMessage message) {
+	    sessionFactory.getCurrentSession().saveOrUpdate(message);
+	    return message;
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#deleteSDMXHDMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
-	 * @should deleve the sdmx message with the given id
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#deleteMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
+	 * @should delete the message with the given id
 	 */
-	public void deleteSDMXHDMessage(SDMXHDMessage sdmxhdMessage) {
-	    sessionFactory.getCurrentSession().delete(sdmxhdMessage);
+	public void deleteMessage(SDMXHDMessage message) {
+	    sessionFactory.getCurrentSession().delete(message);
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getAllSDMXHDMessages()
-	 * @should return all sdmx messages
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getAllMessages()
+	 * @should return all messages
 	 * @should return an empty list if none exist
 	 */
-	public List<SDMXHDMessage> getAllSDMXHDMessages(Boolean includeRetired) {
+	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired) {
 	    Criteria crit = sessionFactory.getCurrentSession().createCriteria(SDMXHDMessage.class);
 	    crit.addOrder(Order.asc("name"));
 	    if (!includeRetired) {
 	    	crit.add(Expression.eq("retired", false));
 	    }
 	    
-	    return (List<SDMXHDMessage>) crit.list();
+	    return (List<SDMXHDMessage>)crit.list();
 	}
 	
 	/**

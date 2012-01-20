@@ -24,13 +24,13 @@ import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
  */
 public interface SDMXHDMessageDAO {
 
-	public SDMXHDMessage getSDMXHDMessage(Integer id);
+	public SDMXHDMessage getMessage(Integer id);
 	
-	public List<SDMXHDMessage> getAllSDMXHDMessages(Boolean includeRetired);
+	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired);
 	
-	public SDMXHDMessage saveSDMXHDMessage(SDMXHDMessage sdmxhdMessage);
+	public SDMXHDMessage saveMessage(SDMXHDMessage sdmxhdMessage);
 	
-	public void deleteSDMXHDMessage(SDMXHDMessage sdmxhdMessage);
+	public void deleteMessage(SDMXHDMessage sdmxhdMessage);
 	
 	public KeyFamilyMapping getKeyFamilyMapping(Integer id);
 	

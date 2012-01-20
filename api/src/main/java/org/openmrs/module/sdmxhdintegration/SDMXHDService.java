@@ -38,7 +38,7 @@ public interface SDMXHDService extends OpenmrsService {
 	 * @return the message
 	 */
 	@Transactional(readOnly=true)
-	public SDMXHDMessage getSDMXHDMessage(Integer id);
+	public SDMXHDMessage getMessage(Integer id);
 	
 	/**
 	 * Gets all SDMX-HD messages
@@ -46,20 +46,19 @@ public interface SDMXHDService extends OpenmrsService {
 	 * @return the messages
 	 */
 	@Transactional(readOnly=true)
-	public List<SDMXHDMessage> getAllSDMXHDMessages(Boolean includeRetired);
+	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired);
 	
 	/**
 	 * Saves an SDMX-HD message
 	 * @param sdmxhdMessage the message
-	 * @return the same message
 	 */
-	public SDMXHDMessage saveSDMXHDMessage(SDMXHDMessage sdmxhdMessage);
+	public void saveMessage(SDMXHDMessage message);
 	
 	/**
-	 * Purges an SDMX-HD message
+	 * Deletes an SDMX-HD message
 	 * @param sdmxhdMessage the message
 	 */
-	public void purgeSDMXHDMessage(SDMXHDMessage sdmxhdMessage);
+	public void deleteMessage(SDMXHDMessage message);
 	
 	/**
 	 * Gets a key family mapping by id
