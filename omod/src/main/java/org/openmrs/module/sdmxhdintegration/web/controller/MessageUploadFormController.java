@@ -47,7 +47,7 @@ public class MessageUploadFormController {
     public void showForm(@RequestParam(value = "sdmxhdmessageid", required = false) Integer sdmxMessageId, ModelMap model) {
 		if (sdmxMessageId != null) {
 	    	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxMessageId);
+	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxMessageId);
 	    	
 	    	model.addAttribute("sdmxhdMessage", sdmxhdMessage);
     	} else {
@@ -97,7 +97,7 @@ public class MessageUploadFormController {
 		
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
 		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
-		sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
+		sdmxhdService.saveMessage(sdmxhdMessage);
 		
 		// delete all existing mappings and reports
 		List<KeyFamilyMapping> allKeyFamilyMappingsForMsg = sdmxhdService.getKeyFamilyMappingsFromMessage(sdmxhdMessage);
@@ -129,7 +129,7 @@ public class MessageUploadFormController {
         		destFile.delete();
         	}
         	
-        	sdmxhdService.purgeSDMXHDMessage(sdmxhdMessage);
+        	sdmxhdService.deleteMessage(sdmxhdMessage);
         	result.rejectValue("sdmxhdZipFileName", "upload.file.rejected", "This file is not a valid zip file or it does not contain a valid SDMX-HD DataSetDefinition");
         	return "/module/sdmxhdintegration/messageUpload";
         }

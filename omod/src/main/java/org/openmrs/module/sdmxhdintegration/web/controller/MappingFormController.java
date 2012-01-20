@@ -67,7 +67,7 @@ public class MappingFormController {
 		
 		if (sdmxMessageId != null) {
 	    	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxMessageId);
+	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxMessageId);
 	    	
 	    	// Add parameters to model
 	    	model.addAttribute("sdmxhdmessageid", sdmxMessageId);

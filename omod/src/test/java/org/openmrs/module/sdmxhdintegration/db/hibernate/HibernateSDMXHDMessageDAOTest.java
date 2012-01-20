@@ -16,7 +16,6 @@ package org.openmrs.module.sdmxhdintegration.db.hibernate;
 
 import java.util.List;
 
-import org.hibernate.ObjectDeletedException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,25 +37,25 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 	@Before
 	public void runBeforeAllTests() throws Exception {
 		executeDataSet("IndicatorTest.xml");
-		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
+		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
 		
-		SDMXHDMessage sdmxhdMessage = new SDMXHDMessage();
+		// Create 2 test messages
+		SDMXHDMessage message1 = new SDMXHDMessage();	
+		message1.setName("test1");
+		message1.setDescription("test1");
+		message1.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
+		SDMXHDMessage message2 = new SDMXHDMessage();
+		message2.setName("test2");
+		message2.setDescription("test2");
+		message2.setSdmxhdZipFileName("SDMX-HD.v1.0 sample2.zip");
 		
-		sdmxhdMessage.setName("test1");
-		sdmxhdMessage.setDescription("test1");
-		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
+		// Save them
+		sdmxhdService.saveMessage(message1);
+		sdmxhdService.saveMessage(message2);
 		
-		SDMXHDMessage saveSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
-		testMsg1Id = saveSDMXHDMessage.getId();
-		
-		sdmxhdMessage = new SDMXHDMessage();
-		
-		sdmxhdMessage.setName("test2");
-		sdmxhdMessage.setDescription("test2");
-		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample2.zip");
-		
-		saveSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
-		testMsg2Id = saveSDMXHDMessage.getId();
+		// Get their ids for use in tests
+		testMsg1Id = message1.getId();
+		testMsg2Id = message2.getId();
 	}
 	
 	/**
@@ -64,28 +63,22 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 	 * 
 	 */
 	@Test
-	@Verifies(value = "should void the sdmx message with the given id", method = "deleteSDMXHDMessage(SDMXHDMessage)")
-	public void deleteSDMXHDMessage_shouldDeleveTheSdmxMessageWithTheGivenId() throws Exception {
-		SDMXHDMessage sdmxhdMessage = new SDMXHDMessage();
+	@Verifies(value = "should delete the message with the given id", method = "deleteMessage(SDMXHDMessage)")
+	public void deleteMessage_shouldDeleteMessageWithTheGivenId() throws Exception {
+		// Create test message
+		SDMXHDMessage message = new SDMXHDMessage();
+		message.setName("deltest");
+		message.setDescription("deltest");
+		message.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
 		
-		sdmxhdMessage.setName("deltest");
-		sdmxhdMessage.setDescription("deltest");
-		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
+		// Save message and then delete it
+		SDMXHDService service = Context.getService(SDMXHDService.class);
+		service.saveMessage(message);
+		Integer messageId = message.getId();
+		service.deleteMessage(message);
 		
-		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-		SDMXHDMessage savedSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
-		Integer id = savedSDMXHDMessage.getId();
-		SDMXHDMessage msg = sdmxhdService.getSDMXHDMessage(id);
-		sdmxhdService.purgeSDMXHDMessage(msg);
-		try {
-			msg = sdmxhdService.getSDMXHDMessage(id);
-		} catch (ObjectDeletedException e) {
-			//Test passed!
-			return;
-		}
-		
-		//Otherwise fail
-		Assert.fail();
+		// Request for that object should now return null
+		Assert.assertNull(service.getMessage(messageId));
 	}
 	
 	/**
@@ -93,44 +86,46 @@ public class HibernateSDMXHDMessageDAOTest extends BaseModuleContextSensitiveTes
 	 * 
 	 */
 	@Test
-	@Verifies(value = "should return all sdmx messages", method = "getAllSDMXHDMessages()")
-	public void getAllSDMXHDMessages_shouldReturnAllSdmxMessages() throws Exception {
+	@Verifies(value = "should return all sdmx messages", method = "getAllMessages()")
+	public void getAllMessages_shouldReturnAllMessages() throws Exception {
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-		List<SDMXHDMessage> messages = sdmxhdService.getAllSDMXHDMessages(false);
+		List<SDMXHDMessage> messages = sdmxhdService.getAllMessages(false);
 		
 		Assert.assertEquals(2, messages.size());
 	}
 	
 	/**
-	 * @see {@link HibernateSDMXHDMessageDAO#getSDMXHDMessage(Integer)}
+	 * @see {@link HibernateSDMXHDMessageDAO#getMessage(Integer)}
 	 * 
 	 */
 	@Test
-	@Verifies(value = "should get the correct sdmxhd message for the given id", method = "getSDMXHDMessage(Integer)")
-	public void getSDMXHDMessage_shouldGetTheCorrectSdmxhdMessageForTheGivenId() throws Exception {
+	@Verifies(value = "should get the correct message for the given id", method = "getMessage(Integer)")
+	public void getMessage_shouldGetTheCorrectMessageForTheGivenId() throws Exception {
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-		SDMXHDMessage msg = sdmxhdService.getSDMXHDMessage(testMsg1Id);
+		SDMXHDMessage message = sdmxhdService.getMessage(testMsg1Id);
 		
-		Assert.assertNotNull(msg);
-		Assert.assertEquals("test1", msg.getName());
+		Assert.assertNotNull(message);
+		Assert.assertEquals("test1", message.getName());
 	}
 	
 	/**
-	 * @see {@link HibernateSDMXHDMessageDAO#saveSDMXHDMessage(SDMXHDMessage)}
+	 * @see {@link HibernateSDMXHDMessageDAO#saveMessage(SDMXHDMessage)}
 	 * 
 	 */
 	@Test
-	@Verifies(value = "should save the given sdmxhd message", method = "saveSDMXHDMessage(SDMXHDMessage)")
-	public void saveSDMXHDMessage_shouldSaveTheGivenSdmxhdMessage() throws Exception {
-		SDMXHDMessage sdmxhdMessage = new SDMXHDMessage();
+	@Verifies(value = "should save the given message", method = "saveMessage(SDMXHDMessage)")
+	public void saveSDMXHDMessage_shouldSaveTheGivenMessage() throws Exception {
+		// Create test message
+		SDMXHDMessage message = new SDMXHDMessage();
+		message.setName("test3");
+		message.setDescription("test3");
+		message.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
 		
-		sdmxhdMessage.setName("test3");
-		sdmxhdMessage.setDescription("test3");
-		sdmxhdMessage.setSdmxhdZipFileName("SDMX-HD.v1.0 sample1.zip");
+		// Save message
+		SDMXHDService service = (SDMXHDService) Context.getService(SDMXHDService.class);
+		service.saveMessage(message);
 		
-		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-		SDMXHDMessage savedSDMXHDMessage = sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
-		
-		Assert.assertNotNull(savedSDMXHDMessage);
+		// Check it now has an id
+		Assert.assertNotNull(message.getId());
 	}
 }

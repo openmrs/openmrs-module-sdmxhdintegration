@@ -54,7 +54,7 @@ public class SetAttributesDialogController {
 		}
 		
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
     	
     	// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
@@ -160,7 +160,7 @@ public class SetAttributesDialogController {
 		}
 		
 		// get SDMXHDMessage Object in OMRS
-		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getSDMXHDMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getMessage(sdmxhdMessageId);
 		
 		// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);

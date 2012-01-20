@@ -95,7 +95,7 @@ public class MappingDialogController {
     	model.addAttribute("omrsDimensions", omrsDimensions);
     	
     	SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
     	
     	// get sdmxhd Dimension options
     	DSD sdmxhdDSD = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
@@ -171,7 +171,7 @@ public class MappingDialogController {
 		sdmxhdDimension = URLDecoder.decode(sdmxhdDimension);
 		
 		// get SDMXHDMessage Object in OMRS
-		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getSDMXHDMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getMessage(sdmxhdMessageId);
 		
 		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = getDataSetDefinition(sdmxhdMessage, keyFamilyId);
 		
@@ -241,7 +241,7 @@ public class MappingDialogController {
     	model.addAttribute("sdmxhdMessageId");
     	
     	SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
     	KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
     	
     	// if a OMRS DSD is attached then get the mapped indicator as well
@@ -267,7 +267,7 @@ public class MappingDialogController {
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
 		
 		// get SDMXHDMessage Object in OMRS
-		SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
 		
 		// get SDMX-HD DSD
 		DSD sdmxhdDSD = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);

@@ -33,7 +33,7 @@ public class GlobalMessageConfigController {
 	@RequestMapping(method=RequestMethod.GET)
 	public void showPage(ModelMap model, @RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId) throws ValidationException, IOException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-		SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
 		
 		// skip lazy initilization
 		sdmxhdMessage.getGroupElementAttributes();
@@ -53,7 +53,7 @@ public class GlobalMessageConfigController {
 	                               BindingResult result) {
 		
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-		sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
+		sdmxhdService.saveMessage(sdmxhdMessage);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Global message configuration saved");

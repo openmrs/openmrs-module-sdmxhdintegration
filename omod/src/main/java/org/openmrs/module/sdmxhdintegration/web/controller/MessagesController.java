@@ -35,15 +35,15 @@ public class MessagesController {
 		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
 		
 		if (deleteMsgId != null) {
-			SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(deleteMsgId);
+			SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(deleteMsgId);
 			sdmxhdMessage.setRetired(true);
 			sdmxhdMessage.setDateRetired(new Date());
 			sdmxhdMessage.setRetiredBy(Context.getAuthenticatedUser());
 			sdmxhdMessage.setRetireReason("User Deleted");
-			sdmxhdService.saveSDMXHDMessage(sdmxhdMessage);
+			sdmxhdService.saveMessage(sdmxhdMessage);
 		}
 		
-		List<SDMXHDMessage> allSDMXHDMessages = sdmxhdService.getAllSDMXHDMessages(false);
+		List<SDMXHDMessage> allSDMXHDMessages = sdmxhdService.getAllMessages(false);
 		List<KeyFamilyMapping> allKeyFamilyMappings = sdmxhdService.getAllKeyFamilyMappings();
 
 		// get report uuid's

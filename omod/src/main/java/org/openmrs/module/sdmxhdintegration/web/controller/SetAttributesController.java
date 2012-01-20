@@ -41,7 +41,7 @@ public class SetAttributesController {
 	                                                                                              ExternalRefrenceNotFoundException,
 	                                                                                              SchemaValidationException {
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-		SDMXHDMessage sdmxhdMessage = sdmxhdService.getSDMXHDMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
 		KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
 		if (keyFamilyMapping.getReportDefinitionId() != null) {
 			DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
