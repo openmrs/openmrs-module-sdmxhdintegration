@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
@@ -26,14 +39,28 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller for the messages list page
+ */
 @Controller
 public class MessagesController {
 	
+	/**
+	 * Displays the page
+	 * @param deleteMsgId the message to delete (optional)
+	 * @param model the model
+	 * @throws ValidationException
+	 * @throws IOException
+	 * @throws XMLStreamException
+	 * @throws ExternalRefrenceNotFoundException
+	 * @throws SchemaValidationException
+	 */
 	@RequestMapping("/module/sdmxhdintegration/messages")
-    public void showList(@RequestParam(value="deletemsgid", required=false) Integer deleteMsgId, ModelMap model) throws ValidationException, IOException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
+    public void showList(@RequestParam(value="deleteMsgId", required=false) Integer deleteMsgId, ModelMap model) throws ValidationException, IOException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
 		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
 		
+		// hAndle request to delete a message
 		if (deleteMsgId != null) {
 			SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(deleteMsgId);
 			sdmxhdMessage.setRetired(true);

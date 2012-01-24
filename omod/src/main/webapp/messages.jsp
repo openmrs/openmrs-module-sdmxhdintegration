@@ -38,24 +38,29 @@
 
 	<table width="100%">
 		<tr>
-			<td valign="top" width="65%">
+			<td valign="top" width="60%">
 				<b class="boxHeader">
 					<spring:message code="@MODULE_ID@.general.messages" />
 				</b>
 				<div class="box">
 					<table width="100%" cellspacing="0">
 						<tr>
+							<th>&nbsp;</th>
 							<th><spring:message code="general.name" /></th>
 							<th><spring:message code="general.description" /></th>
 							<th><spring:message code="@MODULE_ID@.messages.uploader" /></th>
 							<th><spring:message code="@MODULE_ID@.messages.uploaded" /></th>
-							<th><spring:message code="@MODULE_ID@.general.attributes" /></th>
-							<th><spring:message code="general.delete" /></th>
-							<th><spring:message code="@MODULE_ID@.general.keyFamilies" /></th>
+							<th align="center"><spring:message code="@MODULE_ID@.general.attributes" /></th>
+							<th align="center"><spring:message code="@MODULE_ID@.general.keyFamilies" /></th>
 							<th>&nbsp;</th>
 						</tr>
 						<c:forEach var="message" items="${messages}" varStatus="index1">
 							<tr class="<c:choose><c:when test="${index1.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
+								<td align="center">
+									<a href="messages.list?deleteMsgId=${message.id}" onclick="return confirm('<spring:message code="@MODULE_ID@.messages.deleteMessageConfirm" />')">
+										<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
+									</a>
+								</td>
 								<td>				
 									<a href="messageUpload.form?messageId=${message.id}">${message.name}</a>
 								</td>
@@ -65,11 +70,6 @@
 								<td align="center">
 									<a href="messageAttributes.form?messageId=${message.id}">
 										<img width="20" height="20" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/attributes.png" align="absmiddle" border="0"/>	
-									</a>
-								</td>
-								<td align="center">
-									<a href="messages.list?deletemsgid=${message.id}" onclick="return confirm('Are you sure you want to delete this message?')">
-										<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
 									</a>
 								</td>
 								<td align="center">
@@ -84,7 +84,7 @@
 				</div>			
 			</td>
 			
-			<td valign="top" width="35%">
+			<td valign="top" width="40%">
 				<b class="boxHeader">
 					<spring:message code="@MODULE_ID@.general.keyFamilies" />
 				</b>
