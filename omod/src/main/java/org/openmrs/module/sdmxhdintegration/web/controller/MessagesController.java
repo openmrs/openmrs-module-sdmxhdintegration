@@ -90,7 +90,7 @@ public class MessagesController {
 	        DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(message);
 			for (Iterator<KeyFamilyMapping> iterator2 = allKeyFamilyMappings.iterator(); iterator2.hasNext();) {
 		        KeyFamilyMapping keyFamilyMapping = iterator2.next();
-		        if (keyFamilyMapping.getSdmxhdMessage().getId().equals(message.getId())) {
+		        if (keyFamilyMapping.getMessage().getId().equals(message.getId())) {
 			        KeyFamily keyFamily = dsd.getKeyFamily(keyFamilyMapping.getKeyFamilyId());
 			        keyFamilyNamesMap.put(keyFamily.getId(), keyFamily.getName().getDefaultStr());
 		        }

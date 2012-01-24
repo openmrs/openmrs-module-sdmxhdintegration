@@ -8,8 +8,8 @@
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
 
-	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
-	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${sdmxhdmessageid}&keyfamilyid=${keyfamilyid}";
+	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${messageId}&keyfamilyid=${keyFamilyId}";
+	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${messageId}&keyfamilyid=${keyFamilyId}";
 
 	$j(function() {
 

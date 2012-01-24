@@ -51,7 +51,7 @@ public class MappingFormController {
 	
 	/**
 	 * Displays the form
-	 * @param sdmxMessageId the message id
+	 * @param messageId the message id
 	 * @param keyFamilyId the key family id
 	 * @param model the page model
 	 * @throws IOException
@@ -61,20 +61,20 @@ public class MappingFormController {
 	 * @throws SchemaValidationException
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public void showForm(@RequestParam("sdmxhdmessageid") Integer sdmxMessageId,
-	                     @RequestParam("keyfamilyid") String keyFamilyId,
+	public void showForm(@RequestParam("messageId") Integer messageId,
+	                     @RequestParam("keyFamilyId") String keyFamilyId,
 	                     ModelMap model) throws IOException, XMLStreamException, ExternalRefrenceNotFoundException, ValidationException, SchemaValidationException {
 		
-		if (sdmxMessageId != null) {
-	    	SDMXHDService sdmxhdService = (SDMXHDService) Context.getService(SDMXHDService.class);
-	    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxMessageId);
+		if (messageId != null) {
+	    	SDMXHDService service = (SDMXHDService) Context.getService(SDMXHDService.class);
+	    	SDMXHDMessage message = service.getMessage(messageId);
 	    	
 	    	// Add parameters to model
-	    	model.addAttribute("sdmxhdmessageid", sdmxMessageId);
-	    	model.addAttribute("keyfamilyid", keyFamilyId);
+	    	model.addAttribute("messageId", messageId);
+	    	model.addAttribute("keyFamilyId", keyFamilyId);
 	    	
 	    	// Get DSD indicators
-	    	DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage); 	
+	    	DSD dsd = service.getSDMXHDDataSetDefinition(message); 	
 	    	Set<LocalizedString> indicatorNames = dsd.getIndicatorNames(keyFamilyId);
 	    	
 	    	// Make list of default indicator names
@@ -106,10 +106,10 @@ public class MappingFormController {
 	    	model.addAttribute("sdmxhdDimensions", sDims);
 	    	model.addAttribute("sdmxhdIndicators", simpleIndicatorNames);
 	    	
-	    	KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
+	    	KeyFamilyMapping keyFamilyMapping = service.getKeyFamilyMapping(message, keyFamilyId);
 	    	
 	    	if (keyFamilyMapping.getReportDefinitionId() != null) {
-	    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(sdmxhdMessage, keyFamilyId);
+	    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(message, keyFamilyId);
 	    		
 	    		// Add OpenMRS indicators and dimensions to model
 		    	model.addAttribute("mappedIndicators", omrsDSD.getOMRSMappedIndicators());

@@ -146,7 +146,7 @@ public class MessageUploadFormController {
 	            
 	            KeyFamilyMapping kfm = new KeyFamilyMapping();
             	kfm.setKeyFamilyId(keyFamily.getId());
-	            kfm.setSdmxhdMessage(message);
+	            kfm.setMessage(message);
 	            service.saveKeyFamilyMapping(kfm);
             }
         }

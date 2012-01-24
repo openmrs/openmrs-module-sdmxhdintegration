@@ -94,21 +94,21 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getKeyFamilyMapping(org.openmrs.module.sdmxhdintegration.SDMXHDMessage, java.lang.String)
 	 */
 	@Override
-	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage sdmxhdMessage, String keyFamilyId) {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(KeyFamilyMapping.class);
+	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage message, String keyFamilyId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(KeyFamilyMapping.class);
 		
-		crit.add(Expression.eq("keyFamilyId", keyFamilyId));
-		crit.add(Expression.eq("sdmxhdMessage", sdmxhdMessage));
+		criteria.add(Expression.eq("keyFamilyId", keyFamilyId));
+		criteria.add(Expression.eq("message", message));
 		
-		List list = crit.list();
+		List list = criteria.list();
 		if (list.size() > 1) {
 			throw new APIException("Multiple elements returned for this query");
 		}
 		if (list.size() < 1) {
-		return null;
+			return null;
 		}
 		    	
-	    return (KeyFamilyMapping) list.get(0);
+	    return (KeyFamilyMapping)list.get(0);
 	}
 	
 	/**
@@ -132,10 +132,10 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getKeyFamilyMappingsFromMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
 	 */
 	@Override
-	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage sdmxhdMessage) {
+	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage message) {
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(KeyFamilyMapping.class);
 		
-		crit.add(Expression.eq("sdmxhdMessage", sdmxhdMessage));
+		crit.add(Expression.eq("message", message));
 		
 		return crit.list();
 	}

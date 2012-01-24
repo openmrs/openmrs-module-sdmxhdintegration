@@ -10,7 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="uuid" type="string" length="38" not-null="true" />
-		<many-to-one name="sdmxhdMessage" class="SDMXHDMessage" not-null="true">
+		<many-to-one name="message" class="SDMXHDMessage" not-null="true">
 			 <column name="sdmxhd_message_id" />
 		</many-to-one>
 		<property name="keyFamilyId" type="string" length="255" column="keyfamily_id" not-null="true" />

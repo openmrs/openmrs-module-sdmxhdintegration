@@ -91,7 +91,7 @@
 		<tr><td><input type="submit" value="<spring:message code="general.save" />" /></td></tr>
 	</table>
 	
-	<input type="hidden" id="sdmxhdMessageId" value="${sdmxhdmessageid}" />
+	<input type="hidden" id="messageId" value="${messageId}" />
 	<input type="hidden" id="attachmentLevel" value="${attachmentLevel}" />
-	<input type="hidden" id="keyfamilyid" value="${keyfamilyid}" />
+	<input type="hidden" id="keyFamilyId" value="${keyFamilyId}" />
 </form>

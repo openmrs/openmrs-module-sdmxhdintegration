@@ -107,7 +107,7 @@
 								<c:set var="index2" value="0" />
 								
 								<c:forEach var="keyFamilyMapping" items="${keyFamilyMappings}">
-									<c:if test="${keyFamilyMapping.sdmxhdMessage.id == message.id}">
+									<c:if test="${keyFamilyMapping.message.id == message.id}">
 										<tr class="<c:choose><c:when test="${index2 % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
 											<td align="center">
 												<c:choose>
@@ -125,10 +125,10 @@
 												<span>${keyFamilyNamesMap[keyFamilyMapping.keyFamilyId]}</span>
 											</td>
 											<td align="center">
-												<input type="button" value="Map..." onclick="location.href='mapping.form?sdmxhdmessageid=${message.id}&amp;keyfamilyid=${keyFamilyMapping.keyFamilyId}'" />
+												<input type="button" value="Map..." onclick="location.href='mapping.form?messageId=${message.id}&amp;keyFamilyId=${keyFamilyMapping.keyFamilyId}'" />
 											</td>
 											<td align="center">
-												 <input type="button" value="Edit..." onclick="location.href='setAttributes.form?sdmxhdMessageId=${message.id}&keyfamilyid=${keyFamilyMapping.keyFamilyId}'" />
+												 <input type="button" value="Edit..." onclick="location.href='keyFamilyAttributes.form?messageId=${message.id}&keyFamilyId=${keyFamilyMapping.keyFamilyId}'" />
 											</td>
 										</tr>
 										<c:set var="index2" value="${index2 + 1}" />

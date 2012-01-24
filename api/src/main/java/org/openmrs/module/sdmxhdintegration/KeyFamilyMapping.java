@@ -22,7 +22,7 @@ import org.openmrs.BaseOpenmrsObject;
 public class KeyFamilyMapping extends BaseOpenmrsObject {
 	
 	private Integer id;
-	private SDMXHDMessage sdmxhdMessage;
+	private SDMXHDMessage message;
 	private String keyFamilyId;
 	private Integer reportDefinitionId;
 	
@@ -44,18 +44,18 @@ public class KeyFamilyMapping extends BaseOpenmrsObject {
 
     /**
      * Gets the SDMX message
-     * @return the sdmxhdMessage
+     * @return the message
      */
-    public SDMXHDMessage getSdmxhdMessage() {
-    	return sdmxhdMessage;
+    public SDMXHDMessage getMessage() {
+    	return message;
     }
 	
     /**
      * Sets the SDMX message
-     * @param sdmxhdMessage the message
+     * @param message the message
      */
-    public void setSdmxhdMessage(SDMXHDMessage sdmxhdMessage) {
-    	this.sdmxhdMessage = sdmxhdMessage;
+    public void setMessage(SDMXHDMessage message) {
+    	this.message = message;
     }
 
     /**

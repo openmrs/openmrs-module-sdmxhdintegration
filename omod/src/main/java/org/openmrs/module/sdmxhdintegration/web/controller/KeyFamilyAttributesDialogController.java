@@ -38,15 +38,15 @@ import org.springframework.web.context.request.WebRequest;
 
 
 @Controller
-public class SetAttributesDialogController {
+public class KeyFamilyAttributesDialogController {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
-	@RequestMapping("/module/sdmxhdintegration/setAttributesDialog")
+	@RequestMapping("/module/sdmxhdintegration/keyFamilyAttributesDialog")
 	public void showForm(ModelMap model,
-	                     @RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId,
+	                     @RequestParam("messageId") Integer messageId,
 	                     @RequestParam("attachmentLevel") String attachmentLevel,
-	                     @RequestParam("keyfamilyid") String keyFamilyId,
+	                     @RequestParam("keyFamilyId") String keyFamilyId,
 	                     @RequestParam(value="columnName", required=false) String columnName) throws IOException, XMLStreamException, ExternalRefrenceNotFoundException, ValidationException, SchemaValidationException {
 		attachmentLevel = URLDecoder.decode(attachmentLevel);
 		if (columnName != null) {
@@ -54,7 +54,7 @@ public class SetAttributesDialogController {
 		}
 		
 		SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
+    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(messageId);
     	
     	// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
@@ -142,17 +142,17 @@ public class SetAttributesDialogController {
     	model.addAttribute("attributeValues", attributeValues);
     	model.addAttribute("codelistValues", codelistValues);
     	
-    	model.addAttribute("sdmxhdmessageid", sdmxhdMessageId);
+    	model.addAttribute("sdmxhdmessageid", messageId);
     	model.addAttribute("attachmentLevel", attachmentLevel);
 	}
 	
 	public static final String ATTRIBUTE = "attribute.";
 	
-	@RequestMapping(value="/module/sdmxhdintegration/setAttributesDialog", method=RequestMethod.POST)
+	@RequestMapping(value="/module/sdmxhdintegration/keyFamilyAttributesDialog", method=RequestMethod.POST)
 	public String handleSubmission(WebRequest request,
-	                               @RequestParam("sdmxhdMessageId") Integer sdmxhdMessageId,
+	                               @RequestParam("messageId") Integer messageId,
 	                               @RequestParam("attachmentLevel") String attachmentLevel,
-	                               @RequestParam("keyfamilyid") String keyFamilyId,
+	                               @RequestParam("keyFamilyId") String keyFamilyId,
 	                               @RequestParam(value="columnName", required=false) String columnName) {
 		attachmentLevel = URLDecoder.decode(attachmentLevel);
 		if (columnName != null) {
@@ -160,7 +160,7 @@ public class SetAttributesDialogController {
 		}
 		
 		// get SDMXHDMessage Object in OMRS
-		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getMessage(sdmxhdMessageId);
+		SDMXHDMessage sdmxhdMessage = Context.getService(SDMXHDService.class).getMessage(messageId);
 		
 		// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
@@ -189,7 +189,7 @@ public class SetAttributesDialogController {
 		
 		dss.saveDefinition(omrsDSD);
 		
-		return "redirect:redirectParent.form?url=setAttributes.form?sdmxhdMessageId=" + sdmxhdMessageId + "%26keyfamilyid=" + keyFamilyId;
+		return "redirect:redirectParent.form?url=keyFamilyAttributes.form?messageId=" + messageId + "&amp;keyFamilyId=" + keyFamilyId;
 	}
 
 }
