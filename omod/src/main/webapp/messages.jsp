@@ -38,17 +38,17 @@
 
 	<table width="100%">
 		<tr>
-			<td valign="top" width="50%">
-
+			<td valign="top" width="65%">
 				<b class="boxHeader">
 					<spring:message code="@MODULE_ID@.general.messages" />
 				</b>
 				<div class="box">
-					<table width="100%">
+					<table width="100%" cellspacing="0">
 						<tr>
 							<th><spring:message code="general.name" /></th>
 							<th><spring:message code="general.description" /></th>
-							<th><spring:message code="general.creator" /></th>
+							<th><spring:message code="@MODULE_ID@.messages.uploader" /></th>
+							<th><spring:message code="@MODULE_ID@.messages.uploaded" /></th>
 							<th><spring:message code="@MODULE_ID@.general.attributes" /></th>
 							<th><spring:message code="general.delete" /></th>
 							<th><spring:message code="@MODULE_ID@.general.keyFamilies" /></th>
@@ -60,7 +60,8 @@
 									<a href="messageUpload.form?messageId=${message.id}">${message.name}</a>
 								</td>
 								<td>${message.description}</td>
-								<td>${message.creator}</td>
+								<td>${message.creator.personName}</td>
+								<td><openmrs:formatDate date="${not empty message.dateChanged ? message.dateChanged : message.dateCreated}" /></td>
 								<td align="center">
 									<a href="messageAttributes.form?messageId=${message.id}">
 										<img width="20" height="20" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/attributes.png" align="absmiddle" border="0"/>	
@@ -83,7 +84,7 @@
 				</div>			
 			</td>
 			
-			<td valign="top" width="50%">
+			<td valign="top" width="35%">
 				<b class="boxHeader">
 					<spring:message code="@MODULE_ID@.general.keyFamilies" />
 				</b>
@@ -94,7 +95,7 @@
 					
 					<c:forEach var="message" items="${messages}">
 						<div id="keyFamilyTable${message.id}" style="display:none">
-							<table width="100%">
+							<table width="100%" cellspacing="0">
 							
 								<tr>
 									<th>&nbsp;</th>
