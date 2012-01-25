@@ -8,8 +8,8 @@
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
 
-	var indMapUrl = "mappingIndDialog.form?sdmxhdMessageId=${messageId}&keyfamilyid=${keyFamilyId}";
-	var dimMapUrl = "mappingDimDialog.form?sdmxhdMessageId=${messageId}&keyfamilyid=${keyFamilyId}";
+	var indMapUrl = "mappingIndDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
+	var dimMapUrl = "mappingDimDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
 
 	$j(function() {
 
@@ -57,7 +57,7 @@
 </script>
 	
 <form action="mapping.form" method="post">
-	<input type="hidden" name="sdmxhdmessageid" value="${sdmxhdmessageid}">
+	<input type="hidden" name="messageid" value="${messageId}">
 	
 	<table>
 		<tr>

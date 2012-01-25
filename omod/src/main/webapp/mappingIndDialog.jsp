@@ -17,9 +17,9 @@
 		</c:forEach>
 	</select>
 	<br />
-	<input type="hidden" id="sdmxhdMessageId" value="${sdmxhdMessageId}" />
+	<input type="hidden" id="messageId" value="${messageId}" />
 	<input type="hidden" id="sdmxhdIndicator" value="${sdmxhdIndicator}" />
-	<input type="hidden" id="keyfamilyid" value="${keyfamilyid}" />
+	<input type="hidden" id="keyFamilyId" value="${keyFamilyId}" />
 	<input type="submit" value="<spring:message code="general.save" />" />
 </form>
 

@@ -11,10 +11,10 @@
 	$j(function() {
 		$j("#mappedOMRSDimensionId").change(function() {
 			var omrsDimensionId = $j("#mappedOMRSDimensionId").val();
-			var sdmxhdIdRequestParam = 'sdmxhdMessageId=<c:out value="${sdmxhdMessageId}" />';
+			var sdmxhdIdRequestParam = 'messageId=<c:out value="${messageId}" />';
 			var sdmxhdDimensionRequestParam = 'sdmxhdDimension=<c:out value="${sdmxhdDimension}" />';
 			var omrsDimensionRequestParam = 'omrsDimension=' + omrsDimensionId;
-			var keyFamilyRequestParam = 'keyfamilyid=<c:out value="${keyfamilyid}" />';
+			var keyFamilyRequestParam = 'keyFamilyId=<c:out value="${keyFamilyId}" />';
 			window.location = 'mappingDimDialog.form?'
 				+ sdmxhdIdRequestParam + '&'
 				+ sdmxhdDimensionRequestParam + '&'
@@ -57,9 +57,9 @@
 		</td>
 	</tr>
 	
-	<input type="hidden" id="sdmxhdMessageId" value="${sdmxhdMessageId}" />
+	<input type="hidden" id="messageId" value="${messageId}" />
 	<input type="hidden" id="sdmxhdDimension" value="${sdmxhdDimension}" />
-	<input type="hidden" id="keyfamilyid" value="${keyfamilyid}" />
+	<input type="hidden" id="keyFamilyId" value="${keyFamilyId}" />
 
 	<c:if test="${omrsDimensionOptions != null}">
 		<c:forEach var="sdmxhdDimensionOptionElement" items="${sdmxhdDimensionOptions}">
