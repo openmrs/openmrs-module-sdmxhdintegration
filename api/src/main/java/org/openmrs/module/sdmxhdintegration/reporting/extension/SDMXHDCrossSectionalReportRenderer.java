@@ -199,7 +199,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     	
     	try {
     		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-	        ZipFile zf = new ZipFile(path + File.separator + sdmxhdMessage.getSdmxhdZipFileName());
+	        ZipFile zf = new ZipFile(path + File.separator + sdmxhdMessage.getZipFilename());
 	        SDMXHDParser parser = new SDMXHDParser();
 	        org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
 	        DSD sdmxhdDSD = sdmxhdData.getDsd();
@@ -386,7 +386,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempFile));
 	        
 	        // copy all zip entries to new zip file
-	        zf = new ZipFile(path + File.separator + sdmxhdMessage.getSdmxhdZipFileName());
+	        zf = new ZipFile(path + File.separator + sdmxhdMessage.getZipFilename());
 	        Enumeration<? extends ZipEntry> entries = zf.entries();
 	        while(entries.hasMoreElements()) {
 	        	ZipEntry readZipEntry = entries.nextElement();

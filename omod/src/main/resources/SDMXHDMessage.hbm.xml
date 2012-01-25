@@ -10,7 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="uuid" type="string" length="38" not-null="true" />
-		<property name="sdmxhdZipFileName" type="string" column="sdmxhd_zip_file_name" length="255" not-null="true" />
+		<property name="zipFilename" type="string" column="sdmxhd_zip_file_name" length="255" not-null="true" />
 		<property name="name" type="string" length="255" column="name" not-null="true" />
 		<property name="description" type="string" column="description" not-null="false" />
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" />

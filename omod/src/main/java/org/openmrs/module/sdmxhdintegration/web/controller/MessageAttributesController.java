@@ -62,7 +62,7 @@ public class MessageAttributesController {
 		// Prevent lazy initialization
 		message.getGroupElementAttributes();
 		
-		DSD dsd = service.getSDMXHDDataSetDefinition(message);
+		DSD dsd = service.getDataSetDefinition(message);
 		CodeList frequencyCodeList = dsd.getCodeList("CL_FREQ");
 		if (frequencyCodeList != null) {
 			model.addAttribute("frequencyCodes", frequencyCodeList.getCodes());

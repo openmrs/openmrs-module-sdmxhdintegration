@@ -11,6 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.sdmxhdintegration;
 
 import java.util.HashMap;
@@ -18,107 +19,113 @@ import java.util.Map;
 
 import org.openmrs.BaseOpenmrsMetadata;
 
-
 /**
- * This class represents a SDMX-HD Message. It stores the SDMX-HD as a ZipFile (as per specification)
- * and implements the various getter and setter required by an openmrs metadata object.
+ * This class represents a SDMX-HD message. It stores the SDMX-HD as a zip file
+ * (as per specification) and implements the various getter and setter required
+ * by an OpenMRS metadata object.
  */
 public class SDMXHDMessage extends BaseOpenmrsMetadata {
-	
+
 	private Integer id;
-	private String sdmxhdZipFileName;
-	
+	private String zipFilename;
+
 	private Map<String, String> headerElementAttributes = new HashMap<String, String>();
 	private Map<String, String> datasetElementAttributes = new HashMap<String, String>();
 	private Map<String, String> groupElementAttributes = new HashMap<String, String>();
 
 	/**
-     * @see org.openmrs.OpenmrsObject#getId()
-     */
-    @Override
-    public Integer getId() {
-	    return id;
-    }
+	 * @see org.openmrs.BaseOpenmrsMetadata#getId()
+	 */
+	@Override
+	public Integer getId() {
+		return id;
+	}
 
 	/**
-     * @see org.openmrs.OpenmrsObject#setId(java.lang.Integer)
-     */
-    @Override
-    public void setId(Integer id) {
-	    this.id = id;
-    }
+	 * @see org.openmrs.BaseOpenmrsMetadata#setId(Integer)
+	 */
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	
-    public String getSdmxhdZipFileName() {
-    	return sdmxhdZipFileName;
-    }
+	/**
+	 * Gets name of zip file containing original message
+	 * 
+	 * @return the file name
+	 */
+	public String getZipFilename() {
+		return zipFilename;
+	}
 
-	
-    public void setSdmxhdZipFileName(String sdmxhdZipFileName) {
-    	this.sdmxhdZipFileName = sdmxhdZipFileName;
-    }
+	/**
+	 * Sets name of zip file containing original message
+	 * 
+	 * @param zipFilename
+	 *            the file name
+	 */
+	public void setZipFilename(String zipFilename) {
+		this.zipFilename = zipFilename;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-    	if (this == obj) {
-    		return true;
-    	}
-    	
-    	if (!(obj instanceof SDMXHDMessage)) {
-    		return false;
-    	}
-    	
-    	SDMXHDMessage sdmxhdMessage = (SDMXHDMessage) obj;
-    	
-    	return (this.getId().equals(sdmxhdMessage.getId()));
-    }
+	/**
+	 * @return the datasetElementAttributes
+	 */
+	public Map<String, String> getDatasetElementAttributes() {
+		return datasetElementAttributes;
+	}
 
-	
-    /**
-     * @return the datasetElementAttributes
-     */
-    public Map<String, String> getDatasetElementAttributes() {
-    	return datasetElementAttributes;
-    }
+	/**
+	 * @param datasetElementAttributes
+	 *            the datasetElementAttributes to set
+	 */
+	public void setDatasetElementAttributes(Map<String, String> datasetElementAttributes) {
+		this.datasetElementAttributes = datasetElementAttributes;
+	}
 
-	
-    /**
-     * @param datasetElementAttributes the datasetElementAttributes to set
-     */
-    public void setDatasetElementAttributes(Map<String, String> datasetElementAttributes) {
-    	this.datasetElementAttributes = datasetElementAttributes;
-    }
+	/**
+	 * @return the headerElementAttributes
+	 */
+	public Map<String, String> getHeaderElementAttributes() {
+		return headerElementAttributes;
+	}
 
-	
-    /**
-     * @return the headerElementAttributes
-     */
-    public Map<String, String> getHeaderElementAttributes() {
-    	return headerElementAttributes;
-    }
+	/**
+	 * @param headerElementAttributes
+	 *            the headerElementAttributes to set
+	 */
+	public void setHeaderElementAttributes(
+			Map<String, String> headerElementAttributes) {
+		this.headerElementAttributes = headerElementAttributes;
+	}
 
-	
-    /**
-     * @param headerElementAttributes the headerElementAttributes to set
-     */
-    public void setHeaderElementAttributes(Map<String, String> headerElementAttributes) {
-    	this.headerElementAttributes = headerElementAttributes;
-    }
+	/**
+	 * @return the groupElementAttributes
+	 */
+	public Map<String, String> getGroupElementAttributes() {
+		return groupElementAttributes;
+	}
 
-	
-    /**
-     * @return the groupElementAttributes
-     */
-    public Map<String, String> getGroupElementAttributes() {
-    	return groupElementAttributes;
-    }
+	/**
+	 * @param groupElementAttributes the groupElementAttributes to set
+	 */
+	public void setGroupElementAttributes(
+			Map<String, String> groupElementAttributes) {
+		this.groupElementAttributes = groupElementAttributes;
+	}
 
-	
-    /**
-     * @param groupElementAttributes the groupElementAttributes to set
-     */
-    public void setGroupElementAttributes(Map<String, String> groupElementAttributes) {
-    	this.groupElementAttributes = groupElementAttributes;
-    }
-    
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (!(obj instanceof SDMXHDMessage))
+			return false;
+
+		SDMXHDMessage sdmxhdMessage = (SDMXHDMessage) obj;
+		return (this.getId().equals(sdmxhdMessage.getId()));
+	}
 }

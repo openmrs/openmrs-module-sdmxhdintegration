@@ -74,7 +74,7 @@ public class MappingFormController {
 	    	model.addAttribute("keyFamilyId", keyFamilyId);
 	    	
 	    	// Get DSD indicators
-	    	DSD dsd = service.getSDMXHDDataSetDefinition(message); 	
+	    	DSD dsd = service.getDataSetDefinition(message); 	
 	    	Set<LocalizedString> indicatorNames = dsd.getIndicatorNames(keyFamilyId);
 	    	
 	    	// Make list of default indicator names

@@ -25,6 +25,7 @@ public class SDMXHDMessageValidator implements Validator {
 	
 	/**
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
+	 * @should support only message class
 	 */
 	@Override
 	public boolean supports(Class clazz) {
@@ -33,10 +34,13 @@ public class SDMXHDMessageValidator implements Validator {
 	
 	/**
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
+	 * @should accept if valid
+	 * @should reject if name is empty
+	 * @should reject if zip file name is empty
 	 */
 	@Override
 	public void validate(Object obj, Errors e) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "name", Constants.MODULE_ID + ".error.requiredField");
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "sdmxhdZipFileName", Constants.MODULE_ID + ".error.requiredFile");
+		ValidationUtils.rejectIfEmptyOrWhitespace(e, "zipFilename", Constants.MODULE_ID + ".error.requiredFile");
 	}	
 }

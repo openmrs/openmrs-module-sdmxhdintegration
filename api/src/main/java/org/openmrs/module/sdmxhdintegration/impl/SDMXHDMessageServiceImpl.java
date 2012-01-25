@@ -37,7 +37,7 @@ import org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO;
 /**
  * Implementation of the module service
  */
-public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXHDService {
+public class SDMXHDMessageServiceImpl extends BaseOpenmrsService implements SDMXHDService {
     
 	private SDMXHDMessageDAO dao;
 	
@@ -160,13 +160,14 @@ public class SDMXHDModuleServiceImpl extends BaseOpenmrsService implements SDMXH
 	 * @throws SchemaValidationException 
 	 * @throws ExternalRefrenceNotFoundException 
 	 * @throws XMLStreamException 
-	 * @throws ValidationException 
-	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getSDMXHDDataSetDefinition(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
+	 * @throws ValidationException
+	 * @should should get parsed DSD for given message
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getDataSetDefinition(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
 	 */
 	@Override
-	public DSD getSDMXHDDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
+	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-		ZipFile zf = new ZipFile(path + File.separator + message.getSdmxhdZipFileName());
+		ZipFile zf = new ZipFile(path + File.separator + message.getZipFilename());
 		SDMXHDParser parser = new SDMXHDParser();
 		org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
 		return sdmxhdData.getDsd();

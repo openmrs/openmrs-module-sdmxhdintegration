@@ -36,6 +36,7 @@ public interface SDMXHDService extends OpenmrsService {
 	 * Gets an SDMX-HD message
 	 * @param id the message id
 	 * @return the message
+	 * @should get the correct message for the given id
 	 */
 	@Transactional(readOnly=true)
 	public SDMXHDMessage getMessage(Integer id);
@@ -44,6 +45,9 @@ public interface SDMXHDService extends OpenmrsService {
 	 * Gets all SDMX-HD messages
 	 * @param includeRetired true if retired messages should be included
 	 * @return the messages
+	 * @should return all messages if includeRetired is true
+	 * @should return all non-retired messages if includeRetired is false
+	 * @should return an empty list if no messages exist
 	 */
 	@Transactional(readOnly=true)
 	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired);
@@ -51,12 +55,14 @@ public interface SDMXHDService extends OpenmrsService {
 	/**
 	 * Saves an SDMX-HD message
 	 * @param sdmxhdMessage the message
+	 * @should save the given message
 	 */
 	public void saveMessage(SDMXHDMessage message);
 	
 	/**
 	 * Deletes an SDMX-HD message
 	 * @param sdmxhdMessage the message
+	 * @should delete the given message
 	 */
 	public void deleteMessage(SDMXHDMessage message);
 	
@@ -70,12 +76,12 @@ public interface SDMXHDService extends OpenmrsService {
 	
 	/**
 	 * Gets key family mapping from the given message by key family id
-	 * @param sdmxhdMessage the message
+	 * @param message the message
 	 * @param keyFamilyId the key family id
 	 * @return the mapping
 	 */
 	@Transactional(readOnly=true)
-	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage sdmxhdMessage, String keyFamilyId);
+	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage message, String keyFamilyId);
 	
 	/**
 	 * Gets the key family mapping for the given report definition
@@ -87,11 +93,11 @@ public interface SDMXHDService extends OpenmrsService {
 	
 	/**
 	 * Gets all the key family mapping for the given message
-	 * @param sdmxhdMessage the message
+	 * @param message the message
 	 * @return the mappings
 	 */
 	@Transactional(readOnly=true)
-	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage sdmxhdMessage);
+	public List<KeyFamilyMapping> getKeyFamilyMappingsFromMessage(SDMXHDMessage message);
 	
 	/**
 	 * Gets all key family mappings
@@ -113,7 +119,17 @@ public interface SDMXHDService extends OpenmrsService {
 	 */
 	public void purgeKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping);
 	
-	
+	/**
+	 * Gets and parses the DSD for the given message
+	 * @param sdmxhdMessage the message
+	 * @return the DSD
+	 * @throws IOException
+	 * @throws ValidationException
+	 * @throws XMLStreamException
+	 * @throws ExternalRefrenceNotFoundException
+	 * @throws SchemaValidationException
+	 * @should should get parsed DSD for given message
+	 */
 	@Transactional(readOnly=true)
-	public DSD getSDMXHDDataSetDefinition(SDMXHDMessage sdmxhdMessage) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException;    
+	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException;    
 }

@@ -98,7 +98,7 @@ public class MappingDialogController {
     	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
     	
     	// get sdmxhd Dimension options
-    	DSD sdmxhdDSD = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
+    	DSD sdmxhdDSD = sdmxhdService.getDataSetDefinition(sdmxhdMessage);
     	List<String> sdmxhdDimensionOptions = new ArrayList<String>();
     	Dimension sdmxhdDimensionObj = sdmxhdDSD.getDimension(sdmxhdDimension, keyFamilyId);
     	CodeList codeList = sdmxhdDSD.getCodeList(sdmxhdDimensionObj.getCodelistRef());
@@ -270,7 +270,7 @@ public class MappingDialogController {
 		SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(sdmxhdMessageId);
 		
 		// get SDMX-HD DSD
-		DSD sdmxhdDSD = sdmxhdService.getSDMXHDDataSetDefinition(sdmxhdMessage);
+		DSD sdmxhdDSD = sdmxhdService.getDataSetDefinition(sdmxhdMessage);
     	
     	// get Indicator obj
     	// TODO do this properly with either uuid or create method in service to fetch by id

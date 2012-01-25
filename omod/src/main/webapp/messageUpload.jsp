@@ -26,20 +26,20 @@
 			</td>
 		</tr>
 		<tr>
-	    	<td><spring:message code="@MODULE_ID@.upload.sdmxhdZipFileName" /></td>
+	    	<td><spring:message code="@MODULE_ID@.upload.zipFilename" /></td>
 	    	<td>
 	    		<input type="file" name="sdmxhdMessage" id="sdmxhdMessage" size="40" />
 	    		
-				<c:if test="${not empty message.sdmxhdZipFileName}">
-				    	<spring:message code="@MODULE_ID@.upload.currentMessage" />: <i>${message.sdmxhdZipFileName}</i>
+				<c:if test="${not empty message.zipFilename}">
+				    	<spring:message code="@MODULE_ID@.upload.currentMessage" />: <i>${message.zipFilename}</i>
 				    	<br />
 				    	<br />
 				    	<span class="tooltip"><spring:message code="@MODULE_ID@.upload.overwriteWarning" /></span>
 				</c:if>
 				
-				<input type="hidden" value="${message.sdmxhdZipFileName}"/>
+				<input type="hidden" value="${message.zipFilename}"/>
 				<br />
-				<springform:errors path="sdmxhdZipFileName" cssClass="error"/>
+				<springform:errors path="zipFilename" cssClass="error"/>
 	    	</td>
 		</tr>
 		<tr>

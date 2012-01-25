@@ -87,7 +87,7 @@ public class MessagesController {
 		// get keyFamilyNames
 		Map<String, String> keyFamilyNamesMap = new HashMap<String, String>();
 		for (SDMXHDMessage message : messages) {
-	        DSD dsd = sdmxhdService.getSDMXHDDataSetDefinition(message);
+	        DSD dsd = sdmxhdService.getDataSetDefinition(message);
 			for (Iterator<KeyFamilyMapping> iterator2 = allKeyFamilyMappings.iterator(); iterator2.hasNext();) {
 		        KeyFamilyMapping keyFamilyMapping = iterator2.next();
 		        if (keyFamilyMapping.getMessage().getId().equals(message.getId())) {

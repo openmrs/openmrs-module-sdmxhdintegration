@@ -23,7 +23,7 @@
 				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager"><ref bean="transactionManager"/></property>
 					<property name="target">
-						<bean class="org.openmrs.module.sdmxhdintegration.impl.SDMXHDModuleServiceImpl">
+						<bean class="org.openmrs.module.sdmxhdintegration.impl.SDMXHDMessageServiceImpl">
 							<property name="dao">
 								<bean class="org.openmrs.module.sdmxhdintegration.db.hibernate.HibernateSDMXHDMessageDAO">
 									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	

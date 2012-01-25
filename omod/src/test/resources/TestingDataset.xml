@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<sdmxhdintegration_sdmxhd_message
+		id="1"
+		uuid="3ce6eb68-d64c-4950-98aa-91cf9bda5b68"
+		sdmxhd_zip_file_name="test_message1.zip"
+		name="test1"
+		description="decription1"
+		creator="1"
+		date_created="2012-01-24 17:19:09"		
+		changed_by="[NULL]"
+		date_changed="[NULL]"
+		retired="0"
+		date_retired="[NULL]"
+		retired_by="[NULL]"
+		retire_reason="[NULL]"
+	/>	
+	<sdmxhdintegration_sdmxhd_message
+		id="2"
+		uuid="d2a56a23-6be1-45f0-b36d-c595a12f5565"
+		sdmxhd_zip_file_name="test_message2.zip"
+		name="test2"
+		description="decription2"
+		creator="1"
+		date_created="2012-01-23 14:17:11"		
+		changed_by="[NULL]"
+		date_changed="[NULL]"
+		retired="1"
+		date_retired="[NULL]"
+		retired_by="[NULL]"
+		retire_reason="[NULL]"
+	/>
+</dataset>

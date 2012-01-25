@@ -66,7 +66,7 @@ public class KeyFamilyAttributesController {
 			model.addAttribute("keyFamilyId", keyFamilyId);
 			
 			String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-			ZipFile zf = new ZipFile(path + File.separator + message.getSdmxhdZipFileName());
+			ZipFile zf = new ZipFile(path + File.separator + message.getZipFilename());
 			SDMXHDParser parser = new SDMXHDParser();
 			org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
 			DSD sdmxhdDSD = sdmxhdData.getDsd();

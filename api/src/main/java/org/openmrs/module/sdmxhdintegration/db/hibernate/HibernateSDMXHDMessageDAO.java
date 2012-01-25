@@ -44,15 +44,13 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	
 	/**
 	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getMessage(java.lang.Integer)
-	 * @should get the correct message for the given id
 	 */
 	public SDMXHDMessage getMessage(Integer id) {
 	    return (SDMXHDMessage)sessionFactory.getCurrentSession().get(SDMXHDMessage.class, id);
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#saveMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
-	 * @should save the given message
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#saveMessage(SDMXHDMessage)
 	 */
 	public SDMXHDMessage saveMessage(SDMXHDMessage message) {
 	    sessionFactory.getCurrentSession().saveOrUpdate(message);
@@ -60,8 +58,7 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#deleteMessage(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
-	 * @should delete the message with the given id
+	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#deleteMessage(SDMXHDMessage)
 	 */
 	public void deleteMessage(SDMXHDMessage message) {
 	    sessionFactory.getCurrentSession().delete(message);
@@ -69,8 +66,6 @@ public class HibernateSDMXHDMessageDAO implements SDMXHDMessageDAO {
 	
 	/**
 	 * @see org.openmrs.module.sdmxhdintegration.db.SDMXHDMessageDAO#getAllMessages()
-	 * @should return all messages
-	 * @should return an empty list if none exist
 	 */
 	public List<SDMXHDMessage> getAllMessages(Boolean includeRetired) {
 	    Criteria crit = sessionFactory.getCurrentSession().createCriteria(SDMXHDMessage.class);

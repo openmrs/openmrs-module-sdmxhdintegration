@@ -109,7 +109,7 @@ public class MessageUploadFormController {
             	return "/module/sdmxhdintegration/messageUpload";
             }
 			
-			message.setSdmxhdZipFileName(filename);
+			message.setZipFilename(filename);
 		}
 		
 		new SDMXHDMessageValidator().validate(message, result);
@@ -139,7 +139,7 @@ public class MessageUploadFormController {
 		
 		// create initial keyFamilyMappings
 		try {
-	        DSD dsd = service.getSDMXHDDataSetDefinition(message);
+	        DSD dsd = service.getDataSetDefinition(message);
 	        List<KeyFamily> keyFamilies = dsd.getKeyFamilies();
 	        for (Iterator<KeyFamily> iterator = keyFamilies.iterator(); iterator.hasNext();) {
 	            KeyFamily keyFamily = iterator.next();
