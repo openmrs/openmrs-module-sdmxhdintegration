@@ -14,24 +14,20 @@
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipFile;
 
 import javax.xml.bind.ValidationException;
 import javax.xml.stream.XMLStreamException;
 
 import org.jembi.sdmxhd.dsd.Attribute;
 import org.jembi.sdmxhd.dsd.DSD;
-import org.jembi.sdmxhd.parser.SDMXHDParser;
 import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
 import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.dataset.definition.CohortIndicatorDataSetDefinition.CohortIndicatorAndDimensionColumn;
-import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
@@ -48,79 +44,80 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class KeyFamilyAttributesController {
 	
+	/**
+	 * Shows the page
+	 * @param model the model
+	 * @param messageId the message id
+	 * @param keyFamilyId the key family id
+	 * @throws IOException
+	 * @throws ValidationException
+	 * @throws XMLStreamException
+	 * @throws ExternalRefrenceNotFoundException
+	 * @throws SchemaValidationException
+	 */
 	@RequestMapping("/module/sdmxhdintegration/keyFamilyAttributes")
-	public void showPage(ModelMap model, @RequestParam("messageId") Integer messageId,
-	                     				 @RequestParam("keyFamilyId") String keyFamilyId)
-	             throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
+	public void showPage(ModelMap model, @RequestParam("messageId") Integer messageId, @RequestParam("keyFamilyId") String keyFamilyId)
+			throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
 		
 		SDMXHDService service = Context.getService(SDMXHDService.class);
 		SDMXHDMessage message = service.getMessage(messageId);
 		KeyFamilyMapping keyFamilyMapping = service.getKeyFamilyMapping(message, keyFamilyId);
 		
 		if (keyFamilyMapping.getReportDefinitionId() != null) {
-			DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
 			SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getOMRSDataSetDefinition(message, keyFamilyId);
 			
 			model.addAttribute("columns", omrsDSD.getColumns());
-			model.addAttribute("messageId", messageId);
+			model.addAttribute("message", message);
 			model.addAttribute("keyFamilyId", keyFamilyId);
 			
-			String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-			ZipFile zf = new ZipFile(path + File.separator + message.getZipFilename());
-			SDMXHDParser parser = new SDMXHDParser();
-			org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
-			DSD sdmxhdDSD = sdmxhdData.getDsd();
+			DSD dsd = Utils.getDataSetDefinition(message);
 			
-			// test if mandatory attributes are set
-			// DataSet Attachment
-			List<Attribute> mandDataSetAttr = sdmxhdDSD.getAttributes(Attribute.DATASET_ATTACHMENT_LEVEL,
-			    Attribute.MANDATORY);
-			Map<String, String> dataSetAttachedAttributes = omrsDSD.getDataSetAttachedAttributes();
+			// Get mandatory dataset level attributes and those attached
+			List<Attribute> mandatoryDataSetAttrs = dsd.getAttributes(Attribute.DATASET_ATTACHMENT_LEVEL, Attribute.MANDATORY);
+			Map<String, String> attachedDatasetAttrs = omrsDSD.getDataSetAttachedAttributes();
+			boolean hasAllMandatoryDatasetAttrs = containsAllAttributes(mandatoryDataSetAttrs, attachedDatasetAttrs);		
 			
-			model.addAttribute("datasetMandAttrSet", isMandatoryAttributesSet(mandDataSetAttr, dataSetAttachedAttributes));
+			// Column level (series and obs) attributes
+			Map<String, Boolean> hasAllMandatorySeriesAttrs = new HashMap<String, Boolean>();
+			Map<String, Boolean> hasAllMandatoryObsAttrs = new HashMap<String, Boolean>();
 			
-			// Series Attachment
-			Map<String, Boolean> seriesMandAttrSet = new HashMap<String, Boolean>();
 			for (CohortIndicatorAndDimensionColumn c : omrsDSD.getColumns()) {
-				List<Attribute> mandSeriesAttr = sdmxhdDSD.getAttributes(Attribute.SERIES_ATTACHMENT_LEVEL,
-				    Attribute.MANDATORY);
-				Map<String, String> seriesAttachedAttributes = omrsDSD.getSeriesAttachedAttributes().get(c.getName());
 				
-				seriesMandAttrSet.put(c.getName(), isMandatoryAttributesSet(mandSeriesAttr, seriesAttachedAttributes));
+				// Get mandatory series level attributes and those attached
+				List<Attribute> mandatorySeriesAttrs = dsd.getAttributes(Attribute.SERIES_ATTACHMENT_LEVEL, Attribute.MANDATORY);
+				Map<String, String> attachedSeriesAttrs = omrsDSD.getSeriesAttachedAttributes().get(c.getName());
+				hasAllMandatorySeriesAttrs.put(c.getName(), containsAllAttributes(mandatorySeriesAttrs, attachedSeriesAttrs));
 				
+				// Get mandatory obs level attributes and those attached
+				List<Attribute> mandatoryObsAttrs = dsd.getAttributes(Attribute.OBSERVATION_ATTACHMENT_LEVEL, Attribute.MANDATORY);
+				Map<String, String> attachedObsAttrs = omrsDSD.getObsAttachedAttributes().get(c.getName());
+				hasAllMandatoryObsAttrs.put(c.getName(), containsAllAttributes(mandatoryObsAttrs, attachedObsAttrs));
 			}
-			model.addAttribute("seriesMandAttrSet", seriesMandAttrSet);
 			
-			// Obs Attachment
-			Map<String, Boolean> obsMandAttrSet = new HashMap<String, Boolean>();
-			for (CohortIndicatorAndDimensionColumn c : omrsDSD.getColumns()) {
-				List<Attribute> mandObsAttr = sdmxhdDSD.getAttributes(Attribute.OBSERVATION_ATTACHMENT_LEVEL,
-				    Attribute.MANDATORY);
-				Map<String, String> obsAttachedAttributes = omrsDSD.getObsAttachedAttributes().get(c.getName());
-				
-				obsMandAttrSet.put(c.getName(), isMandatoryAttributesSet(mandObsAttr, obsAttachedAttributes));
-				
-			}
-			model.addAttribute("obsMandAttrSet", obsMandAttrSet);
+			model.addAttribute("attachedDatasetAttrs", attachedDatasetAttrs);
+			model.addAttribute("hasAllMandatoryDatasetAttrs", hasAllMandatoryDatasetAttrs);
+			model.addAttribute("hasAllMandatorySeriesAttrs", hasAllMandatorySeriesAttrs);
+			model.addAttribute("hasAllMandatoryObsAttrs", hasAllMandatoryObsAttrs);
 		}
 	}
 	
-	private boolean isMandatoryAttributesSet(List<Attribute> mandAttributes, Map<String, String> attributes) {
-		if (mandAttributes == null || mandAttributes.size() < 1) {
+	/**
+	 * Check a map of attributes to see if they include all the mandatory attributes from the given list
+	 * @param mandatoryAttributes the mandatory attributes
+	 * @param attributes the attributes
+	 * @return true if list contains all mandatory attributes, else false
+	 */
+	private static boolean containsAllAttributes(List<Attribute> mandatoryAttributes, Map<String, String> attributes) {
+		if (mandatoryAttributes == null || mandatoryAttributes.size() < 1)
 			return true;
-		}
-		if (attributes == null) {
+		else if (attributes == null)
 			return false;
-		}
 		
-		boolean mandandatoryAttributesSet = true;
-		for (Attribute a : mandAttributes) {
-			if (attributes.get(a.getConceptRef()) == null || attributes.get(a.getConceptRef()).equals("")) {
-				mandandatoryAttributesSet = false;
-			}
+		for (Attribute a : mandatoryAttributes) {
+			if (attributes.get(a.getConceptRef()) == null || attributes.get(a.getConceptRef()).equals(""))
+				return false;
 		}
-		
-		return mandandatoryAttributesSet;
+		return true;
 	}
 	
 }

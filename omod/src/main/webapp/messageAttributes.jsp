@@ -41,7 +41,7 @@
 	</div>
 	
 	<b class="boxHeader">
-		<spring:message code="@MODULE_ID@.globalconfig.datasetAttributes" />
+		<spring:message code="@MODULE_ID@.general.datasetAttributes" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
 		<table>

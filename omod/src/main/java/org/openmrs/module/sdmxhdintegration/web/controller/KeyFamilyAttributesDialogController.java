@@ -139,7 +139,7 @@ public class KeyFamilyAttributesDialogController {
     	
     	// get attribute values for the attachment level
     	Map<String, String> attributeValues = null;
-    	if (attachmentLevel.equals("DataSet")) {
+    	if (attachmentLevel.equals("Dataset")) {
     		attributeValues = omrsDSD.getDataSetAttachedAttributes();
     	} else if (attachmentLevel.equals("Series")) {
     		attributeValues = omrsDSD.getSeriesAttachedAttributes().get(columnName);
@@ -186,7 +186,7 @@ public class KeyFamilyAttributesDialogController {
 				if (attributeValue != null && attributeValue != "") {
 					String attribute = key.replaceFirst(ATTRIBUTE, "");
 					
-					if (attachmentLevel.equals("DataSet")) {
+					if (attachmentLevel.equals("Dataset")) {
 						omrsDSD.addDataSetAttribute(attribute, attributeValue);
 					} else if (attachmentLevel.equals("Series")) {
 						omrsDSD.addSeriesAttributesToColumn(columnName, attribute, attributeValue);

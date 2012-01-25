@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
-	var scr = "keyFamilyAttributesDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
+	var scr = "keyFamilyAttributesDialog.form?messageId=${message.id}&keyFamilyId=${keyFamilyId}";
 
 	$j(function() {
 
@@ -43,72 +43,94 @@
 	}
 </script>
 
-<p class="description">Set the attributes that can be attached at the DataSet level for this SDMX-HD message. A tick will be show if all mandatory attributes have been filled in.</p>
-
-<span class="boxHeader">
-	<b><spring:message code="DataSet Attributes" /></b>
-	<a onclick="$j('#dataSetAttrBox').slideToggle()"> [show/hide]</a>
-</span>
-<table id="dataSetAttrBox" class="box">
-	<tr>
-		<td>
-			<a href="#" onclick="openDialog('DataSet')">Add DataSet level Attributes</a>
-			<c:choose>
-				<c:when test="${datasetMandAttrSet == true}">
-					<img src="${pageContext.request.contextPath}/images/checkmark.png" title="Mandatory Attributes Set" />
-				</c:when>
-				<c:otherwise>
-					<img src="${pageContext.request.contextPath}/images/delete.gif" title="Mandatory Attributes NOT Set" />
-				</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
-		
-</table>
-
-<br />
-
-<p class="description">Set the attributes that can be attached at the Series and Obs level for this SDMX-HD message. A tick will be show if all mandatory attributes have been filled in.</p>
-
-<span class="boxHeader">
-	<b><spring:message code="Report Columns" /></b>
-	<a onclick="$j('#columnsAttrBox').slideToggle()"> [show/hide]</a>
-</span>
-<table id="columnsAttrBox" class="box">
-	<tr>
-		<th>Column Name</th>
-		<th>Column Label</th>
-	</tr>
-	<c:forEach var="column" items="${columns}">
+<b class="boxHeader">
+	<spring:message code="@MODULE_ID@.general.keyFamily" />
+</b>
+<div class="box" style="margin-bottom: 20px">
+	<table>
 		<tr>
-			<td>${column.name}</td>
-			<td>${column.label}</td>
-			<td>
-				<a href="#" onclick="openDialogForColumn('Series', '${column.name}')">Add Series level Attributes</a>
-				<c:choose>
-					<c:when test="${seriesMandAttrSet[column.name] == true}">
-						<img src="${pageContext.request.contextPath}/images/checkmark.png" title="Mandatory Attributes Set" />
-					</c:when>
-					<c:otherwise>
-						<img src="${pageContext.request.contextPath}/images/delete.gif" title="Mandatory Attributes NOT Set" />
-					</c:otherwise>
-				</c:choose>
-			</td>
-				
-			<td>
-				<a href="#" onclick="openDialogForColumn('Observation', '${column.name}')">Add Obs level Attributes</a>
-				<c:choose>
-					<c:when test="${obsMandAttrSet[column.name] == true}">
-						<img src="${pageContext.request.contextPath}/images/checkmark.png" title="Mandatory Attributes Set" />
-					</c:when>
-					<c:otherwise>
-						<img src="${pageContext.request.contextPath}/images/delete.gif" title="Mandatory Attributes NOT Set" />
-					</c:otherwise>
-				</c:choose>
-			</td>
+			<th align="left" width="300"><spring:message code="@MODULE_ID@.general.message" /></th>
+			<td>${message.name}</td>
 		</tr>
-	</c:forEach>
-</table>
+		<tr>
+			<th align="left"><spring:message code="general.name" /></th>
+			<td>${keyFamilyId}</td>
+		</tr>
+	</table>
+</div>
+
+<b class="boxHeader">
+	<spring:message code="@MODULE_ID@.general.datasetAttributes" />
+</b>
+<div class="box" style="margin-bottom: 20px">
+	<table style="margin-bottom: 10px" cellspacing="0">
+		<tr>
+			<th width="300"><spring:message code="general.name" /></th>
+			<th><spring:message code="general.value" /></th>
+		</tr>
+		<c:forEach var="attribute" items="${attachedDatasetAttrs}" varStatus="row">
+			<tr class="<c:choose><c:when test="${row.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
+				<td>${attribute.key}</td>
+				<td>${attribute.value}</td>
+			</tr>
+		</c:forEach>	
+	</table>
+	
+	<input type="button" value="Add/edit" onclick="openDialog('Dataset')" />
+	
+	<spring:message code="@MODULE_ID@.attributes.containsAllMandatoryAttributes" />:
+	<c:choose>
+		<c:when test="${hasAllMandatoryDatasetAttrs}">
+			<span style="color:#080; font-weight: bold"><spring:message code="general.yes" /></span>
+		</c:when>
+		<c:otherwise>
+			<span style="color:#800; font-weight: bold"><spring:message code="general.no" /></span>
+		</c:otherwise>
+	</c:choose>
+</div>
+
+<b class="boxHeader">
+	<spring:message code="@MODULE_ID@.general.reportColumns" />
+</b>
+<div class="box">
+	<p class="description">Set the attributes that can be attached at the Series and Obs level for this SDMX-HD message. A tick will be show if all mandatory attributes have been filled in.</p>
+	
+	<table>
+		<tr>
+			<th>Column Name</th>
+			<th>Column Label</th>
+		</tr>
+		<c:forEach var="column" items="${columns}">
+			<tr>
+				<td>${column.name}</td>
+				<td>${column.label}</td>
+				<td>
+					<a href="#" onclick="openDialogForColumn('Series', '${column.name}')">Add Series level Attributes</a>
+					<c:choose>
+						<c:when test="${hasAllMandatorySeriesAttrs[column.name] == true}">
+							<img src="${pageContext.request.contextPath}/images/checkmark.png" title="Mandatory Attributes Set" />
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/images/delete.gif" title="Mandatory Attributes NOT Set" />
+						</c:otherwise>
+					</c:choose>
+				</td>
+					
+				<td>
+					<a href="#" onclick="openDialogForColumn('Observation', '${column.name}')">Add Obs level Attributes</a>
+					<c:choose>
+						<c:when test="${hasAllMandatoryObsAttrs[column.name] == true}">
+							<img src="${pageContext.request.contextPath}/images/checkmark.png" title="Mandatory Attributes Set" />
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/images/delete.gif" title="Mandatory Attributes NOT Set" />
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
+</div>
 
 <div style="display: none">
 	<div id="setAttributesDialogiFrameDiv">
