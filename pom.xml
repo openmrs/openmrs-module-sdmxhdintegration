@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>sdmxhdintegration</artifactId>
-	<version>0.6.7-SNAPSHOT</version>
+	<version>0.7.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>SDMX-HD Integration Module</name>
 	<description>Parent project for SDMX-HD Integration Module</description>
