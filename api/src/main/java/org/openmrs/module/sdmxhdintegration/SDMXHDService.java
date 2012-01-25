@@ -65,21 +65,7 @@ public interface SDMXHDService extends OpenmrsService {
 	 * @should delete the given message
 	 */
 	public void deleteMessage(SDMXHDMessage message);
-	
-	/**
-	 * Gets and parses the DSD for the given message
-	 * @param sdmxhdMessage the message
-	 * @return the DSD
-	 * @throws IOException
-	 * @throws ValidationException
-	 * @throws XMLStreamException
-	 * @throws ExternalRefrenceNotFoundException
-	 * @throws SchemaValidationException
-	 * @should should get parsed DSD for given message
-	 */
-	@Transactional(readOnly=true)
-	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException;
-	
+
 	/**
 	 * Gets a key family mapping by id
 	 * @param the mapping id

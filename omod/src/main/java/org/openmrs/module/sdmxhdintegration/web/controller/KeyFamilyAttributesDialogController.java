@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
@@ -27,7 +40,7 @@ import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinition
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
 import org.openmrs.module.sdmxhdintegration.SimpleCode;
-import org.openmrs.module.sdmxhdintegration.Util;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.module.sdmxhdintegration.reporting.extension.SDMXHDCohortIndicatorDataSetDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,11 +49,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
-
 @Controller
 public class KeyFamilyAttributesDialogController {
 	
 	private Log log = LogFactory.getLog(this.getClass());
+	
+	public static final String ATTRIBUTE = "attribute.";
 	
 	@RequestMapping("/module/sdmxhdintegration/keyFamilyAttributesDialog")
 	public void showForm(ModelMap model,
@@ -58,7 +72,7 @@ public class KeyFamilyAttributesDialogController {
     	
     	// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(sdmxhdMessage, keyFamilyId);
+		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getOMRSDataSetDefinition(sdmxhdMessage, keyFamilyId);
     	
 		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
     	ZipFile zf = new ZipFile(path + File.separator + sdmxhdMessage.getZipFilename());
@@ -142,11 +156,10 @@ public class KeyFamilyAttributesDialogController {
     	model.addAttribute("attributeValues", attributeValues);
     	model.addAttribute("codelistValues", codelistValues);
     	
-    	model.addAttribute("sdmxhdmessageid", messageId);
+    	model.addAttribute("messageId", messageId);
+    	model.addAttribute("keyFamilyId", keyFamilyId);
     	model.addAttribute("attachmentLevel", attachmentLevel);
 	}
-	
-	public static final String ATTRIBUTE = "attribute.";
 	
 	@RequestMapping(value="/module/sdmxhdintegration/keyFamilyAttributesDialog", method=RequestMethod.POST)
 	public String handleSubmission(WebRequest request,
@@ -164,7 +177,7 @@ public class KeyFamilyAttributesDialogController {
 		
 		// get OMRS DSD
 		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(sdmxhdMessage, keyFamilyId);
+		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getOMRSDataSetDefinition(sdmxhdMessage, keyFamilyId);
 		
 		Map<String, String[]> paramMap = request.getParameterMap();
 		for (String key : paramMap.keySet()) {
@@ -189,7 +202,7 @@ public class KeyFamilyAttributesDialogController {
 		
 		dss.saveDefinition(omrsDSD);
 		
-		return "redirect:redirectParent.form?url=keyFamilyAttributes.form?messageId=" + messageId + "&amp;keyFamilyId=" + keyFamilyId;
+		return "redirect:redirectParent.form?url=keyFamilyAttributes.form?messageId=" + messageId + "%26keyFamilyId=" + keyFamilyId;
 	}
 
 }

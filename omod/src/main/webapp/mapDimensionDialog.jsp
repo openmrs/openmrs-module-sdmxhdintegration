@@ -15,7 +15,7 @@
 			var sdmxhdDimensionRequestParam = 'sdmxhdDimension=<c:out value="${sdmxhdDimension}" />';
 			var omrsDimensionRequestParam = 'omrsDimension=' + omrsDimensionId;
 			var keyFamilyRequestParam = 'keyFamilyId=<c:out value="${keyFamilyId}" />';
-			window.location = 'mappingDimDialog.form?'
+			window.location = 'mapDimensionDialog.form?'
 				+ sdmxhdIdRequestParam + '&'
 				+ sdmxhdDimensionRequestParam + '&'
 				+ omrsDimensionRequestParam + '&'

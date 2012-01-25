@@ -14,7 +14,6 @@
 
 package org.openmrs.module.sdmxhdintegration.web.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -26,32 +25,21 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.ValidationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.jembi.sdmxhd.convenience.DimensionWrapper;
 import org.jembi.sdmxhd.dsd.DSD;
 import org.jembi.sdmxhd.dsd.Dimension;
-import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
-import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
-import org.jembi.sdmxhd.primitives.Code;
-import org.jembi.sdmxhd.primitives.CodeList;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.reporting.ReportingConstants;
 import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.indicator.CohortIndicator;
 import org.openmrs.module.reporting.indicator.Indicator;
-import org.openmrs.module.reporting.indicator.dimension.CohortDefinitionDimension;
-import org.openmrs.module.reporting.indicator.dimension.CohortDimension;
-import org.openmrs.module.reporting.indicator.dimension.service.DimensionService;
 import org.openmrs.module.reporting.indicator.service.IndicatorService;
 import org.openmrs.module.reporting.indicator.util.IndicatorUtil;
-import org.openmrs.module.reporting.report.definition.PeriodIndicatorReportDefinition;
-import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
-import org.openmrs.module.sdmxhdintegration.Util;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.module.sdmxhdintegration.exceptions.DimensionNotMappedException;
 import org.openmrs.module.sdmxhdintegration.reporting.extension.SDMXHDCohortIndicatorDataSetDefinition;
 import org.openmrs.web.WebConstants;
@@ -60,161 +48,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 
 /**
  * Controller for indicator and dimension mapping dialog boxes
  */
 @Controller
-public class MappingDialogController {
-	
-	private static final String DIM_OPT = "dimOptMapping.";
-	
-	/**
-	 * Shows the dimensions mapping dialog
-	 * @param model the model
-	 * @param sdmxhdIndicator the SDMX indicator
-	 * @param messageId the SDMX message id
-	 * @param keyFamilyId the key family id
-	 * @throws UnsupportedEncodingException
-	 */
-	@RequestMapping("/module/sdmxhdintegration/mappingDimDialog")
-	public void showDimDialog(ModelMap model,
-	                          @RequestParam("sdmxhdDimension") String sdmxhdDimension,
-	                          @RequestParam("messageId") Integer messageId,
-	                          @RequestParam(value="omrsDimension", required=false) Integer omrsDimension,
-	                          @RequestParam("keyFamilyId") String keyFamilyId) throws IOException, XMLStreamException, ExternalRefrenceNotFoundException, ValidationException, SchemaValidationException {
-		sdmxhdDimension = URLDecoder.decode(sdmxhdDimension);
-		keyFamilyId = URLDecoder.decode(keyFamilyId);
-		
-    	model.addAttribute("sdmxhdDimension", sdmxhdDimension);
-    	model.addAttribute("messageId", messageId);
-    	model.addAttribute("keyFamilyId", keyFamilyId);
-		
-		// get all omrs Dimensions
-    	DimensionService ds = Context.getService(DimensionService.class);
-		List<org.openmrs.module.reporting.indicator.dimension.Dimension> omrsDimensions = ds.getAllDefinitions(false);
-    	model.addAttribute("omrsDimensions", omrsDimensions);
-    	
-    	SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	SDMXHDMessage sdmxhdMessage = sdmxhdService.getMessage(messageId);
-    	
-    	// get sdmxhd Dimension options
-    	DSD sdmxhdDSD = sdmxhdService.getDataSetDefinition(sdmxhdMessage);
-    	List<String> sdmxhdDimensionOptions = new ArrayList<String>();
-    	Dimension sdmxhdDimensionObj = sdmxhdDSD.getDimension(sdmxhdDimension, keyFamilyId);
-    	CodeList codeList = sdmxhdDSD.getCodeList(sdmxhdDimensionObj.getCodelistRef());
-    	for (Code c : codeList.getCodes()) {
-    		sdmxhdDimensionOptions.add(c.getDescription().getDefaultStr());
-    	}
-    	model.addAttribute("sdmxhdDimensionOptions", sdmxhdDimensionOptions);
-    	
-    	KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
-    	SDMXHDCohortIndicatorDataSetDefinition omrsDSD = null;
-    	
-    	// if a OMRS DSD is attached then get the mapped dimension and the dimension options mappings
-    	if (keyFamilyMapping.getReportDefinitionId() != null) {
-    		omrsDSD = getDataSetDefinition(sdmxhdMessage, keyFamilyId);
-    		// get mapped dimension if none is specified in the request
-    		if (omrsDimension == null) {
-	    		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-	    		Integer omrsMappedDimensionId = omrsDSD.getOMRSMappedDimension(sdmxhdDimension);
-	    		model.addAttribute("mappedOMRSDimensionId", omrsMappedDimensionId);
-	    		omrsDimension = omrsMappedDimensionId;
-	    		
-	    		// get sdmx-hd -> omrs Dimension mappings for mapped Dimension
-	    		if (omrsMappedDimensionId != null) {
-	    			Map<String, String> mappedDimensionOptions = omrsDSD.getOMRSMappedDimensionOptions(sdmxhdDimension);
-	    			model.addAttribute("mappedDimOpts", mappedDimensionOptions);
-	    		}
-    		}
-    		// else set the dimension specified in the request
-    		else {
-    			model.addAttribute("mappedOMRSDimensionId", omrsDimension);
-    		}
-    	} else if (omrsDimension != null) {
-    		model.addAttribute("mappedOMRSDimensionId", omrsDimension);
-    	}
-    	
-    	// get omrs Dimension Options if there is a valid dimension to work with
-    	if (omrsDimension != null) {
-	    	org.openmrs.module.reporting.indicator.dimension.Dimension omrsDimensionObj = ds.getDefinition(CohortDimension.class, omrsDimension);
-	    	List<String> omrsDimensionOptions = omrsDimensionObj.getOptionKeys();
-	    	model.addAttribute("omrsDimensionOptions", omrsDimensionOptions);
-    	}
-    	
-    	// get fixed value data
-    	if (omrsDSD != null) {
-	    	String fixedDimensionValue = omrsDSD.getFixedDimensionValues(sdmxhdDimension);
-	    	if (fixedDimensionValue != null) {
-	    		model.addAttribute("fixedValue", fixedDimensionValue);
-	    		model.addAttribute("fixedValueCheckbox", true);
-	    	} else {
-	    		model.addAttribute("fixedValueCheckbox", false);
-	    	}
-    	} else {
-    		model.addAttribute("fixedValueCheckbox", false);
-    	}
-	}
-	
-	/**
-	 * Handles submission of dimension mapping dialog
-	 */
-	@RequestMapping(value="/module/sdmxhdintegration/mappingDimDialog", method=RequestMethod.POST)
-	public String handleDimDialogSubmission(WebRequest request,
-	                                        @RequestParam("mappedOMRSDimensionId") Integer mappedOMRSDimensionId,
-	                                        @RequestParam("messageId") Integer messageId,
-	                                        @RequestParam("sdmxhdDimension") String sdmxhdDimension,
-	                                        @RequestParam("keyFamilyId") String keyFamilyId,
-	                                        @RequestParam(value="fixedValueCheckbox", required=false) String fixedValueCheckbox,
-	                                        @RequestParam(value="fixedValue", required=false) String fixedValue) throws Exception {
-		sdmxhdDimension = URLDecoder.decode(sdmxhdDimension);
-		
-		SDMXHDMessage message = Context.getService(SDMXHDService.class).getMessage(messageId);
-		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = getDataSetDefinition(message, keyFamilyId);
-		
-		// delete previous mappings if there are any
-		Integer omrsDimensionId = omrsDSD.getOMRSMappedDimension(sdmxhdDimension);
-		if (omrsDimensionId != null) {
-			// remove previous dimensions
-			omrsDSD.removeDimension(omrsDimensionId + "");
-			// TODO remove all Columns that use that dimension (reporting ticket?)
-		}
-		omrsDSD.getOMRSMappedDimensions().remove(sdmxhdDimension);
-		omrsDSD.getOMRSMappedDimensionOptions().remove(sdmxhdDimension);
-		omrsDSD.getFixedDimensionValues().remove(sdmxhdDimension);
-		
-		if (fixedValueCheckbox != null) {
-			omrsDSD.addFixedDimensionValues(sdmxhdDimension, fixedValue);
-		} else {
-			// Build up Dimension Options Map
-			Map<String,String> mappedDimOpts = new HashMap<String, String>();
-			Map<String,String[]> paramMap = request.getParameterMap();
-			for (String key : paramMap.keySet()) {
-				if (key.startsWith(DIM_OPT)) {
-					String mappedSDMXHSDimension = key.replaceFirst(DIM_OPT, "");
-					String mappedOMRSDimension = paramMap.get(key)[0];
-					mappedDimOpts.put(mappedSDMXHSDimension, mappedOMRSDimension);
-				}
-			}
-			
-			// Map Dimension and Dimension options
-			omrsDSD.mapDimension(sdmxhdDimension, mappedOMRSDimensionId, mappedDimOpts);
-			
-			// add dimension to DataSet
-			DimensionService ds = Context.getService(DimensionService.class);
-			CohortDefinitionDimension omrsDimension = ds.getDefinition(CohortDefinitionDimension.class, mappedOMRSDimensionId);
-			omrsDimension.addParameters(IndicatorUtil.getDefaultParameters());
-			omrsDimension = (CohortDefinitionDimension) ds.saveDefinition(omrsDimension);
-			omrsDSD.addDimension(mappedOMRSDimensionId + "", omrsDimension, IndicatorUtil.getDefaultParameterMappings());
-		}
-		
-		// save dataset
-		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-		dss.saveDefinition(omrsDSD);
-		
-		return "redirect:redirectParent.form?url=mapping.form?messageId=" + messageId + "%26keyFamilyId=" + keyFamilyId;
-	}
+@RequestMapping("/module/sdmxhdintegration/mapIndicatorDialog")
+public class MapIndicatorDialogController {
 	
 	/**
 	 * Shows the indicator mapping dialog
@@ -224,10 +64,11 @@ public class MappingDialogController {
 	 * @param keyFamilyId the key family id
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping("/module/sdmxhdintegration/mappingIndDialog")
-	public void showIndDialog(ModelMap model, @RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
+	@RequestMapping(method = RequestMethod.GET)
+	public void showDialog(ModelMap model, @RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
 	                          @RequestParam("messageId") Integer messageId,
 	                          @RequestParam("keyFamilyId") String keyFamilyId) throws UnsupportedEncodingException {
+		
 		sdmxhdIndicator = URLDecoder.decode(sdmxhdIndicator);
 		
 		// get indicators
@@ -244,7 +85,7 @@ public class MappingDialogController {
     	// if a OMRS DSD is attached then get the mapped indicator as well
     	if (keyFamilyMapping.getReportDefinitionId() != null) {
     		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = getDataSetDefinition(sdmxhdMessage, keyFamilyId);
+    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getDataSetDefinition(sdmxhdMessage, keyFamilyId);
     		Integer omrsMappedIndicatorId = omrsDSD.getOMRSMappedIndicator(sdmxhdIndicator);
     		model.addAttribute("mappedOMRSIndicatorId", omrsMappedIndicatorId);
     	}
@@ -253,8 +94,8 @@ public class MappingDialogController {
 	/**
 	 * Handles submission of indicator mapping dialog
 	 */
-	@RequestMapping(value="/module/sdmxhdintegration/mappingIndDialog", method=RequestMethod.POST)
-	public String handleIndDialogSubmission(HttpSession httpSession,
+	@RequestMapping(method = RequestMethod.POST)
+	public String handleDialogSubmit(HttpSession httpSession,
 			@RequestParam("mappedOMRSIndicatorId") Integer mappedOMRSIndicatorId,
 			@RequestParam("messageId") Integer messageId,
 			@RequestParam("sdmxhdIndicator") String sdmxhdIndicator,
@@ -263,7 +104,7 @@ public class MappingDialogController {
 		
 		SDMXHDService service = Context.getService(SDMXHDService.class);
 		SDMXHDMessage message = service.getMessage(messageId);
-		DSD sdmxhdDSD = service.getDataSetDefinition(message);
+		DSD sdmxhdDSD = Utils.getDataSetDefinition(message);
     	
     	// get Indicator obj
     	// TODO do this properly with either uuid or create method in service to fetch by id
@@ -277,7 +118,7 @@ public class MappingDialogController {
     		}
     	}
     	
-    	SDMXHDCohortIndicatorDataSetDefinition omrsDSD = getDataSetDefinition(message, keyFamilyId);
+    	SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getDataSetDefinition(message, keyFamilyId);
     	
     	// remove previous column specification if there is one
     	List<String> columnNames = omrsDSD.getIndicatorColumnMapping().get(sdmxhdIndicator);
@@ -402,54 +243,6 @@ public class MappingDialogController {
 			httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Indicator could not be mapped as one or more Dimensions that are used by this indicator have not been mapped");
         }
 	        
-        return "redirect:redirectParent.form?url=mapping.form?messageId=" + messageId + "%26keyFamilyId=" + keyFamilyId;
+        return "redirect:redirectParent.form?url=keyFamilyMapping.form?messageId=" + messageId + "%26keyFamilyId=" + keyFamilyId;
 	}
-	
-	/* HELPER METHODS */
-
-	/**
-     * Auto generated method comment
-     * 
-     * @param sdmxhdMessage
-     * @return
-     */
-    private SDMXHDCohortIndicatorDataSetDefinition getDataSetDefinition(SDMXHDMessage sdmxhdMessage, String keyFamilyId) {
-    	SDMXHDService sdmxhdService = Context.getService(SDMXHDService.class);
-    	KeyFamilyMapping keyFamilyMapping = sdmxhdService.getKeyFamilyMapping(sdmxhdMessage, keyFamilyId);
-    	
-    	if (keyFamilyMapping.getReportDefinitionId() == null) {
-    		// create Report
-    		PeriodIndicatorReportDefinition report = new PeriodIndicatorReportDefinition();
-    		report.setName(sdmxhdMessage.getName() + " (" + keyFamilyId + ")");
-    		report.setDescription("SDMX-HD Message Description: " + sdmxhdMessage.getDescription());
-    		
-    		// create OMRS DSD
-    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = new SDMXHDCohortIndicatorDataSetDefinition();
-    		omrsDSD.setName(sdmxhdMessage.getName() + " (SDMX-HD Module generated DSD)");
-    		omrsDSD.setDescription("SDMX-HD Message Description: " + sdmxhdMessage.getDescription());
-    		omrsDSD.setSDMXHDMessageId(sdmxhdMessage.getId());
-    		
-    		omrsDSD.addParameter(ReportingConstants.START_DATE_PARAMETER);
-    		omrsDSD.addParameter(ReportingConstants.END_DATE_PARAMETER);
-    		omrsDSD.addParameter(ReportingConstants.LOCATION_PARAMETER);
-    		
-    		// save dataset
-    		DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-    		omrsDSD = (SDMXHDCohortIndicatorDataSetDefinition) dss.saveDefinition(omrsDSD);
-    		
-    		report.addDataSetDefinition(PeriodIndicatorReportDefinition.DEFAULT_DATASET_KEY, omrsDSD, IndicatorUtil.getDefaultParameterMappings());
-    		// save report
-    		ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
-    		rds.saveDefinition(report);
-    		
-    		// set foreign key
-    		keyFamilyMapping.setReportDefinitionId(report.getId());
-    		
-    		sdmxhdService.saveKeyFamilyMapping(keyFamilyMapping);
-
-    		return omrsDSD;
-    	} else {
-    	    return Util.getOMRSDataSetDefinition(keyFamilyMapping);
-    	}    	
-    }
 }

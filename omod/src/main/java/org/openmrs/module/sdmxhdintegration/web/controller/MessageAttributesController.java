@@ -28,6 +28,7 @@ import org.jembi.sdmxhd.primitives.CodeList;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -62,7 +63,7 @@ public class MessageAttributesController {
 		// Prevent lazy initialization
 		message.getGroupElementAttributes();
 		
-		DSD dsd = service.getDataSetDefinition(message);
+		DSD dsd = Utils.getDataSetDefinition(message);
 		CodeList frequencyCodeList = dsd.getCodeList("CL_FREQ");
 		if (frequencyCodeList != null) {
 			model.addAttribute("frequencyCodes", frequencyCodeList.getCodes());

@@ -37,14 +37,6 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	@Before
 	public void runBeforeAllTests() throws Exception {
 		executeDataSet("TestingDataset.xml");
-		
-		// Set value of message upload dir to tmp directory
-		AdministrationService as = Context.getAdministrationService();
-		as.setGlobalProperty("sdmxhdintegration.messageUploadDir", System.getProperty("java.io.tmpdir"));
-		
-		// Copy zips to upload dir (i.e. the temp dir)
-		TestingUtils.uploadMessage("test_message1.zip");
-		TestingUtils.uploadMessage("test_message2.zip");
 	}
 	
 	/**
@@ -132,24 +124,6 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 		// Delete message and check it's gone
 		service.deleteMessage(message);
 		Assert.assertNull(service.getMessage(messageId));
-	}
-	
-	/**
-	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getDataSetDefinition(SDMXHDMessage)
-	 */
-	@Test
-	@Verifies(value = "should get parsed DSD for given message", method = "getDataSetDefinition(SDMXHDMessage)")
-	public void getDataSetDefinition_shouldGetParsedDSDForMessage() throws Exception {
-		SDMXHDService service = Context.getService(SDMXHDService.class);
-		SDMXHDMessage message = service.getMessage(1);
-		
-		DSD dsd = service.getDataSetDefinition(message);
-		
-		// Check DSD parsed correctly
-		Assert.assertNotNull(dsd);
-		Assert.assertEquals(1, dsd.getKeyFamilies().size());
-		Assert.assertEquals("SDMX-HD", dsd.getKeyFamilies().get(0).getId());
-		Assert.assertEquals("WHO", dsd.getKeyFamilies().get(0).getAgencyID());
 	}
 	
 	/**

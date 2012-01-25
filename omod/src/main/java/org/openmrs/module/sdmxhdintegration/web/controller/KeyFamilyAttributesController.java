@@ -35,7 +35,7 @@ import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinition
 import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
-import org.openmrs.module.sdmxhdintegration.Util;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.module.sdmxhdintegration.reporting.extension.SDMXHDCohortIndicatorDataSetDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +59,7 @@ public class KeyFamilyAttributesController {
 		
 		if (keyFamilyMapping.getReportDefinitionId() != null) {
 			DataSetDefinitionService dss = Context.getService(DataSetDefinitionService.class);
-			SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(message, keyFamilyId);
+			SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getOMRSDataSetDefinition(message, keyFamilyId);
 			
 			model.addAttribute("columns", omrsDSD.getColumns());
 			model.addAttribute("messageId", messageId);

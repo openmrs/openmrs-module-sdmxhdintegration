@@ -8,8 +8,8 @@
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
 
-	var indMapUrl = "mappingIndDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
-	var dimMapUrl = "mappingDimDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
+	var indMapUrl = "mapIndicatorDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
+	var dimMapUrl = "mapDimensionDialog.form?messageId=${messageId}&keyFamilyId=${keyFamilyId}";
 
 	$j(function() {
 
@@ -67,7 +67,7 @@
 	</table>
 	
 	<span class="boxHeader">
-		<b><spring:message code="Dimensions" /></b>
+		<b><spring:message code="@MODULE_ID@.general.dimensions" /></b>
 		<a onclick="$j('#dimBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
 	</span>
 	<table id="dimBox" class="box">
@@ -100,7 +100,7 @@
 	</table>
 	
 	<span class="boxHeader">
-		<b><spring:message code="Indicators" /></b>
+		<b><spring:message code="@MODULE_ID@.general.indicators" /></b>
 		<a onclick="$j('#indBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
 	</span>
 	<table id="indBox" class="box">

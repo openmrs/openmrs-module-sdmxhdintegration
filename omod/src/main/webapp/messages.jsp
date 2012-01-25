@@ -100,7 +100,7 @@
 								<tr>
 									<th>&nbsp;</th>
 									<th><spring:message code="general.name" /></th>
-									<th><spring:message code="@MODULE_ID@.general.indicators" /></th>
+									<th><spring:message code="@MODULE_ID@.general.indicators" />/<spring:message code="@MODULE_ID@.general.dimensions" /></th>
 									<th><spring:message code="@MODULE_ID@.general.attributes" /></th>
 								</tr>
 								
@@ -125,7 +125,7 @@
 												<span>${keyFamilyNamesMap[keyFamilyMapping.keyFamilyId]}</span>
 											</td>
 											<td align="center">
-												<input type="button" value="Map..." onclick="location.href='mapping.form?messageId=${message.id}&amp;keyFamilyId=${keyFamilyMapping.keyFamilyId}'" />
+												<input type="button" value="Map..." onclick="location.href='keyFamilyMapping.form?messageId=${message.id}&amp;keyFamilyId=${keyFamilyMapping.keyFamilyId}'" />
 											</td>
 											<td align="center">
 												 <input type="button" value="Edit..." onclick="location.href='keyFamilyAttributes.form?messageId=${message.id}&keyFamilyId=${keyFamilyMapping.keyFamilyId}'" />

@@ -35,6 +35,7 @@ import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessageValidator;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -139,7 +140,7 @@ public class MessageUploadFormController {
 		
 		// create initial keyFamilyMappings
 		try {
-	        DSD dsd = service.getDataSetDefinition(message);
+	        DSD dsd = Utils.getDataSetDefinition(message);
 	        List<KeyFamily> keyFamilies = dsd.getKeyFamilies();
 	        for (Iterator<KeyFamily> iterator = keyFamilies.iterator(); iterator.hasNext();) {
 	            KeyFamily keyFamily = iterator.next();

@@ -34,7 +34,7 @@ import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
 import org.openmrs.module.sdmxhdintegration.SimpleDimension;
-import org.openmrs.module.sdmxhdintegration.Util;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.openmrs.module.sdmxhdintegration.reporting.extension.SDMXHDCohortIndicatorDataSetDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,8 +46,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Controller for mapping page
  */
 @Controller
-@RequestMapping("/module/sdmxhdintegration/mapping")
-public class MappingFormController {
+@RequestMapping("/module/sdmxhdintegration/keyFamilyMapping")
+public class KeyFamilyMappingController {
 	
 	/**
 	 * Displays the form
@@ -74,7 +74,7 @@ public class MappingFormController {
 	    	model.addAttribute("keyFamilyId", keyFamilyId);
 	    	
 	    	// Get DSD indicators
-	    	DSD dsd = service.getDataSetDefinition(message); 	
+	    	DSD dsd = Utils.getDataSetDefinition(message); 	
 	    	Set<LocalizedString> indicatorNames = dsd.getIndicatorNames(keyFamilyId);
 	    	
 	    	// Make list of default indicator names
@@ -109,7 +109,7 @@ public class MappingFormController {
 	    	KeyFamilyMapping keyFamilyMapping = service.getKeyFamilyMapping(message, keyFamilyId);
 	    	
 	    	if (keyFamilyMapping.getReportDefinitionId() != null) {
-	    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Util.getOMRSDataSetDefinition(message, keyFamilyId);
+	    		SDMXHDCohortIndicatorDataSetDefinition omrsDSD = Utils.getOMRSDataSetDefinition(message, keyFamilyId);
 	    		
 	    		// Add OpenMRS indicators and dimensions to model
 		    	model.addAttribute("mappedIndicators", omrsDSD.getOMRSMappedIndicators());

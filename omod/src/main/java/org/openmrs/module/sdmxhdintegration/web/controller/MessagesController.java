@@ -34,6 +34,7 @@ import org.openmrs.module.reporting.report.definition.service.ReportDefinitionSe
 import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,19 +76,20 @@ public class MessagesController {
 
 		// get report uuid's
 		Map<String, String> reportUuidMapping = new HashMap<String, String>();
-		for (Iterator iterator = allKeyFamilyMappings.iterator(); iterator.hasNext();) {
-	        KeyFamilyMapping keyFamilyMapping = (KeyFamilyMapping) iterator.next();
-	        Integer reportDefinitionId = keyFamilyMapping.getReportDefinitionId();
+		for (KeyFamilyMapping mapping : allKeyFamilyMappings) {
+	        Integer reportDefinitionId = mapping.getReportDefinitionId();
+	        
 	        if (reportDefinitionId != null) {
 		        ReportDefinition reportDefinition = rds.getDefinition(reportDefinitionId);
-		        reportUuidMapping.put(keyFamilyMapping.getKeyFamilyId(), reportDefinition.getUuid());
+		        reportUuidMapping.put(mapping.getKeyFamilyId(), reportDefinition.getUuid());
 	        }
         }
 		
-		// get keyFamilyNames
+		// Get key families for each message
 		Map<String, String> keyFamilyNamesMap = new HashMap<String, String>();
 		for (SDMXHDMessage message : messages) {
-	        DSD dsd = sdmxhdService.getDataSetDefinition(message);
+	        DSD dsd = Utils.getDataSetDefinition(message);
+	        
 			for (Iterator<KeyFamilyMapping> iterator2 = allKeyFamilyMappings.iterator(); iterator2.hasNext();) {
 		        KeyFamilyMapping keyFamilyMapping = iterator2.next();
 		        if (keyFamilyMapping.getMessage().getId().equals(message.getId())) {
