@@ -14,15 +14,8 @@
 
 package org.openmrs.module.sdmxhdintegration;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.xml.bind.ValidationException;
-import javax.xml.stream.XMLStreamException;
-
-import org.jembi.sdmxhd.dsd.DSD;
-import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
-import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
