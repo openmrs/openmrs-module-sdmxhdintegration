@@ -48,7 +48,7 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link SDMXHDService#getMessage(Integer)}
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getMessage(Integer)
 	 */
 	@Test
 	@Verifies(value = "should get the correct message for the given id", method = "getMessage(Integer)")
@@ -62,7 +62,7 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link SDMXHDService#getAllMessages()}
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getAllMessages()
 	 */
 	@Test
 	@Verifies(value = "should return all messages if includeRetired is true", method = "getAllMessages(Boolean)")
@@ -89,7 +89,7 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link SDMXHDService#saveMessage(SDMXHDMessage)}
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#saveMessage(SDMXHDMessage)
 	 */
 	@Test
 	@Verifies(value = "should save the given message", method = "saveMessage(SDMXHDMessage)")
@@ -111,7 +111,7 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link SDMXHDService#deleteMessage(SDMXHDMessage)}
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#deleteMessage(SDMXHDMessage)
 	 */
 	@Test
 	@Verifies(value = "should delete the given message", method = "deleteMessage(SDMXHDMessage)")
@@ -135,7 +135,7 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link SDMXHDService#getDataSetDefinition(SDMXHDMessage)}
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getDataSetDefinition(SDMXHDMessage)
 	 */
 	@Test
 	@Verifies(value = "should get parsed DSD for given message", method = "getDataSetDefinition(SDMXHDMessage)")
@@ -150,5 +150,51 @@ public class SDMXHDServiceTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals(1, dsd.getKeyFamilies().size());
 		Assert.assertEquals("SDMX-HD", dsd.getKeyFamilies().get(0).getId());
 		Assert.assertEquals("WHO", dsd.getKeyFamilies().get(0).getAgencyID());
+	}
+	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getKeyFamilyMapping(Integer)
+	 */
+	@Test
+	@Verifies(value = "should return the correct mapping for the given id", method = "getKeyFamilyMapping(Integer)")
+	public void getKeyFamilyMapping_shouldGetTheCorrectMappingForTheGivenId() throws Exception {
+		SDMXHDService service = Context.getService(SDMXHDService.class);
+		
+		KeyFamilyMapping mapping1 = service.getKeyFamilyMapping(1);
+		Assert.assertEquals(1, (int)mapping1.getId());
+		
+		KeyFamilyMapping mapping2 = service.getKeyFamilyMapping(2);
+		Assert.assertEquals(2, (int)mapping2.getId());
+	}
+	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getKeyFamilyMapping(Integer)
+	 */
+	@Test
+	@Verifies(value = "should return the correct mapping for the given message and key family", method = "getKeyFamilyMapping(SDMXHDMessage, Integer)")
+	public void getKeyFamilyMapping_shouldGetTheCorrectMappingForTheGivenMessageAndKeyFamily() throws Exception {
+		SDMXHDService service = Context.getService(SDMXHDService.class);
+		
+		SDMXHDMessage message1 = service.getMessage(1);	
+		KeyFamilyMapping mapping1 = service.getKeyFamilyMapping(message1, "SDMX-HD");
+		Assert.assertEquals(1, (int)mapping1.getId());
+		
+		SDMXHDMessage message2 = service.getMessage(2);	
+		KeyFamilyMapping mapping2 = service.getKeyFamilyMapping(message2, "SDMX-HD");
+		Assert.assertEquals(2, (int)mapping2.getId());
+	}
+	
+	/**
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getAllKeyFamilyMappings()
+	 */
+	@Test
+	@Verifies(value = "should return all mappings", method = "getAllKeyFamilyMappings()")
+	public void getAllKeyFamilyMappings_shouldReturnAllMappings() throws Exception {
+		SDMXHDService service = (SDMXHDService)Context.getService(SDMXHDService.class);
+		List<KeyFamilyMapping> mappings = service.getAllKeyFamilyMappings();
+
+		Assert.assertEquals(2, mappings.size());
+		Assert.assertEquals(1, (int)mappings.get(0).getId());
+		Assert.assertEquals(2, (int)mappings.get(1).getId());
 	}
 }

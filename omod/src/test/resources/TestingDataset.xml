@@ -30,4 +30,19 @@
 		retired_by="[NULL]"
 		retire_reason="[NULL]"
 	/>
+	
+	<sdmxhdintegration_keyfamily_mapping
+		id="1"
+		uuid="fc42f1f1-df98-47bb-a971-97b625a2f21a"
+		sdmxhd_message_id="1"
+		keyfamily_id="SDMX-HD"
+		report_definition_id="[NULL]"
+	/>
+	<sdmxhdintegration_keyfamily_mapping
+		id="2"
+		uuid="d7f9c5d5-7aff-49d3-8730-9b758a3844c4"
+		sdmxhd_message_id="2"
+		keyfamily_id="SDMX-HD"
+		report_definition_id="[NULL]"
+	/>
 </dataset>

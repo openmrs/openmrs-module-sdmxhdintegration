@@ -67,9 +67,24 @@ public interface SDMXHDService extends OpenmrsService {
 	public void deleteMessage(SDMXHDMessage message);
 	
 	/**
+	 * Gets and parses the DSD for the given message
+	 * @param sdmxhdMessage the message
+	 * @return the DSD
+	 * @throws IOException
+	 * @throws ValidationException
+	 * @throws XMLStreamException
+	 * @throws ExternalRefrenceNotFoundException
+	 * @throws SchemaValidationException
+	 * @should should get parsed DSD for given message
+	 */
+	@Transactional(readOnly=true)
+	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException;
+	
+	/**
 	 * Gets a key family mapping by id
 	 * @param the mapping id
 	 * @return the mapping
+	 * @should return the correct mapping for the given id
 	 */
 	@Transactional(readOnly=true)
 	public KeyFamilyMapping getKeyFamilyMapping(Integer id);
@@ -79,6 +94,7 @@ public interface SDMXHDService extends OpenmrsService {
 	 * @param message the message
 	 * @param keyFamilyId the key family id
 	 * @return the mapping
+	 * @should return the correct mapping for the given message and key family
 	 */
 	@Transactional(readOnly=true)
 	public KeyFamilyMapping getKeyFamilyMapping(SDMXHDMessage message, String keyFamilyId);
@@ -102,6 +118,7 @@ public interface SDMXHDService extends OpenmrsService {
 	/**
 	 * Gets all key family mappings
 	 * @return the mappings
+	 * @should return all mappings
 	 */
 	@Transactional(readOnly=true)
 	public List<KeyFamilyMapping> getAllKeyFamilyMappings();
@@ -117,19 +134,5 @@ public interface SDMXHDService extends OpenmrsService {
 	 * Purges a key family mapping
 	 * @param keyFamilyMapping the mapping
 	 */
-	public void purgeKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping);
-	
-	/**
-	 * Gets and parses the DSD for the given message
-	 * @param sdmxhdMessage the message
-	 * @return the DSD
-	 * @throws IOException
-	 * @throws ValidationException
-	 * @throws XMLStreamException
-	 * @throws ExternalRefrenceNotFoundException
-	 * @throws SchemaValidationException
-	 * @should should get parsed DSD for given message
-	 */
-	@Transactional(readOnly=true)
-	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException;    
+	public void deleteKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping);    
 }

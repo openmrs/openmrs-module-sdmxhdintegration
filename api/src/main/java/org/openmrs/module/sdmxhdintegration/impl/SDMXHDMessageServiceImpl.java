@@ -100,6 +100,24 @@ public class SDMXHDMessageServiceImpl extends BaseOpenmrsService implements SDMX
 	}
 	
 	/**
+	 * @throws IOException 
+	 * @throws SchemaValidationException 
+	 * @throws ExternalRefrenceNotFoundException 
+	 * @throws XMLStreamException 
+	 * @throws ValidationException
+	 * @should should get parsed DSD for given message
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getDataSetDefinition(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
+	 */
+	@Override
+	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
+		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
+		ZipFile zf = new ZipFile(path + File.separator + message.getZipFilename());
+		SDMXHDParser parser = new SDMXHDParser();
+		org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
+		return sdmxhdData.getDsd();
+	}
+	
+	/**
 	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getKeyFamilyMapping(java.lang.Integer)
 	 */
 	@Override
@@ -140,10 +158,10 @@ public class SDMXHDMessageServiceImpl extends BaseOpenmrsService implements SDMX
 	}
 	
 	/**
-	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#purgeKeyFamilyMapping(org.openmrs.module.sdmxhdintegration.KeyFamilyMapping)
+	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#deleteKeyFamilyMapping(org.openmrs.module.sdmxhdintegration.KeyFamilyMapping)
 	 */
 	@Override
-	public void purgeKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping) {
+	public void deleteKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping) {
 	    dao.deleteKeyFamilyMapping(keyFamilyMapping);
 	}
 	
@@ -153,23 +171,5 @@ public class SDMXHDMessageServiceImpl extends BaseOpenmrsService implements SDMX
 	@Override
 	public KeyFamilyMapping saveKeyFamilyMapping(KeyFamilyMapping keyFamilyMapping) {
 		return dao.saveKeyFamilyMapping(keyFamilyMapping);
-	}
-	
-	/**
-	 * @throws IOException 
-	 * @throws SchemaValidationException 
-	 * @throws ExternalRefrenceNotFoundException 
-	 * @throws XMLStreamException 
-	 * @throws ValidationException
-	 * @should should get parsed DSD for given message
-	 * @see org.openmrs.module.sdmxhdintegration.SDMXHDService#getDataSetDefinition(org.openmrs.module.sdmxhdintegration.SDMXHDMessage)
-	 */
-	@Override
-	public DSD getDataSetDefinition(SDMXHDMessage message) throws IOException, ValidationException, XMLStreamException, ExternalRefrenceNotFoundException, SchemaValidationException {
-		String path = Context.getAdministrationService().getGlobalProperty("sdmxhdintegration.messageUploadDir");
-		ZipFile zf = new ZipFile(path + File.separator + message.getZipFilename());
-		SDMXHDParser parser = new SDMXHDParser();
-		org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
-		return sdmxhdData.getDsd();
 	}
 }

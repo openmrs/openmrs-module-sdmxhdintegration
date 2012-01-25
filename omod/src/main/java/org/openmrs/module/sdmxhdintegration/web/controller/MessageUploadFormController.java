@@ -131,7 +131,7 @@ public class MessageUploadFormController {
 		for (Iterator<KeyFamilyMapping> iterator = allKeyFamilyMappingsForMsg.iterator(); iterator.hasNext();) {
 	        KeyFamilyMapping kfm = iterator.next();
 	        Integer reportDefinitionId = kfm.getReportDefinitionId();
-	        service.purgeKeyFamilyMapping(kfm);
+	        service.deleteKeyFamilyMapping(kfm);
 	        if (reportDefinitionId != null) {
 	        	rds.purgeDefinition(rds.getDefinition(reportDefinitionId));
 	        }
