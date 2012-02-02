@@ -15,7 +15,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>jembi</groupId>
+			<groupId>org.jembi</groupId>
 			<artifactId>sdmx-hd</artifactId>
 			<type>jar</type>
 		</dependency>
