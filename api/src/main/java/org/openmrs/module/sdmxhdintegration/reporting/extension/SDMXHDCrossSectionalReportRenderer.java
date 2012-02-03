@@ -1,3 +1,16 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 
 package org.openmrs.module.sdmxhdintegration.reporting.extension;
 
@@ -62,15 +75,16 @@ import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
 import org.springframework.util.StringUtils;
 
-
 /**
- *
+ * Renderer for SDMX-HD cross-sectional report
  */
 @Handler
 @Localized("SDMX-HD Cross Sectional DataSet")
 public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	
 	private Log log = LogFactory.getLog(this.getClass());
+	
+	private static final SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
      * @see org.openmrs.module.report.renderer.ReportRenderer#getFilename(org.openmrs.module.report.ReportDefinition, java.lang.String)
@@ -145,7 +159,6 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     	// get reporting month
     	Date reportStartDate = (Date) reportData.getContext().getParameterValue("startDate");
     	Date reportEndDate = (Date) reportData.getContext().getParameterValue("endDate");
-    	SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	String timePeriod = null;
     	
     	// calculate time period and make sure reporting dates make sense
@@ -187,7 +200,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	    		int endYear = startCal.get(Calendar.YEAR);
 	    		
 	    		if (startDay != 1 || startMonth != Calendar.JANUARY || startYear != endYear || endDay != 31 || endMonth != Calendar.DECEMBER) {
-	    			throw new RenderingException("Frequency is set to anual, but the reporting start and end date are not the begining of the end day of the same year");
+	    			throw new RenderingException("Frequency is set to annual, but the reporting start and end date are not the begining of the end day of the same year");
 	    		}
 	    		
 	    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -214,20 +227,19 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        h.setTest(false);
 	        h.setTruncated(false);
 	        h.getName().addValue("en", "OpenMRS SDMX-HD Export");
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        h.setPrepared(sdf.format(new Date()));
+	        h.setPrepared(iso8601DateFormat.format(new Date()));
 	        h.getSenders().add(p);
 	        
 	        h.setReportingBegin(iso8601DateFormat.format(reportStartDate));
 	        h.setReportingEnd(iso8601DateFormat.format(reportEndDate));
 	        
-	        // construct dataset
+	        // Construct dataset
 	        DataSet sdmxhdDataSet = new DataSet();
 	        
 	        sdmxhdDataSet.setReportingBeginDate(iso8601DateFormat.format(reportStartDate));
 	        sdmxhdDataSet.setReportingEndDate(iso8601DateFormat.format(reportEndDate));
 	        
-	        // add fixed DataSet attributes
+	        // Add fixed dataset attributes
 	        Map<String, String> datasetElementAttributes = sdmxhdMessage.getDatasetElementAttributes();
 	        for (String attribute : datasetElementAttributes.keySet()) {
 	        	String value = datasetElementAttributes.get(attribute);
@@ -236,32 +248,28 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        	}
 	        }
 	        
-	        // construct group
-	        Group g = new Group();
+	        // Construct group
+	        Group group = new Group();
 	        
-	        // set time period
-	        if (timePeriod != null) {
-	        	g.addAttribute("TIME_PERIOD", timePeriod);
-	        }
+	        // Set time period and frequency
+	        if (timePeriod != null)
+	        	group.addAttribute("TIME_PERIOD", timePeriod);
+	        if (timePeriod != null)
+	        	group.addAttribute("FREQ", freq);
 	        
-	        // set frequency
-	        if (timePeriod != null) {
-	        	g.addAttribute("FREQ", freq);
-	        }
-	        
-	        // set DataSet Attributes
+	        // Set DataSet attributes
 	        Map<String, String> dataSetAttachedAttributes = omrsDSD.getDataSetAttachedAttributes();
 	        for (String key : dataSetAttachedAttributes.keySet()) {
 	        	sdmxhdDataSet.getAttributes().put(key, dataSetAttachedAttributes.get(key));
 	        }
 	        
-
-	        //holder for all sections.  Will hold a default section if no explicit heirarchy is found in SL_ISET
+	        // Holder for all sections. Will hold a default section if no explicit hierarchy is found in SL_ISET
 	        List<Section> sectionList = new ArrayList<Section>();
-	        //for each row of dataset
+	        
+	        // Iterate each row and colum of the dataset
 	        for (DataSetRow row : dataSet) {
-	        	//for each column of dataset
 	        	for (DataSetColumn column : row.getColumnValues().keySet()) {
+	        		
 	        		CohortIndicatorAndDimensionColumn cidColumn = (CohortIndicatorAndDimensionColumn) column;
 	        		Object value = row.getColumnValues().get(column);
 	        		String columnName = column.getName();
@@ -276,22 +284,22 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        		Code indCode = indCodeList.getCodeByDescription(sdmxhdIndicatorName);
 
 	        		//setup or get the section for this indicator
-	        		Section s = getSectionHelper(indCode, sectionList, sdmxhdDSD);  //indicator code, listOfSections, message
+	        		Section section = getSectionHelper(indCode, sectionList, sdmxhdDSD);  //indicator code, listOfSections, message
 	        		
 	        		//get the dimension for the list of indicators (CL_INDICATOR)
 	        		Dimension indDimension = sdmxhdDSD.getDimension(indCodeList);
 	        		
 	        		//construct new (SDMX-HD) obs to contain the indicator value
-	        		Obs o = new Obs();
+	        		Obs obs = new Obs();
 	        		
-	        		//set the indicator attribute
-	        		o.getAttributes().put(indDimension.getConceptRef(), indCode.getValue());
+	        		// set the indicator attribute
+	        		obs.getAttributes().put(indDimension.getConceptRef(), indCode.getValue());
 	        		
 	        		// set Section Attributes
 	        		Map<String, String> seriesAttachedAttributes = omrsDSD.getSeriesAttachedAttributes().get(columnName);
 	        		if (seriesAttachedAttributes != null) {
 		    	        for (String key : seriesAttachedAttributes.keySet()) {
-		    	        	s.getAttributes().put(key, seriesAttachedAttributes.get(key));
+		    	        	section.getAttributes().put(key, seriesAttachedAttributes.get(key));
 		    	        }
 	        		}
 	        		
@@ -323,7 +331,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        			Dimension sdmxhdDimension = sdmxhdDSD.getDimension(sdmxhdDimensionName, keyFamilyId);
 	        			CodeList codeList = sdmxhdDSD.getCodeList(sdmxhdDimension.getCodelistRef());
 	        			Code code = codeList.getCodeByDescription(sdmxhdDimensionOptionName);
-	        			o.addAttribute(sdmxhdDimensionName, code.getValue());
+	        			obs.addAttribute(sdmxhdDimensionName, code.getValue());
 	        		}
 	        		
 	        		// add dimensions with default values
@@ -335,7 +343,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        				Dimension dimension = sdmxhdDSD.getDimension(sdmxhdDimension, keyFamilyId);
 		        			CodeList codeList = sdmxhdDSD.getCodeList(dimension.getCodelistRef());
 		        			Code code = codeList.getCodeByDescription(fixedValue);
-	        				o.addAttribute(sdmxhdDimension, code.getValue());
+	        				obs.addAttribute(sdmxhdDimension, code.getValue());
 	        			}
 	        		}
 	        		
@@ -343,32 +351,32 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        		Map<String, String> obsAttachedAttributes = omrsDSD.getObsAttachedAttributes().get(columnName);
 	        		if (obsAttachedAttributes != null) {
 		    	        for (String key : obsAttachedAttributes.keySet()) {
-		    	        	o.getAttributes().put(key, obsAttachedAttributes.get(key));
+		    	        	obs.getAttributes().put(key, obsAttachedAttributes.get(key));
 		    	        }
 	        		}
 	        		
 	        		String primaryMeasure = sdmxhdDSD.getKeyFamily(keyFamilyId).getComponents().getPrimaryMeasure().getConceptRef();
-	        		o.elementName = primaryMeasure; 
+	        		obs.elementName = primaryMeasure; 
 	        		
 	        		// write value
 	        		if (value instanceof CohortIndicatorAndDimensionResult) {
 	        			CohortIndicatorAndDimensionResult typedValue = (CohortIndicatorAndDimensionResult) value;
-	        			o.getAttributes().put("value", typedValue.getValue().toString());
+	        			obs.getAttributes().put("value", typedValue.getValue().toString());
 	        		} else {
-	        			o.getAttributes().put("value", value.toString());
+	        			obs.getAttributes().put("value", value.toString());
 	        		}
 	        		
-	        		//TODO:  add obs to the correct Section from the ISET in the DTD
-	        		s.getObs().add(o);
-	        		
+	        		section.getObs().add(obs);
 	        	}
 	        }
 	        
-	        // add section to SDMX-HD group
-	        for (Section s:sectionList)
-	        	g.getSections().add(s);
-    		// add group to dataset
-    		sdmxhdDataSet.getGroups().add(g);
+	        // Add all sections to group
+	        for (Section section : sectionList) {
+	        	group.getSections().add(section);
+	        }
+	        		
+    		// Add group to dataset
+    		sdmxhdDataSet.getGroups().add(group);
 	        
 	        CSDS csds = new CSDS();
 	        csds.getDatasets().add(sdmxhdDataSet);
@@ -452,7 +460,7 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     }
     
     /**
-     * this uses the HCL_CONFIGURATION_HIERARCHIES, INDICATOR_SET_INDICATOR_HIERARCHY in the DSD 
+     * This uses the HCL_CONFIGURATION_HIERARCHIES, INDICATOR_SET_INDICATOR_HIERARCHY in the DSD 
      * to put an indicator in the right Section based on the CL_ISET file.  
      * If not found, all results will end up in 1 section.
      * @param indCode
@@ -464,7 +472,8 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     	org.jembi.sdmxhd.dsd.HierarchicalCodelist codeList = dsd.getHierarchicalCodeList("HCL_CONFIGURATION_HIERARCHIES");
     	String descriptionAttributeText = "";
     	Code code = null;
-    	if (codeList != null){ //if the codelist hierarchy exists
+    	
+    	if (codeList != null) { //if the codelist hierarchy exists
     		org.jembi.sdmxhd.dsd.Hierarchy h = codeList.getHierarchy("INDICATOR_SET_INDICATOR_HIERARCHY"); //this is the spot in the DSD where you put indicators into sets described in CL_ISET
     		if (h != null && h.getCodeRefs() != null){
     			for (CodeRef cr : h.getCodeRefs()){ // these are one of these for each AL_ISET entry
@@ -486,7 +495,8 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     		}
     	}
     	
-    	if (code == null){ //if sections aren't described in hierarchy in DSD.
+    	// Are sections described in hierarchy in DSD?
+    	if (code == null) { 
     		if (sectionList.size() == 0){
     			Section section = new Section();
     			sectionList.add(section);
@@ -494,17 +504,15 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     		} else {
     			return sectionList.get(0);
     		}	
-    	} else {   //sections are describe in hierarchy in DSD
+    	} 
+    	else
     		return findSectionByCodeValue(sectionList, descriptionAttributeText, code);
-    	}
     }
     
     /**
-     * 
-     * Looks in a list of Sections to find an existing Section by its description attribute.
-     * Returns a new section if not found.
-     * 
-     * @param sections
+     * Looks in a list of sections to find an existing section by its code value and 
+     * returns a new section if not found
+     * @param sections the list of existing sections
      * @param attributeText
      * @return Section
      */
@@ -513,12 +521,12 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
     		if (s.getAttributeValue("value") != null && s.getAttributeValue("value").equals(code.getValue()))
     			return s;
     	}
-    	//not found
+
+    	// Create new section
     	Section section = new Section();
-    	section.addAttribute("description", descriptionAttributeText);
     	section.addAttribute("value", code.getValue());
+    	section.addAttribute("description", descriptionAttributeText);
     	sections.add(section);
     	return section;
     }
-
 }
