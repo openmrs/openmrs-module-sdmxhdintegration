@@ -1,0 +1,18 @@
+<sdmxDesignConfiguration>
+	<headerId>SDMX-HD-CSDS</headerId>
+	<headerName>OpenMRS SDMX-HD Export</headerName>
+	<senderId>OMRS</senderId>
+	<senderName>OpenMRS</senderName>
+	<startDateParameterName>startDate</startDateParameterName>
+	<endDateParameterName>endDate</endDateParameterName>
+	<reportfrequency>M</reportfrequency>
+	<datasetAttributes>
+		<property name="dataProviderId" value="446"/>
+		<property name="confirmationEmail" value="mseaton@pih.org"/>
+	</datasetAttributes>
+	<columnMappings>
+		<property name="1a" value="INDICATOR=1,AGROUP=1,GENDER=0"/>
+		<property name="1" value="INDICATOR=1,AGROUP=2"/>
+		<property name="1b" value="INDICATOR=1,AGROUP=1,GENDER=1"/>
+	</columnMappings>
+</sdmxDesignConfiguration>

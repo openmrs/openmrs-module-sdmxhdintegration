@@ -21,8 +21,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>reporting</artifactId>
+			<artifactId>reporting-api</artifactId>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>serialization.xstream-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
@@ -40,5 +45,4 @@
 			<type>jar</type>
 		</dependency>	
 	</dependencies>
-
 </project>

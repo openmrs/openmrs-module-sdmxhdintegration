@@ -3,8 +3,9 @@
 	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
-<hibernate-configuration>
+<hibernate-configuration>	
 	<session-factory>
-		${hbmConfig}
-	</session-factory>
+       <mapping resource="SDMXHDMessage.hbm.xml" />
+       <mapping resource="KeyFamilyMapping.hbm.xml" />
+    </session-factory>
 </hibernate-configuration>

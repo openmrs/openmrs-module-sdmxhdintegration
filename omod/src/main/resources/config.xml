@@ -10,7 +10,7 @@
 	<description>Allows SDMX-HD reports to be generated from SDMX-HD Data Set Definitions.</description>
 	<updateURL>https://dev.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
 	<require_version>${openMRSVersion}</require_version>
-	<activator>@MODULE_PACKAGE@.SDMXHDActivator</activator>
+	<activator>org.openmrs.module.sdmxhdintegration.SDMXHDActivator</activator>
 	
 	<require_modules>
 	   	<require_module>org.openmrs.module.reporting</require_module>
@@ -18,7 +18,7 @@
 	
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+		<class>org.openmrs.module.sdmxhdintegration.extension.html.AdminList</class>
 	</extension>
 	
 	<privilege>
@@ -27,7 +27,7 @@
 	</privilege>
 
 	<globalProperty>
-		<property>@MODULE_ID@.messageUploadDir</property>
+		<property>sdmxhdintegration.messageUploadDir</property>
 		<defaultValue></defaultValue>
 		<description>The directory where SDMX-HD messages are uploaded to.</description>
 	</globalProperty>
@@ -38,7 +38,8 @@
 	</messages>
 
 	<mappingFiles>
-		${omodHbmConfig}
+       SDMXHDMessage.hbm.xml
+       KeyFamilyMapping.hbm.xml
 	</mappingFiles>
 	
 </module>

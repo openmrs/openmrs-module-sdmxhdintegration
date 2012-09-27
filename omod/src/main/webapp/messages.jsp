@@ -40,7 +40,7 @@
 		<tr>
 			<td valign="top" width="60%">
 				<b class="boxHeader">
-					<spring:message code="@MODULE_ID@.general.messages" />
+					<spring:message code="sdmxhdintegration.general.messages" />
 				</b>
 				<div class="box">
 					<table width="100%" cellspacing="0">
@@ -48,16 +48,16 @@
 							<th>&nbsp;</th>
 							<th><spring:message code="general.name" /></th>
 							<th><spring:message code="general.description" /></th>
-							<th><spring:message code="@MODULE_ID@.messages.uploader" /></th>
-							<th><spring:message code="@MODULE_ID@.messages.uploaded" /></th>
-							<th align="center"><spring:message code="@MODULE_ID@.general.attributes" /></th>
-							<th align="center"><spring:message code="@MODULE_ID@.general.keyFamilies" /></th>
+							<th><spring:message code="sdmxhdintegration.messages.uploader" /></th>
+							<th><spring:message code="sdmxhdintegration.messages.uploaded" /></th>
+							<th align="center"><spring:message code="sdmxhdintegration.general.attributes" /></th>
+							<th align="center"><spring:message code="sdmxhdintegration.general.keyFamilies" /></th>
 							<th>&nbsp;</th>
 						</tr>
 						<c:forEach var="message" items="${messages}" varStatus="index1">
 							<tr class="<c:choose><c:when test="${index1.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
 								<td align="center">
-									<a href="messages.list?deleteMsgId=${message.id}" onclick="return confirm('<spring:message code="@MODULE_ID@.messages.deleteMessageConfirm" />')">
+									<a href="messages.list?deleteMsgId=${message.id}" onclick="return confirm('<spring:message code="sdmxhdintegration.messages.deleteMessageConfirm" />')">
 										<img src='<c:url value="/images/trash.gif"/>' align="absmiddle" border="0"/>							
 									</a>
 								</td>
@@ -86,11 +86,11 @@
 			
 			<td valign="top" width="40%">
 				<b class="boxHeader">
-					<spring:message code="@MODULE_ID@.general.keyFamilies" />
+					<spring:message code="sdmxhdintegration.general.keyFamilies" />
 				</b>
 				<div class="box">
 					<span id="keyFamilyTableHelp">
-						<i><spring:message code="@MODULE_ID@.messages.keyFamilyTableHelp" /></i>
+						<i><spring:message code="sdmxhdintegration.messages.keyFamilyTableHelp" /></i>
 					</span>
 					
 					<c:forEach var="message" items="${messages}">
@@ -100,8 +100,8 @@
 								<tr>
 									<th>&nbsp;</th>
 									<th><spring:message code="general.name" /></th>
-									<th><spring:message code="@MODULE_ID@.general.indicators" />/<spring:message code="@MODULE_ID@.general.dimensions" /></th>
-									<th><spring:message code="@MODULE_ID@.general.attributes" /></th>
+									<th><spring:message code="sdmxhdintegration.general.indicators" />/<spring:message code="sdmxhdintegration.general.dimensions" /></th>
+									<th><spring:message code="sdmxhdintegration.general.attributes" /></th>
 								</tr>
 								
 								<c:set var="index2" value="0" />

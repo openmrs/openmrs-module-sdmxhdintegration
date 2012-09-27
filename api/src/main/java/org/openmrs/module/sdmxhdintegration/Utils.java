@@ -16,6 +16,9 @@ package org.openmrs.module.sdmxhdintegration;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
@@ -132,5 +135,21 @@ public class Utils {
 		SDMXHDParser parser = new SDMXHDParser();
 		org.jembi.sdmxhd.SDMXHDMessage sdmxhdData = parser.parse(zf);
 		return sdmxhdData.getDsd();
+	}
+	
+	/**
+	 * @return true if two dates match after being formatted
+	 */
+	public static boolean datesMatchWithFormat(Date d1, Date d2, String format) {
+		if (d1 != null && d2 != null) {
+			if (format != null) {
+				DateFormat df = new SimpleDateFormat(format);
+				return df.format(d1).equals(df.format(d2));
+			}
+			else {
+				return d1.equals(d2);
+			}
+		}
+		return false;
 	}
 }

@@ -8,7 +8,7 @@
 <springform:form commandName="message">
 
 	<b class="boxHeader">
-		<spring:message code="@MODULE_ID@.general.message" />
+		<spring:message code="sdmxhdintegration.general.message" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
 		<table>
@@ -20,19 +20,19 @@
 	</div>
 
 	<b class="boxHeader">
-		<spring:message code="@MODULE_ID@.globalconfig.groupAttributes" />
+		<spring:message code="sdmxhdintegration.globalconfig.groupAttributes" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
 		<table>
 			<tr>
-				<td width="300"><spring:message code="@MODULE_ID@.globalconfig.reportingfrequency" /></td>
+				<td width="300"><spring:message code="sdmxhdintegration.globalconfig.reportingfrequency" /></td>
 				<td>
 					<c:choose>
 						<c:when test="${frequencyCodes != null}">
 							<springform:select path="groupElementAttributes[${'FREQ'}]" items="${frequencyCodes}" itemLabel="description.defaultStr" itemValue="value" />
 						</c:when>
 						<c:otherwise>
-							<i><spring:message code="@MODULE_ID@.globalconfig.noFrequencies" /></i>
+							<i><spring:message code="sdmxhdintegration.globalconfig.noFrequencies" /></i>
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -41,7 +41,7 @@
 	</div>
 	
 	<b class="boxHeader">
-		<spring:message code="@MODULE_ID@.general.datasetAttributes" />
+		<spring:message code="sdmxhdintegration.general.datasetAttributes" />
 	</b>
 	<div class="box" style="margin-bottom: 20px">
 		<table>

@@ -13,7 +13,7 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util-2.0.xsd">
            
-    <context:component-scan base-package="@MODULE_PACKAGE@" />
+    <context:component-scan base-package="org.openmrs.module.sdmxhdintegration" />
     
     <!-- Service -->
 	<bean parent="serviceContext">

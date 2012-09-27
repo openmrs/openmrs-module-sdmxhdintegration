@@ -44,12 +44,12 @@
 </script>
 
 <b class="boxHeader">
-	<spring:message code="@MODULE_ID@.general.keyFamily" />
+	<spring:message code="sdmxhdintegration.general.keyFamily" />
 </b>
 <div class="box" style="margin-bottom: 20px">
 	<table>
 		<tr>
-			<th align="left" width="300"><spring:message code="@MODULE_ID@.general.message" /></th>
+			<th align="left" width="300"><spring:message code="sdmxhdintegration.general.message" /></th>
 			<td>${message.name}</td>
 		</tr>
 		<tr>
@@ -60,7 +60,7 @@
 </div>
 
 <b class="boxHeader">
-	<spring:message code="@MODULE_ID@.general.datasetAttributes" />
+	<spring:message code="sdmxhdintegration.general.datasetAttributes" />
 </b>
 <div class="box" style="margin-bottom: 20px">
 	<table style="margin-bottom: 10px" cellspacing="0">
@@ -78,7 +78,7 @@
 	
 	<input type="button" value="Add/edit" onclick="openDialog('Dataset')" />
 	
-	<spring:message code="@MODULE_ID@.attributes.containsAllMandatoryAttributes" />:
+	<spring:message code="sdmxhdintegration.attributes.containsAllMandatoryAttributes" />:
 	<c:choose>
 		<c:when test="${hasAllMandatoryDatasetAttrs}">
 			<span style="color:#080; font-weight: bold"><spring:message code="general.yes" /></span>
@@ -90,7 +90,7 @@
 </div>
 
 <b class="boxHeader">
-	<spring:message code="@MODULE_ID@.general.reportColumns" />
+	<spring:message code="sdmxhdintegration.general.reportColumns" />
 </b>
 <div class="box">
 	<p class="description">Set the attributes that can be attached at the Series and Obs level for this SDMX-HD message. A tick will be show if all mandatory attributes have been filled in.</p>

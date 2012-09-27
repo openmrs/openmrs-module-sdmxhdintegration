@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.junit.Ignore;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 
@@ -28,6 +29,7 @@ import com.mchange.v2.c3p0.util.TestUtils;
 /**
  * Utility methods for testing
  */
+@Ignore
 public class TestingUtils {
 	/**
 	 * Uploads a message into the system

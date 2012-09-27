@@ -20,7 +20,7 @@
 			height: 480,
 			modal: true,
 			resizable: true,
-			title: "<spring:message code="@MODULE_ID@.mapping.dimdialogtitle" />"
+			title: "<spring:message code="sdmxhdintegration.mapping.dimdialogtitle" />"
 		});
 
 		$j("#mapIndDialogiFrameDiv").dialog({
@@ -30,7 +30,7 @@
 			height: 160,
 			modal: true,
 			resizable: true,
-			title: "<spring:message code="@MODULE_ID@.mapping.inddialogtitle" />"
+			title: "<spring:message code="sdmxhdintegration.mapping.inddialogtitle" />"
 		}); 
 		
 	});
@@ -62,13 +62,13 @@
 	<table>
 		<tr>
 			<td><img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/glass_numbers_1.png" title="Step 1" /></td>
-			<td class="description"><spring:message code="@MODULE_ID@.mapping.dimdescription" /></td>
+			<td class="description"><spring:message code="sdmxhdintegration.mapping.dimdescription" /></td>
 		</tr>
 	</table>
 	
 	<span class="boxHeader">
-		<b><spring:message code="@MODULE_ID@.general.dimensions" /></b>
-		<a onclick="$j('#dimBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
+		<b><spring:message code="sdmxhdintegration.general.dimensions" /></b>
+		<a onclick="$j('#dimBox').slideToggle()"> <spring:message code="sdmxhdintegration.general.show-hide" /></a>
 	</span>
 	<table id="dimBox" class="box">
 	
@@ -95,13 +95,13 @@
 	<table>
 		<tr>
 			<td><img width="25" height="25" src="${pageContext.request.contextPath}/moduleResources/sdmxhdintegration/images/glass_numbers_2.png" title="Step 1" /></td>
-			<td class="description"><spring:message code="@MODULE_ID@.mapping.inddescription" /></td>
+			<td class="description"><spring:message code="sdmxhdintegration.mapping.inddescription" /></td>
 		</tr>
 	</table>
 	
 	<span class="boxHeader">
-		<b><spring:message code="@MODULE_ID@.general.indicators" /></b>
-		<a onclick="$j('#indBox').slideToggle()"> <spring:message code="@MODULE_ID@.general.show-hide" /></a>
+		<b><spring:message code="sdmxhdintegration.general.indicators" /></b>
+		<a onclick="$j('#indBox').slideToggle()"> <spring:message code="sdmxhdintegration.general.show-hide" /></a>
 	</span>
 	<table id="indBox" class="box">
 	
