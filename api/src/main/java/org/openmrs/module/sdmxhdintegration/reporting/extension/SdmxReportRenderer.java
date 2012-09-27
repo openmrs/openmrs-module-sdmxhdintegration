@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.zip.ZipFile;
@@ -67,9 +66,6 @@ import org.openmrs.module.reporting.report.renderer.ReportRenderer;
 import org.openmrs.module.reporting.report.renderer.ReportTemplateRenderer;
 import org.openmrs.module.sdmxhdintegration.Utils;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 /**
  * Renders a ReportDefinition into an SDMX-HD message, given the associated template, and mapping properties
  */
@@ -89,7 +85,7 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 
 		ReportDesign design = getDesign(argument);
 		EvaluationContext context = reportData.getContext();
-		SdmxDesignConfiguration config = getDesignConfiguration(design);
+		SdmxReportRendererConfig config = getDesignConfiguration(design);
 		
 		if (config == null) {
 			throw new RenderingException("No sdmx design configuration file found. Unable to render.  Please add this as a report design resource file.");
@@ -378,11 +374,11 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 	/**
 	 * @return the design configuration for the passed in design
 	 */
-	public static SdmxDesignConfiguration getDesignConfiguration(ReportDesign design) {
+	public static SdmxReportRendererConfig getDesignConfiguration(ReportDesign design) {
 		for (ReportDesignResource resource : design.getResources()) {
 			if ("xml".equals(resource.getExtension())) {
 				try {
-					return (SdmxDesignConfiguration)getConfigurationSerializer().fromXML(new String(resource.getContents(), "UTF-8"));
+					return SdmxReportRendererConfig.loadFromXml(new String(resource.getContents(), "UTF-8"));
 				}
 				catch (Exception e) {
 					throw new RenderingException("Unable to load design configuration from xml", e);
@@ -390,178 +386,5 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * @return a serializer that can convert the design configuration to/from string
-	 */
-	public static XStream getConfigurationSerializer() {
-		XStream xstream = new XStream(new DomDriver("UTF-8"));
-		xstream.alias("sdmxDesignConfiguration", SdmxDesignConfiguration.class);
-		return xstream;
-	}
-	
-	/**
-	 * Encapsulates the configuration needed to map a report definition to the sdmx output
-	 */
-	public class SdmxDesignConfiguration {
-		
-		private String headerId = "SDMX-HD-CSDS";
-		private String headerName = "OpenMRS SDMX-HD Export";
-		private String senderId = "OMRS";
-		private String senderName = "OpenMRS";
-		private String startDateParameterName = "startDate";
-		private String endDateParameterName = "endDate";
-		private String reportfrequency;
-		private Properties datasetAttributes; // An attribute value can refer to a global property by starting with gp:
-		private Properties columnMappings; // The key references the value in the report.  The value is in the format ind=xxx,dim=yyy,dim=zzz
-		
-		public SdmxDesignConfiguration() {};
-		
-		/**
-		 * @return the headerId
-		 */
-		public String getHeaderId() {
-			return headerId;
-		}
-
-		/**
-		 * @param headerId the headerId to set
-		 */
-		public void setHeaderId(String headerId) {
-			this.headerId = headerId;
-		}
-
-		/**
-		 * @return the headerName
-		 */
-		public String getHeaderName() {
-			return headerName;
-		}
-
-		/**
-		 * @param headerName the headerName to set
-		 */
-		public void setHeaderName(String headerName) {
-			this.headerName = headerName;
-		}
-
-		/**
-		 * @return the senderId
-		 */
-		public String getSenderId() {
-			return senderId;
-		}
-
-		/**
-		 * @param senderId the senderId to set
-		 */
-		public void setSenderId(String senderId) {
-			this.senderId = senderId;
-		}
-
-		/**
-		 * @return the senderName
-		 */
-		public String getSenderName() {
-			return senderName;
-		}
-
-		/**
-		 * @param senderName the senderName to set
-		 */
-		public void setSenderName(String senderName) {
-			this.senderName = senderName;
-		}
-
-		/**
-		 * @return the startDateParameterName
-		 */
-		public String getStartDateParameterName() {
-			return startDateParameterName;
-		}
-
-		/**
-		 * @param startDateParameterName the startDateParameterName to set
-		 */
-		public void setStartDateParameterName(String startDateParameterName) {
-			this.startDateParameterName = startDateParameterName;
-		}
-
-		/**
-		 * @return the endDateParameterName
-		 */
-		public String getEndDateParameterName() {
-			return endDateParameterName;
-		}
-
-		/**
-		 * @param endDateParameterName the endDateParameterName to setMap<String, String>
-		 */
-		public void setEndDateParameterName(String endDateParameterName) {
-			this.endDateParameterName = endDateParameterName;
-		}
-
-		/**
-		 * @return the reportfrequency
-		 */
-		public String getReportfrequency() {
-			return reportfrequency;
-		}
-
-		/**
-		 * @param reportfrequency the reportfrequency to set
-		 */
-		public void setReportfrequency(String reportfrequency) {
-			this.reportfrequency = reportfrequency;
-		}
-
-		/**
-		 * @return the datasetAttributes
-		 */
-		public Properties getDatasetAttributes() {
-			return datasetAttributes;
-		}
-
-		/**
-		 * @param datasetAttributes the datasetAttributes to set
-		 */
-		public void setDatasetAttributes(Properties datasetAttributes) {
-			this.datasetAttributes = datasetAttributes;
-		}
-		
-		/**
-		 * Adds a datasetAttribute
-		 */
-		public void addDataSetAttribute(String key, String value) {
-			if (datasetAttributes == null) {
-				datasetAttributes = new Properties();
-			}
-			datasetAttributes.put(key, value);
-		}
-
-		/**
-		 * @return the columnMappings
-		 */
-		public Properties getColumnMappings() {
-			return columnMappings;
-		}
-
-		/**
-		 * @param columnMappings the columnMappings to set
-		 */
-		public void setColumnMappings(Properties columnMappings) {
-			this.columnMappings = columnMappings;
-		}
-		
-		/**
-		 * Adds a columnMapping
-		 */
-		public void addColumnMapping(String key, String value) {
-			if (columnMappings == null) {
-				columnMappings = new Properties();
-			}
-			columnMappings.put(key, value);
-		}
 	}
 }

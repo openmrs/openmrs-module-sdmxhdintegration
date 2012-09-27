@@ -17,6 +17,8 @@ package org.openmrs.module.sdmxhdintegration;
 import junit.framework.Assert;
 
 import org.jembi.sdmxhd.dsd.DSD;
+import org.jembi.sdmxhd.primitives.Code;
+import org.jembi.sdmxhd.primitives.CodeList;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.AdministrationService;
@@ -60,4 +62,13 @@ public class UtilsTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals("SDMX-HD", dsd.getKeyFamilies().get(0).getId());
 		Assert.assertEquals("WHO", dsd.getKeyFamilies().get(0).getAgencyID());
 	}
+	
+	@Test
+    public void getDisplayNameForIndicatorAndDimensions_shouldGetDisplayName() throws Exception {
+		SDMXHDService service = Context.getService(SDMXHDService.class);
+		SDMXHDMessage message = service.getMessage(1);
+		DSD dsd = Utils.getDataSetDefinition(message);
+		String name = Utils.getDisplayNameForIndicatorAndDimensions(dsd, "INDICATOR=4,GENDER=_ALL,AGROUP=5");
+		Assert.assertEquals("Adults aged = 15 years who are obese (All 15+)", name);
+    }
 }

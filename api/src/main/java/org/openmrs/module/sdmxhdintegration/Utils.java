@@ -26,9 +26,12 @@ import javax.xml.bind.ValidationException;
 import javax.xml.stream.XMLStreamException;
 
 import org.jembi.sdmxhd.dsd.DSD;
+import org.jembi.sdmxhd.dsd.Dimension;
 import org.jembi.sdmxhd.parser.SDMXHDParser;
 import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
 import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
+import org.jembi.sdmxhd.primitives.Code;
+import org.jembi.sdmxhd.primitives.CodeList;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.ReportingConstants;
 import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
@@ -152,4 +155,38 @@ public class Utils {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return a display name for an indicator and dimension string assuming the indicator is listed first
+	 */
+    public static String getDisplayNameForIndicatorAndDimensions(DSD dsd, String combinationString) {
+    	StringBuilder sb = new StringBuilder();
+    	int numFound = 0;
+    	for (String s : combinationString.split("\\,")) {
+    		String[] split = s.split("\\=");
+    		Dimension d = dsd.getDimension(split[0]);
+    		CodeList cl = dsd.getCodeList(d.getCodelistRef());
+    		boolean found = false;
+    		for (Code c : cl.getCodes()) {
+    			if (c.getValue().equals(split[1])) {
+    				if (numFound > 0) {
+    					sb.append(" ");
+    				}
+    				if (numFound == 1) {
+    					sb.append("(");
+    				}
+    	    		sb.append(c.getDescription().getDefaultStr());
+    	    		found = true;
+    	    		numFound++;
+    			}
+    		}
+    		if (!found) {
+    			throw new IllegalArgumentException("Cannot find " + s + " in dsd");
+    		}
+    	}
+    	if (numFound > 1) {
+    		sb.append(")");
+    	}
+    	return sb.toString();
+    }
 }
