@@ -15,12 +15,19 @@
 package org.openmrs.module.sdmxhdintegration;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Map;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.ValidationException;
 import javax.xml.stream.XMLStreamException;
@@ -32,6 +39,7 @@ import org.jembi.sdmxhd.parser.exceptions.ExternalRefrenceNotFoundException;
 import org.jembi.sdmxhd.parser.exceptions.SchemaValidationException;
 import org.jembi.sdmxhd.primitives.Code;
 import org.jembi.sdmxhd.primitives.CodeList;
+import org.jembi.sdmxhd.util.Constants;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.reporting.ReportingConstants;
 import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
@@ -188,5 +196,53 @@ public class Utils {
     		sb.append(")");
     	}
     	return sb.toString();
+    }
+    
+    /**
+     * Outputs the CSDS xml as a new file in the root a copy of the original zipfile
+     */
+    public static void outputCsdsInDsdZip(ZipFile zf, String csdsXml, OutputStream out) throws IOException {
+    	
+    	File tempFile = File.createTempFile("tmp", ".zip");
+        tempFile.delete();
+        
+        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempFile));
+
+        Enumeration<? extends ZipEntry> entries = zf.entries();
+        while (entries.hasMoreElements()) {
+        	
+        	ZipEntry readZipEntry = entries.nextElement();
+        	
+        	// leave out data result files
+        	if (!readZipEntry.getName().equals(Constants.CDS_PATH) && !readZipEntry.getName().equals(Constants.CSDS_PATH)) {
+	        	ZipEntry newZipEntry = new ZipEntry(readZipEntry.getName());
+	        	zos.putNextEntry(newZipEntry);
+	        	InputStream is = zf.getInputStream(readZipEntry);
+	        	byte[] buffer = new byte[1024];
+	        	int len;
+	        	while ((len = is.read(buffer)) > 0){
+	        		zos.write(buffer, 0, len);
+	  	        }
+        	}
+        }
+        
+        // insert CSDS into temp file
+        ZipEntry e = new ZipEntry(Constants.CSDS_PATH);
+        zos.putNextEntry(e);
+        zos.write(csdsXml.getBytes());
+        zos.closeEntry();
+        zos.close();
+        
+        // write temp sdmxhdMessageFile to out
+        FileInputStream inStream = new FileInputStream(tempFile);
+        
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = inStream.read(buffer)) > 0){
+        	out.write(buffer, 0, len);
+        }
+        
+        out.flush();
+        out.close();
     }
 }

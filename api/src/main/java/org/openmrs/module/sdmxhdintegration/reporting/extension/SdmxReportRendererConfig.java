@@ -32,6 +32,8 @@ public class SdmxReportRendererConfig {
 	private String reportfrequency;
 	private Properties datasetAttributes; // An attribute value can refer to a global property by starting with gp:
 	private Properties columnMappings; // The key references the column in the report.  The value is in the format ind=xxx,dim=yyy,dim=zzz
+	private Boolean outputWithinOriginalDsd = Boolean.FALSE;
+	private Boolean compressOutput = Boolean.FALSE;
 	
 	public SdmxReportRendererConfig() {};
 	
@@ -181,8 +183,36 @@ public class SdmxReportRendererConfig {
 		columnMappings.put(key, value);
 	}
 	
-	// Static methods
+	/**
+	 * @return the outputWithinOriginalDsd
+	 */
+	public Boolean getOutputWithinOriginalDsd() {
+		return outputWithinOriginalDsd;
+	}
+
+	/**
+	 * @param outputWithinOriginalDsd the outputWithinOriginalDsd to set
+	 */
+	public void setOutputWithinOriginalDsd(Boolean outputWithinOriginalDsd) {
+		this.outputWithinOriginalDsd = outputWithinOriginalDsd;
+	}
+
+	/**
+	 * @return the compressOutput
+	 */
+	public Boolean getCompressOutput() {
+		return compressOutput;
+	}
+
+	/**
+	 * @param compressOutput the compressOutput to set
+	 */
+	public void setCompressOutput(Boolean compressOutput) {
+		this.compressOutput = compressOutput;
+	}
 	
+	// Static methods
+
 	/**
 	 * @return a new instance given the passed xml
 	 */

@@ -15,10 +15,7 @@
 package org.openmrs.module.sdmxhdintegration.reporting.extension;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,12 +23,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.ValidationException;
 import javax.xml.stream.XMLStreamException;
@@ -73,6 +67,7 @@ import org.openmrs.module.reporting.report.renderer.RenderingMode;
 import org.openmrs.module.sdmxhdintegration.KeyFamilyMapping;
 import org.openmrs.module.sdmxhdintegration.SDMXHDMessage;
 import org.openmrs.module.sdmxhdintegration.SDMXHDService;
+import org.openmrs.module.sdmxhdintegration.Utils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -387,51 +382,9 @@ public class SDMXHDCrossSectionalReportRenderer extends AbstractReportRenderer {
 	        String derivedNamespace = Constants.DERIVED_NAMESPACE_PREFIX + keyFamily.getAgencyID() + ":" + keyFamily.getId() + ":" + keyFamily.getVersion() + ":cross";
 	        String xml = csds.toXML(derivedNamespace);
 	        
-	        // create temp zip file space
-	        File tempFile = File.createTempFile("tmp", ".zip");
-	        tempFile.delete();
-	        
-	        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempFile));
-	        
-	        // copy all zip entries to new zip file
+	        // output csds in original zip
 	        zf = new ZipFile(path + File.separator + sdmxhdMessage.getZipFilename());
-	        Enumeration<? extends ZipEntry> entries = zf.entries();
-	        while(entries.hasMoreElements()) {
-	        	ZipEntry readZipEntry = entries.nextElement();
-	        	
-	        	// leave out data result files
-	        	if (!readZipEntry.getName().equals(Constants.CDS_PATH) &&
-	        			!readZipEntry.getName().equals(Constants.CSDS_PATH)) {
-		        	ZipEntry newZipEntry = new ZipEntry(readZipEntry.getName());
-		        	zos.putNextEntry(newZipEntry);
-		        	InputStream is = zf.getInputStream(readZipEntry);
-		        	
-		        	byte[] buffer = new byte[1024];
-		        	int len;
-		        	while ((len = is.read(buffer)) > 0){
-		        		zos.write(buffer, 0, len);
-		  	        }
-	        	}
-	        }
-	        
-	        // insert CSDS into temp file
-	        ZipEntry e = new ZipEntry(Constants.CSDS_PATH);
-	        zos.putNextEntry(e);
-	        zos.write(xml.getBytes());
-	        zos.closeEntry();
-	        zos.close();
-	        
-	        // write temp sdmxhdMessageFile to out
-	        FileInputStream inStream = new FileInputStream(tempFile);
-	        
-	        byte[] buffer = new byte[1024];
-	        int len;
-	        while ((len = inStream.read(buffer)) > 0){
-	        	out.write(buffer, 0, len);
-	        }
-	        
-	        out.flush();
-	        out.close();
+	        Utils.outputCsdsInDsdZip(zf, xml, out);
         }
         catch (IllegalArgumentException e) {
 	        log.error("Error generated", e);

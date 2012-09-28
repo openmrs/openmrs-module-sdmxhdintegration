@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -52,6 +54,7 @@ import org.jembi.sdmxhd.primitives.LocalizedString;
 import org.jembi.sdmxhd.util.Constants;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.reporting.common.ContentType;
 import org.openmrs.module.reporting.common.DateUtil;
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.common.ObjectUtil;
@@ -61,6 +64,7 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.ReportDesignResource;
+import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.reporting.report.renderer.RenderingException;
 import org.openmrs.module.reporting.report.renderer.ReportRenderer;
 import org.openmrs.module.reporting.report.renderer.ReportTemplateRenderer;
@@ -78,6 +82,34 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	
 	/**
+	 * Return the output content type
+	 */
+	public ContentType getOutputContentType(ReportDefinition definition, String argument) {
+		ReportDesign design = getDesign(argument);
+		SdmxReportRendererConfig config = getDesignConfiguration(design);
+		if (config.getCompressOutput() == Boolean.TRUE || config.getOutputWithinOriginalDsd() == Boolean.TRUE) {
+			return ContentType.ZIP;
+		}
+		return ContentType.XML;
+	}
+	
+	/**
+	 * @see ReportTemplateRenderer#getFilename(ReportDefinition, String)
+	 */
+	@Override
+	public String getFilename(ReportDefinition definition, String argument) {
+		String fn = super.getFilename(definition, argument);
+		return fn.substring(0, fn.lastIndexOf(".")) + getOutputContentType(definition, argument).getExtension();
+	}
+	
+	/** 
+	 * @see ReportRenderer#getRenderedContentType(ReportDefinition, String)
+	 */
+	public String getRenderedContentType(ReportDefinition definition, String argument) {
+		return getOutputContentType(definition, argument).getContentType();
+	}
+
+	/**
      * @see ReportRenderer#render(ReportData, String, OutputStream)
      */
     @Override
@@ -93,7 +125,9 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 		log.info("Loaded config file with " + config.getColumnMappings().size() + " configured mappings");
 
 		// Load the SDMX-HD Message
-		SDMXHDMessage sdmxMessage = getSdmxMessage(getTemplate(design));
+		ReportDesignResource sdmxResource = getTemplate(design);
+		SDMXHDMessage sdmxMessage = getSdmxMessage(sdmxResource);
+
 		DSD sdmxDsd = sdmxMessage.getDsd();
 		
 		// Resolve and validate report dates and time periods
@@ -259,7 +293,25 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
             String derivedNamespace = Constants.DERIVED_NAMESPACE_PREFIX + kf.getAgencyID() + ":" + kf.getId() + ":" + kf.getVersion() + ":cross";
             try {
             	String xml = csds.toXML(derivedNamespace);
-            	IOUtils.write(xml, out, "UTF-8");
+            	if (config.getOutputWithinOriginalDsd() == Boolean.TRUE) {
+            		ZipFile zipFile = SdmxReportRenderer.getSdmxMessageZipFile(sdmxResource);
+            		Utils.outputCsdsInDsdZip(zipFile, xml, out);
+            	}
+            	else if (config.getCompressOutput() == Boolean.TRUE) {
+            		ZipOutputStream zipOut = null;
+            		try {
+            			zipOut = new ZipOutputStream(out);
+            			ZipEntry zipEntry = new ZipEntry("DATA_CROSS.xml");
+            			zipOut.putNextEntry(zipEntry);
+            			zipOut.write(xml.getBytes("UTF-8"));
+            		}
+            		finally {
+            			IOUtils.closeQuietly(zipOut);
+            		}
+            	}
+            	else {
+            		IOUtils.write(xml, out, "UTF-8");
+            	}
             }
             catch (Exception e) {
             	throw new RenderingException("Unable to render data to xml", e);
@@ -310,20 +362,32 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
     /**
      * @return the SDMX-HD message stored in a ReportDesignResource
      */
-	public static SDMXHDMessage getSdmxMessage(ReportDesignResource resource) {
+	public static ZipFile getSdmxMessageZipFile(ReportDesignResource resource) {
 		File tmpFile = null;
-		try {        
-			SDMXHDParser parser = new SDMXHDParser();
+		try {
 			tmpFile = File.createTempFile("sdmx", resource.getReportDesign().getUuid());
 			FileUtils.writeByteArrayToFile(tmpFile, resource.getContents());
-			ZipFile zipFile = new ZipFile(tmpFile);
-			return parser.parse(zipFile);
+			return new ZipFile(tmpFile);
 		}
 		catch (Exception e) {
 			throw new RenderingException("Unable to load an sdmxhd message from report design resource", e);
 		}
 		finally {
 			FileUtils.deleteQuietly(tmpFile);
+		}
+	}
+	
+	/**
+	 * @return an SDMX HD Message parsed from the passed zip file
+	 */
+	public static SDMXHDMessage getSdmxMessage(ReportDesignResource resource) {
+		ZipFile zipFile = SdmxReportRenderer.getSdmxMessageZipFile(resource);
+		SDMXHDParser parser = new SDMXHDParser();
+		try {
+			return parser.parse(zipFile);
+		}
+		catch (Exception e) {
+			throw new RenderingException("Unable to load SDMX HD DSD from Zip File", e);
 		}
 	}
 	
