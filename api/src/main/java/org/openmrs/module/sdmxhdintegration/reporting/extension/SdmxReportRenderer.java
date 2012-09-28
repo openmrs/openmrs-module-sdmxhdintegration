@@ -99,7 +99,7 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
 	@Override
 	public String getFilename(ReportDefinition definition, String argument) {
 		String fn = super.getFilename(definition, argument);
-		return fn.substring(0, fn.lastIndexOf(".")) + getOutputContentType(definition, argument).getExtension();
+		return fn.substring(0, fn.lastIndexOf(".")+1) + getOutputContentType(definition, argument).getExtension();
 	}
 	
 	/** 
