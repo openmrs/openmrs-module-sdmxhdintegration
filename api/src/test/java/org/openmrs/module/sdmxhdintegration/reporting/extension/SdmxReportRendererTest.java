@@ -108,6 +108,7 @@ public class SdmxReportRendererTest extends BaseModuleContextSensitiveTest {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		renderer.render(reportData, "ReportData", baos);
 		baos.close();
-		ReportUtil.writeByteArrayToFile(new File("/home/mseaton/Desktop/testSdmxOutput.xml"), baos.toByteArray());
+		File f = File.createTempFile("testSdmxOutput", ".xml");
+		ReportUtil.writeByteArrayToFile(f, baos.toByteArray());
 	}
 }

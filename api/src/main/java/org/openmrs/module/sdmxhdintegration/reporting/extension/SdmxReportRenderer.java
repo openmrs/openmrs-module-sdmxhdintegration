@@ -253,6 +253,7 @@ public class SdmxReportRenderer extends ReportTemplateRenderer {
             	if (section == null) {
             		section = new Section();;
                 	section.addAttribute("description", sectionCode.getDescription().getDefaultStr());
+                	section.addAttribute("value", sectionCode.getValue());
                 	sectionMap.put(sectionCode.getValue(), section);
             	}
             	
