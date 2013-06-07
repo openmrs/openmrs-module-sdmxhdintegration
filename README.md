@@ -1,4 +1,4 @@
-openmrs-module-sdmxhdintegration
-================================
+SDMX-HD Integration OpenMRS Module
+=========================================
 
-SDMX-HD Integration Module
+This module is to allow SDMX-HD messages to be imported to and exported from OpenMRS
