@@ -12,9 +12,9 @@
 	<url>https://wiki.openmrs.org/display/docs/SDMX-HD+Integration+Module</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/sdmxhdintegration/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/sdmxhdintegration/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/sdmxhdintegration/trunk/</url>
+		<connection>scm:git:https://github.com/openmrs/openmrs-module-sdmxhdintegration/</connection>
+		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-sdmxhdintegration/</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-sdmxhdintegration/</url>
 	</scm>
 
 	<modules>
